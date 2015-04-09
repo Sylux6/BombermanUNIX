@@ -1,3 +1,5 @@
 faire une vrai menu (structure et tous)
 implementer des fonction souvent utile (dans lib.c)
 faire un vrai map.c qui charge un map choisi et non la seul map existante --'
+
+bien faire les include (ne pas tout mettre a chaque fois ^^")
