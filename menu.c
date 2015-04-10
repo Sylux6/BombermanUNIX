@@ -1,7 +1,8 @@
 #include "menu.h"
 #include "term.h"
-#include "lib.h"
+#include "mylib.h"
 #include "map.h"
+
 #define ENTER 13
 #define UP_ARROW 65
 #define DOWN_ARROW 66
@@ -26,7 +27,7 @@ struct menu_choice print_menu(int pos_x,int pos_y){//lui envoyer un struct menu
 		// write(1,buffer,strlen(buffer));
 		print_line("\x1b[91m\x1b[33;5m->", x + pos_x, pos_y - 3);
 		
-		read(0,buffer2,1);
+		myread(0, buffer2, 1);
 		
 		// sprintf(buffer, "\x1b[%d;%dH\x1b[91m%s", x + pos_x, pos_y - 3,"  ");
 		// write(1,buffer,strlen(buffer));
@@ -34,12 +35,12 @@ struct menu_choice print_menu(int pos_x,int pos_y){//lui envoyer un struct menu
 		
 		if(buffer2[0] == 'z' || buffer2[0] == UP_ARROW)
 		{
-			x = mod(x-1,3);	
+			x = mymodulo(x-1,3);	
 			// x = (x-1)%3;
 		}
 		if(buffer2[0] == 's' || buffer2[0] == DOWN_ARROW)
 		{
-			x = mod(x+1,3);//+1;
+			x = mymodulo(x+1,3);//+1;
 			// x = x%3+1;
 		}
 

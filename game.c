@@ -13,7 +13,7 @@
 #include "menu.h"
 #include "map.h"
 #include "term.h"
-#include "lib.h"
+#include "mylib.h"
 
 
 

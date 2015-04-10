@@ -1,0 +1,3 @@
+10/04:
+*Remplacement de lib.c/.h par mylib.c/.h
+*Remplacement des fonctions realRead et mod par myread et mymod (toutes les prochaines fonctions créées en remplacement aux fonctions systemes prendront un nom de la forme my...() dans mylib.c/.h)

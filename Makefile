@@ -1,5 +1,5 @@
 EXEC=Bomberman
-SOURCES=game.c menu.c map.c term.c lib.c
+SOURCES=game.c menu.c map.c term.c mylib.c
 OBJECTS=$(SOURCES:.c=.o)
 CC=gcc
 CFLAGES=-Wall -Werror -std=gnu99
@@ -7,11 +7,11 @@ CFLAGES=-Wall -Werror -std=gnu99
 
 default: $(EXEC)
 
-game.o: game.c menu.h map.h term.h lib.h
+game.o: game.c menu.h map.h term.h mylib.h
 menu.o: menu.c menu.h
 map.o: map.c map.h
 term.o: term.c term.h
-lib.o: lib.c lib.h
+mylib.o: mylib.c mylib.h
 
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGES)

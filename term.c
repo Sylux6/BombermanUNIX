@@ -1,5 +1,5 @@
 #include "term.h"
-#include "lib.h"
+#include "mylib.h"
 
 
 void print_line(char* line,int x,int y){

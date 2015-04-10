@@ -1,7 +1,7 @@
 #include "map.h"
 #include "term.h"
 
-#include "lib.h"
+#include "mylib.h"
 
 
 void map1(int x,int y){
@@ -16,7 +16,7 @@ void map1(int x,int y){
 		sleep(2);
 	}
 	do{
-		n += read(lvl1,buffer2 + n ,1);
+		n += myread(lvl1, buffer2+n, 1);
 
 	}while(buffer2[n-1] != '\n');
 	buffer2[n]='\0';
@@ -30,7 +30,7 @@ void map1(int x,int y){
 	int i =1;
 	map_buf = malloc(colomnus+1);
 	do{
-		realRead(lvl1,map_buf,colomnus+1);
+		myread(lvl1,map_buf,colomnus+1);
 		map_buf[colomnus]='\0';
 		print_line(map_buf,x+i,y);
 		i++;
