@@ -13,8 +13,6 @@ void set_pos(int x,int y){
 	print_line("",x,y);
 }
 
-
-
 void term_raw(){
 	struct termios new;
 	tcgetattr(0, &new);

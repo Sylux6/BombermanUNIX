@@ -9,12 +9,14 @@
 
 #define MIN(x,y) (x<y)?x:y
 
+unsigned int mymodulo();
+
 ssize_t mywrite(int fd, void *buf, size_t count);
 
 ssize_t myread(int fd, void *buf, size_t count);
 
 void *realloc(void *ptr, size_t size);
 
-unsigned int mymodulo();
+char* mystrcpy(char *dest, const char *src);
  
 #endif

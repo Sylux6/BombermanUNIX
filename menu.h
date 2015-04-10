@@ -13,14 +13,40 @@
 #include <termios.h>
 #include <math.h>
 
-
-struct menu_choice
-{
-	int choice;
-	char* folder;
+struct menu {
+    struct menu* parent;
+    char* name;
+    struct item* items[9] ;
 };
+typedef struct menu* menu;
 
-struct menu_choice print_menu(int pos_x,int pos_y);
+struct item {
+    int kind;                   //see below
+    union item_kind {
+        struct menu* submenu;   //kind = 1
+        struct action* action;  //kind = 2
+    }item_kind;
+};
+typedef struct item* item;
+
+struct action {
+    char* name;
+    void (*f)();
+};
+typedef struct action* action;
+
+void itemInit(item[9]);
+
+menu createMenu(const char*);
+
+void addMenuAction(menu, const char*, void (*)());
+
+void addSubMenu(menu , menu);
+
+void deleteMenu(menu );
+
+void launchMenu(menu );
+
 void print_title(int x,int y);
 
 #endif
