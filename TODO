@@ -1,5 +1,30 @@
-faire une vrai menu (structure et tous)
+faire une vrai menu (structure et tous) 											// fait 
 implementer des fonction souvent utile (dans mylib.c)
-faire un vrai map.c qui charge un map choisi et non la seul map existante --'
+faire un vrai map.c qui charge un map choisi et non la seul map existante --'		// urgent
 
 bien faire les include (ne pas tout mettre a chaque fois ^^")
+
+- fair witch_folder, et launch_game (ces fonction sont appeler depuis le menu )
+
+
+
+
+
+
+
+SYLVAIN crée toi l'arboressance :
+mod1/
+	-deroulement
+	-niveau/
+		-1
+		-2
+		-3
+mod2/
+	-deroulement
+	-niveau/
+		-1
+		-2
+		-3
+
+Randomly created/
+	(il faut crée un generateur aleatoir :D ) 

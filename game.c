@@ -29,26 +29,26 @@ int main(int argc,char** argv){
 		}
 	}
 	else if(strcmp(getenv("continue"),"true") == 0){
-		term_raw();
-		print_title(1,10);
-		// ret = print_menu(15,20);
-		// print_line("\x1b[?25l",1,1);
-		// if(ret.choice == 2){
-		// 	return 2;
-		// }
-		// if(ret.choice == 1){
-		// 	return 1;
-		// }
-		// if(ret.choice == 0){
-			
-		// 	char* buffer = malloc(100);
-		// 	sprintf(buffer, "\x1b[2;2H %s %s\x1b[0m", getenv("COLUMNS"), getenv("LINES"));
-		// 	write(1,buffer,strlen(buffer));
-		// 	free(buffer);
-		// 	while(1){
-		// 	}
-		// }
-	}
+		new_stderr(); // create a strerr.log to save all the error
 
+		save_old(); // save the term cannonique value
+		term_raw(); // change the terminal to the mode raw
+
+
+		// ---------------create the menu ----------------------
+		menu main_ = createMenu("main");
+		menu game = createMenu("launch game");
+		addSubMenu(main_, game);
+		addMenuAction1(main_, "commande", print_commande);
+		addMenuAction1(main_, "exit", leave);
+
+		addMenuAction2(game, "mod1", launch_game);
+		addMenuAction2(game, "mod2", launch_game);
+		addMenuAction2(game, "Randomly created", launch_game);
+		addMenuAction1(game, "made by yourself", wich_folder);
+		// ---------- end of the creation ---------------------
+
+		launchMenu(main_,7,4); // launch the main menu 
+	}
 	return 1;
 }

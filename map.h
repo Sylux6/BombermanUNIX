@@ -13,6 +13,8 @@
 #include <termios.h>
 #include <math.h>
 
-void map1(int x,int y);
+void print_map(char* map,int x,int y);
+
+void launch_game(char* folder);
 
 #endif

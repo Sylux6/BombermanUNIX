@@ -31,7 +31,11 @@ typedef struct item* item;
 
 struct action {
     char* name;
-    void (*f)();
+    int kind;                   //see below
+    union action_kind{
+        void (*f)();            //kind = 1
+        void (*f2)(char*);      //kind = 2
+    }action_kind;
 };
 typedef struct action* action;
 
@@ -39,14 +43,22 @@ void itemInit(item[9]);
 
 menu createMenu(const char*);
 
-void addMenuAction(menu, const char*, void (*)());
+void addMenuAction1(menu, const char*, void (*)());
 
-void addSubMenu(menu , menu);
+void addMenuAction2(menu, const char*, void (*)(char*));
 
-void deleteMenu(menu );
+void addSubMenu(menu, menu);
 
-void launchMenu(menu );
+void deleteMenu(menu);
 
-void print_title(int x,int y);
+void launchMenu(menu, int, int);
+
+void print_title(int, int);
+
+void print_commande();
+
+void wich_folder();
+
+void print_menu(menu m, int pos_x, int pos_y);
 
 #endif
