@@ -7,7 +7,7 @@ CFLAGES=-Wall -Werror -std=gnu99
 
 default: $(EXEC)
 
-game.o: game.c menu.h map.h term.h mylib.h
+game.o: game.c
 menu.o: menu.c menu.h
 map.o: map.c map.h
 term.o: term.c term.h
@@ -20,4 +20,4 @@ $(EXEC): $(OBJECTS)
 	$(CC) -o $@ $^
 
 clean:
-	rm $(EXEC) $(OBJECTS) 
+	rm $(EXEC) $(OBJECTS)
