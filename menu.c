@@ -40,26 +40,17 @@ void print_commande(){
     print_line("joueur 2 : deplacement -> pad arrow  , drop bombe -> \"end\"\n", 16, 5);
     sleep(5);
 }
-
+//let the player choose the folder to launch the game
 void wich_folder(){
-    // let him chose a folder to start the game
-    //call launch_game if all is good
-    // i 27906 , o 5 c 1215 l 35387
-    // struct termios not_raw;
-    // not_raw.c_iflag = 27906;
-    // not_raw.c_oflag = 5    ;
-    // not_raw.c_cflag = 1215 ;
-    // not_raw.c_lflag = 35387;
+    print_line("write the nameof the flolder : ",10,5);
     term_cannonique();
-    print_line(CUR_ON,10,5);
+    print_line2(CUR_ON);
     char* buff = malloc(100);
     int i = read(0,buff,100);
     term_raw();
-    buff[i] = '\0';
+    buff[i-1] = '\0';
     launch_game(buff);
     free(buff);
-
-
 }
 
 //////////////////////////////////////////////////////////
@@ -227,9 +218,7 @@ void launchMenu(menu m, int pos_x, int pos_y) {
         if(*direction == ENTER){
             print_line(CLEAR_AFTER_CUR,pos_x,pos_y);
             if(m->items[x]->kind == 1){
-                //clear and launch the new menu
                 launchMenu(m->items[x]->item_kind.submenu,pos_x,pos_y);
-
             }else{
                 if(m->items[x]->item_kind.action->kind == 1){
                     m->items[x]->item_kind.action->action_kind.f();
@@ -238,14 +227,12 @@ void launchMenu(menu m, int pos_x, int pos_y) {
                 }
             }
             for(int i = 0 ; i < nb_item ; i++){
-                //if menu ->
                 if(m->items[i]->kind == 1){
                     print_line(m->items[i]->item_kind.submenu->name, pos_x+i, pos_y+2);
                 }else{
                     print_line(m->items[i]->item_kind.action->name, pos_x+i, pos_y+2);
                 }
             }
-            // print_line(CUR_OFF,pos_x,pos_y);
             print_menu(m,pos_x,pos_y);
             print_line("->",pos_x+x,pos_y+y);
         }

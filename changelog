@@ -3,3 +3,5 @@
 *Remplacement des fonctions realRead et mod par myread et mymod (toutes les prochaines fonctions créées en remplacement aux fonctions systemes prendront un nom de la forme my...() dans mylib.c/.h)
 11/04
 *Création de launchmenu
+12/04
+*modification du menu et création des fonction permetant d'afficher une map et de choisir un dossier

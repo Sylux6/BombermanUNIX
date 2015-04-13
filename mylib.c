@@ -13,8 +13,8 @@ unsigned int mymodulo(int dividend, int divisor) {
 //On error, -1 is returned, and errno is set appropriately.
 ssize_t mywrite(int fd, void *buf, size_t count) {
     ssize_t _written_ = 0;
-    ssize_t ret;
-    while(count > 0) {
+    ssize_t ret = 1;
+    while(count > 0 && ret != 0) {
         if((ret = write(fd, buf+_written_, count)) == -1)
             return -1;
         _written_ += ret;
@@ -28,8 +28,8 @@ ssize_t mywrite(int fd, void *buf, size_t count) {
 //On error, -1 is returned, and errno is set appropriately.
 ssize_t myread(int fd, void *buf, size_t count) {
     ssize_t _read_ = 0;
-    ssize_t ret;
-    while(count > 0) {
+    ssize_t ret = 1;
+    while(count > 0 && ret != 0) {
         if((ret = read(fd, buf+_read_, count)) == -1)
             return -1;
         _read_ += ret;
@@ -78,7 +78,6 @@ void new_stderr(){
 
 void my_print_err(char* message){
     mywrite(2,message,strlen(message));
-    write(2,"\n",1);
 }
 
 char* read_line(int fd){

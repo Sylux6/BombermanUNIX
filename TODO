@@ -1,30 +1,9 @@
 faire une vrai menu (structure et tous) 											// fait 
 implementer des fonction souvent utile (dans mylib.c)
-faire un vrai map.c qui charge un map choisi et non la seul map existante --'		// urgent
+faire un vrai map.c qui charge un map choisi et non la seul map existante --'		// fait
 
 bien faire les include (ne pas tout mettre a chaque fois ^^")
 
-- fair witch_folder, et launch_game (ces fonction sont appeler depuis le menu )
+fair witch_folder, et launch_game (ces fonction sont appeler depuis le menu )  // fait
 
-
-
-
-
-
-
-SYLVAIN crée toi l'arboressance :
-mod1/
-	-deroulement
-	-niveau/
-		-1
-		-2
-		-3
-mod2/
-	-deroulement
-	-niveau/
-		-1
-		-2
-		-3
-
-Randomly created/
-	(il faut crée un generateur aleatoir :D ) 
+trouver les caractere pour les perso , les couleur (meme ou diff)

@@ -19,17 +19,13 @@
 #define RIGHT_ARROW 67
 #define LEFT_ARROW 68
 
+//print the map and launch the game 
 
 void launch_game(char* folder){
 	print_line2(CLEAR_TERM);
-	// launche the game
-	// printf("on ouvre le dossier : %s\n",folder);
-	// ouvrir le dossier passer en parametre 
-	// lire le fichier deroulement
-	// ouvrir le niveau corespondant
-	// map1(1,1);
 	DIR* mod = opendir(folder); // tester avec un access peut etre plutot
 	if(mod == NULL){
+		my_print_err(folder);
 		my_print_err("ouverture du dossier de mod impossible");
 		sleep(5);
 		exit(-1);
@@ -57,13 +53,15 @@ void launch_game(char* folder){
 		strcat(string2,"niveaux");
 		strcat(string2,"/");
 		strcat(string2,string1);
-		my_print_err("map a ouvrir ->");
-		my_print_err(string2);
 		print_map(string2,4,7);
-		sleep(2);
+		//-----------launch the game here------------------
+
+
+		//-------------------end---------------------------
+		sleep(1);
 		print_line2(CLEAR_TERM);
 	}
-	sleep(5);
+	// sleep(5);
 }
 
 
@@ -97,18 +95,11 @@ void print_map(char* map,int x,int y){
 		colomnus = atoi(tmp);
 	}
 	int i =1;
-	print_line(buffer2,3,3);
-
-	print_line(tmp,3,7);
 	map_buf = malloc(colomnus+1);
 	do{
-		char* bufff = malloc(10);
-		myread(lvl1,map_buf,colomnus+1);
+		if(myread(lvl1,map_buf,colomnus+1) > 0);
 		map_buf[colomnus]='\0';
-		sprintf(bufff,"%d",i);
-		print_line(bufff,x+i,y-3);
 		print_line(map_buf,x+i,y);
-		free(bufff);
 		i++;
 	}while(i <= line);
 }
