@@ -32,8 +32,8 @@ void print_title(int x,int y){
 }
 
 void print_commande(){
-    print_line("joueur 1 : deplacement -> zqsd , drop bombe -> a\n", 14, 5);
-    print_line("joueur 2 : deplacement -> pad arrow  , drop bombe -> \"end\"\n", 16, 5);
+    print_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A\n", 14, 5);
+    print_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"\n", 16, 5);
     sleep(5);
 }
 //let the player choose the folder to launch the game
@@ -143,41 +143,6 @@ void deleteMenu(menu m) {
     free(m);
     m->name = NULL;
     m = NULL;
-}
-
-int choiceToInt(char c) {
-    //the value of choice is reduced by 1 to match the values of items[]
-    switch(c) {
-    case '1':
-        return 0;
-        break;
-    case '2':
-        return 1;
-        break;
-    case '3':
-        return 2;
-        break;
-    case '4':
-        return 3;
-        break;
-    case '5':
-        return 4;
-        break;
-    case '6':
-        return 5;
-        break;
-    case '7':
-        return 6;
-        break;
-    case '8':
-        return 7;
-        break;
-    case '9':
-        return 8;
-        break;
-    default:
-        return -1;
-    }
 }
 
 int numberOfItems(menu m){
