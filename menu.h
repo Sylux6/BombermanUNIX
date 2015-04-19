@@ -13,6 +13,11 @@
 #include <termios.h>
 #include <math.h>
 
+#include "term.h"
+#include "mylib.h"
+#include "map.h"
+
+
 struct menu {
     struct menu* parent;
     char* name;

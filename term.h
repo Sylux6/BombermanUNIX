@@ -13,6 +13,8 @@
 #include <termios.h>
 #include <math.h>
 
+#include "mylib.h"
+
 void print_line(char* line,int x,int y);
 void print_line2(char* line);
 void term_cannonique();

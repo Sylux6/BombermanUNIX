@@ -13,8 +13,24 @@
 #include <termios.h>
 #include <math.h>
 
-void print_map(char* map,int x,int y);
+#include "term.h"
+#include "player.h"
+#include "mylib.h"
+
+
+struct board{
+	char** map;
+	int x;
+	int y;
+	int changed;
+};
+typedef struct board board;
+void map_init(board* tab,char* map,int x,int y);
 
 void launch_game(char* folder);
+
+void print_map(board* map,int x,int y);
+
+void del_board(board *map);
 
 #endif

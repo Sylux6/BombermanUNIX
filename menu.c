@@ -1,8 +1,4 @@
 #include "menu.h"
-#include "term.h"
-#include "mylib.h"
-#include "map.h"
-
 
 #define CLEAR_AFTER_CUR "\x1b[0J"
 #define CLEAR_BEFOR_CUR "\x1b[1J"
@@ -42,7 +38,7 @@ void print_commande(){
 }
 //let the player choose the folder to launch the game
 void wich_folder(){
-    print_line("write the nameof the flolder : ",10,5);
+    print_line("write the name of the folder : ",10,5);
     term_cannonique();
     print_line2(CUR_ON);
     char* buff = malloc(100);

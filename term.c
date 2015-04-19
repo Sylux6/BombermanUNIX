@@ -1,5 +1,5 @@
 #include "term.h"
-#include "mylib.h"
+
 struct termios old;
 
 void print_line(char* line,int x,int y){

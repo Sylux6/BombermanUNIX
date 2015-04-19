@@ -67,10 +67,8 @@ char *mystrcpy(char *dest, const char *src) {
 }
 
 void new_stderr(){
-    // if(access("strerr",F_OK) == 0){ // if the file exist
-    //     unlink("stderr");
-    // }
     int new_stderr = open("stderr.log",O_CREAT | O_WRONLY,0777);
+
     lseek(new_stderr,0,SEEK_END);
     dup2(new_stderr,2);
     close(new_stderr);
@@ -108,4 +106,17 @@ char* read_line(int fd){
     ret[i-2] = '\0';
     
     return ret;
+}
+
+
+int my_rand(int min,int max){
+    int f;
+    unsigned int random;
+    if ((f = open("/dev/urandom",O_RDONLY)) == -1) {
+        perror("erreur : generation nombre aléatoir ");
+        exit(1);
+    }
+    myread(f, &random, 4);
+    close(f);
+    return min+random%(max-min+1);
 }

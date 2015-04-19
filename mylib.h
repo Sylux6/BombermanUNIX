@@ -31,5 +31,6 @@ void new_stderr();
 
 char* read_line(int fd);
 
+int my_rand(int min,int max);
  
 #endif
