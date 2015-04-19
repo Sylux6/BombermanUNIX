@@ -13,6 +13,32 @@ void print_line2(char* line){
 	mywrite(1,line,strlen(line));
 }
 
+void printf_line(char* line,int x,int y){
+	char* tmp = NULL;
+	char* save_tmp;
+	char* tmp2 = NULL;
+	tmp = mystrcpy(tmp,line);
+	save_tmp = tmp;
+	if((tmp2 = strpbrk(tmp,"\n")) == NULL){
+		print_line(line,x,y);
+		free(tmp);
+		return;	
+	}
+
+	while((tmp2 = strpbrk(tmp,"\n")) != NULL ){
+		*tmp2 = '\0';
+
+		print_line(tmp,x,y);
+		x++;
+		sleep(2);
+		tmp = tmp2+1;
+	}
+	print_line(tmp,x,y);
+
+
+	free(save_tmp);
+}
+
 void set_pos(int x,int y){
 	print_line("",x,y);
 }

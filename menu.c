@@ -32,8 +32,8 @@ void print_title(int x,int y){
 }
 
 void print_commande(){
-    print_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A\n", 14, 5);
-    print_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"\n", 16, 5);
+    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 14, 5);
+    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 16, 5);
     sleep(5);
 }
 //let the player choose the folder to launch the game

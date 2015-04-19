@@ -20,16 +20,17 @@
 
 struct board{
 	char** map;
+	struct position up_left_corner;
 	int x;
 	int y;
 	int changed;
 };
 typedef struct board board;
-void map_init(board* tab,char* map,int x,int y);
+void map_init(board* tab,char* map/*,int x,int y*/);
 
 void launch_game(char* folder);
 
-void print_map(board* map,int x,int y);
+void print_map(board* map/*,int x,int y*/);
 
 void del_board(board *map);
 

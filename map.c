@@ -43,7 +43,7 @@ void launch_game(char* folder){
 	//end of deroulement's link
 	int game_line = open(string1,O_RDONLY);
 	if(game_line == -1){
-		perror("impossible d'ouvrire le fichier de deroulement de la partie");
+		perror("impossible d'ouvrir le fichier de deroulement de la partie");
 		my_print_err(string1);
 		sleep(5);
 		exit(-1);
@@ -63,8 +63,8 @@ void launch_game(char* folder){
 		strcat(string2,"niveaux");
 		strcat(string2,"/");
 		strcat(string2,string1);
-		map_init(map,string2,4,7);
-		print_map(map,4,7);
+		map_init(map,string2);
+		print_map(map);
 
 		// -----------launch the game here------------------
 		// player p1 = create_player(1);
@@ -89,26 +89,30 @@ void launch_game(char* folder){
 	// sleep(5);
 }
 
-void print_map(board* map,int x,int y){
+void print_map(board* map/*,int x,int y*/){
 	if(map->changed != 0){
 		map->changed = 0;
 		//print the map
 		int i;
+		//calcul of the position to the upper left cornerof the map
+		char* buffer = malloc(100);
+		sprintf(buffer,"%d - %d ",map->up_left_corner.x,map->up_left_corner.y);
+		print_line(buffer,2,2);
 		for (i = 0; i < map->x; ++i)
 		{
-			print_line(map->map[i],x+i,y);
+			print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		}
 	}
 
 }
 
-void map_init(board* map,char* file,int x,int y){
+void map_init(board* map,char* file/*,int x,int y*/){
 	char *buffer2 = malloc(100);
 	char* tmp;
 	print_line(file,2,2);
 	int lvl1 = open(file,O_RDONLY); // open the map's file
 	int n=0;
-	unsigned int line,colomnus;
+	unsigned int line,columns;
 	char* map_buf;
 	if(lvl1 == -1){
 		my_print_err(file);
@@ -122,28 +126,38 @@ void map_init(board* map,char* file,int x,int y){
 
 	}while(buffer2[n-1] != '\n');
 	buffer2[n]='\0';
-	//find the number of line and colomns of the file
+	//find the number of line and columns of the file
 	if((tmp = strpbrk(buffer2," ")) != NULL){
 		*tmp = '\0';
 		tmp++;
 		line = atoi(buffer2);
-		colomnus = atoi(tmp);
+		columns = atoi(tmp);
 	}
 
 	// copy this map to the memory 
 	int i =0;
-	map_buf = malloc(colomnus+1);
+	map_buf = malloc(columns+1);
 	map->x = line;
-	map->y = colomnus;
+	map->y = columns;
+
+	// if(x+line > atoi(getenv("LINES")) || y+columns > atoi(getenv("COLUMNS")))
+	if(map->y > atoi(getenv("COLUMNS")) || map->x >atoi(getenv("LINES"))-2 )
+	{
+		my_print_err("map to big to be print");
+		exit(-1);
+	}
+	int x = (atoi(getenv("LINES"))+2-map->x)/2;
+	int y = (atoi(getenv("COLUMNS"))-map->y)/2;
+	map->up_left_corner.x = x;
+	map->up_left_corner.y = y;
+
 	map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	do{
 		map->map[i] = malloc(sizeof(char)*(map->y+1));
-		myread(lvl1,map_buf,colomnus+1);
-		map_buf[colomnus]='\0';
-		map->map[i] = strcpy(map->map[i], map_buf);
-		// print_line(map_buf,4+i,7);
-		// print_line(map->map[i],4+i,7);
+		myread(lvl1,map_buf,columns+1);
+		map_buf[columns]='\0';
+		map->map[i] = mystrcpy(map->map[i], map_buf);
 		i++;
 	}while(i < line);
 }
