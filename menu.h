@@ -66,4 +66,6 @@ void wich_folder();
 
 void print_menu(menu m, int pos_x, int pos_y);
 
+menu menuINIT();
+
 #endif

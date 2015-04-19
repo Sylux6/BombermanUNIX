@@ -1,9 +1,4 @@
-faire une vrai menu (structure et tous) 											// fait 
-implementer des fonction souvent utile (dans mylib.c)
-faire un vrai map.c qui charge un map choisi et non la seul map existante --'		// fait
-
-bien faire les include (ne pas tout mettre a chaque fois ^^")
-
-fair witch_folder, et launch_game (ces fonction sont appeler depuis le menu )  // fait
-
-trouver les caractere pour les perso , les couleur (meme ou diff)
+*implementer des fonction souvent utile (dans mylib.c)
+*bien faire les include (ne pas tout mettre a chaque fois ^^")
+*trouver les caractere pour les perso , les couleur (meme ou diff)
+*Gestion des déplacements des personnages

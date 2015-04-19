@@ -225,3 +225,17 @@ void print_menu(menu m, int pos_x, int pos_y){
         }
     }
 }
+
+menu menuINIT() {
+    menu main_ = createMenu("main");
+    menu game = createMenu("Start");
+    addSubMenu(main_, game);
+    addMenuAction1(main_, "Commands", print_commande);
+    addMenuAction1(main_, "Exit", leave);
+
+    addMenuAction2(game, "mod1", launch_game);
+    addMenuAction2(game, "mod2", launch_game);
+    addMenuAction2(game, "Randomly generated", launch_game);
+    addMenuAction1(game, "Custom", wich_folder);
+    return main_;
+}

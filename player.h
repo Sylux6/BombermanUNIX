@@ -28,7 +28,7 @@ struct player{
 	uint8_t life;
 	uint8_t nb_bombe;
 	uint8_t speed;
-	uint8_t range_boom;
+	uint8_t radius_bomb;
 };
 typedef struct player player;
 
