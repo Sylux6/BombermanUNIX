@@ -13,7 +13,7 @@ player create_player(int nb){
 	p.life = 3;
 	p.nb_bombe = 1;
 	p.speed = 10;
-	p.range_boom = 4;
+	p.radius_bomb = 1;
 
 	return p;
 }
@@ -31,7 +31,7 @@ void spawn(player *p,int pos_x,int pos_y,int width,int length){
 
 	do{
 		set_pos(pos_x+randX,pos_y+randY);
-		my_print_err("on lis le caractere\n");
+		my_print_err("on lit le caractere\n");
 		if(read(0,buff,1) <= 0){// cette lecture ne fonctionne pas // faire avec un tableau (plus chiant)
 			my_print_err("lecture position impossible");
 			exit(-1);
