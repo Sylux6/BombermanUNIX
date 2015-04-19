@@ -32,9 +32,18 @@ void print_title(int x,int y){
 }
 
 void print_commande(){
-    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 14, 5);
-    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 16, 5);
-    sleep(5);
+    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 8, 5);
+    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 11, 5);
+    print_line("press enter to continue :",19,5);
+    char* cmd = malloc(1);
+    int ret;
+    do{
+        ret = read(0,cmd,1);
+        if(ret < 0){
+            my_print_err("erreur read dans commande");
+        }
+
+    }while(*cmd != ENTER);
 }
 //let the player choose the folder to launch the game
 void wich_folder(){

@@ -30,7 +30,6 @@ void printf_line(char* line,int x,int y){
 
 		print_line(tmp,x,y);
 		x++;
-		sleep(2);
 		tmp = tmp2+1;
 	}
 	print_line(tmp,x,y);
