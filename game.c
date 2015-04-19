@@ -33,22 +33,7 @@ int main(int argc,char** argv){
 
 		save_old(); // save the term cannonique value
 		term_raw(); // change the terminal to the mode raw
-
-
-		// ---------------create the menu ----------------------
-		menu main_ = createMenu("main");
-		menu game = createMenu("launch game");
-		addSubMenu(main_, game);
-		addMenuAction1(main_, "commande", print_commande);
-		addMenuAction1(main_, "exit", leave);
-
-		addMenuAction2(game, "mod1", launch_game);
-		addMenuAction2(game, "mod2", launch_game);
-		addMenuAction2(game, "Randomly created", launch_game);
-		addMenuAction1(game, "made by yourself", wich_folder);
-		// ---------- end of the creation ---------------------
-
-		launchMenu(main_,7,4); // launch the main menu 
+		launchMenu(menuINIT(), 7, 4); // launch the main menu 
 	}
 	return 1;
 }

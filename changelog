@@ -7,3 +7,8 @@
 
 12/04
 *modification du menu et création des fonction permetant d'afficher une map et de choisir un dossier
+
+19/04
+*Renommage range_boom vers radius_bomb dans la structure player (valeur réduite de 4 à 1)
+*Renommage des titres de menu
+*Création de menuINIT() dans menu.h
