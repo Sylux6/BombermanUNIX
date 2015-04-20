@@ -12,3 +12,10 @@
 *Renommage range_boom vers radius_bomb dans la structure player (valeur réduite de 4 à 1)
 *Renommage des titres de menu
 *Création de menuINIT() dans menu.h
+
+20/04
+*Affichage en couleur des joueur
+*creation du struct bombe plutot primitif
+*modification de strcut player (ajout des bombe)
+*solution primitf (surement a changer) 
+	-ajout d'un membre a struct board ( postion joueur) //ne pose pas de probleme mais pas tres evolutif

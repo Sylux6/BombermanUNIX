@@ -11,10 +11,8 @@
 #include <math.h>
 
 #include "menu.h"
-#include "map.h"
 #include "term.h"
 #include "mylib.h"
-
 
 
 int main(int argc,char** argv){

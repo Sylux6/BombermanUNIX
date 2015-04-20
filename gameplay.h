@@ -9,10 +9,16 @@
 
 #include "term.h"
 #include "player.h"
+#include "map.h"
 #include "mylib.h"
-
-void initGameplay();
+struct player;
+struct board;
+char* initGameplay();
 
 char *random_named_pipe();
+
+void mainGame(char* rand_name, struct player *p1, struct player *p2, struct board *map);
+
+void tryMove(struct player *p,struct board *map);
 
 #endif

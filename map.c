@@ -21,7 +21,7 @@
 //print the map and launch the game 
 
 void launch_game(char* folder){
-	board* map;
+	struct board* map;
 	print_line2(CLEAR_TERM);
 	DIR* mod = opendir(folder); // tester avec un access peut etre plutot
 	if(mod == NULL){
@@ -64,16 +64,19 @@ void launch_game(char* folder){
 		strcat(string2,"/");
 		strcat(string2,string1);
 		map_init(map,string2);
-		print_map(map);
+		// print_map(map);
 
 		// -----------launch the game here------------------
-		// player p1 = create_player(1);
-		// player p2 = create_player(2);
-		// spawn(&p1,4,7,atoi(getenv("MAPX")),atoi(getenv("MAPY")));
-		// spawn(&p2,4,7,atoi(getenv("MAPX")),atoi(getenv("MAPY")));
-		// set_pos(15,3);
+		player p1 = create_player(0);
+		player p2 = create_player(1);
+		spawn(&p1, map);
+		spawn(&p2, map);
+		print_map(map,p1,p2);
+		print_line("on app mainGame",19,1);
+		mainGame(initGameplay(), &p1, &p2, map);
+		// set_pos(17,3);
 		// printf("%s %d - %d","j1",p1.pos.x,p1.pos.y );
-		// set_pos(16,3);
+		// set_pos(18,3);
 		// printf("%s %d - %d","j1",p2.pos.x,p2.pos.y );
 
 		// print_line(p1.view,p1.pos.x,p1.pos.y);
@@ -89,7 +92,7 @@ void launch_game(char* folder){
 	// sleep(5);
 }
 
-void print_map(board* map/*,int x,int y*/){
+void print_map(struct board *map, const struct player p1, const struct player p2){
 	if(map->changed != 0){
 		map->changed = 0;
 		//print the map
@@ -101,12 +104,26 @@ void print_map(board* map/*,int x,int y*/){
 		for (i = 0; i < map->x; ++i)
 		{
 			print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
+
 		}
+		//print les 2 player
+		print_player(p1, map);
+		print_player(p2, map);
+
 	}
 
 }
+void print_player(const struct player p,struct board *map){
+	char* color = malloc(20);
+	strcpy(color,p.color);
+	strcat(color,p.view);
+	strcat(color,"\x1b[0m");
+	print_line(color,map->up_left_corner.x + p.pos.x, map->up_left_corner.y + p.pos.y);
 
-void map_init(board* map,char* file/*,int x,int y*/){
+}
+
+
+void map_init(struct board* map,char* file/*,int x,int y*/){
 	char *buffer2 = malloc(100);
 	char* tmp;
 	print_line(file,2,2);
@@ -162,7 +179,7 @@ void map_init(board* map,char* file/*,int x,int y*/){
 	}while(i < line);
 }
 
-void del_board(board *map){
+void del_board(struct board *map){
 	int i;
 	for(i=0 ; i< map->x ; i++)
 		free(map->map[i]);
