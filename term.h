@@ -15,12 +15,12 @@
 
 #include "mylib.h"
 
-void print_line(char* line,int x,int y);
+void print_line(char* line , int x , int y);
 void print_line2(char* line);
-void printf_line(char* line,int x,int y);
+void printf_line(char* line , int x , int y);
 void term_cannonique();
 void save_old();
-void set_pos(int x,int y);
+void set_pos(int x , int y);
 void term_raw();
 void leave();
 

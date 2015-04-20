@@ -10,9 +10,12 @@
 #include "term.h"
 #include "player.h"
 #include "mylib.h"
+#include "map.h"
 
-void initGameplay();
+char *initGameplay();
 
 char *random_named_pipe();
+
+void mainGame(player j[2] , board map);
 
 #endif

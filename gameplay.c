@@ -14,7 +14,7 @@ char* random_named_pipe() {
 	return random_name;
 }
 
-void initGameplay() {
+char* initGameplay() {
 
 //METHODE: Utilisation d'1 tube nommé avec 1 lecteur et 2 écrivains
 
@@ -27,13 +27,10 @@ void initGameplay() {
 			free(rand_name);
 	}
 	while(ret == -1);
+	return rand_name;
+}	
 
-	int fd_players = open(rand_name, O_RDONLY);
-	if(fd_players == -1) {
-		perror(rand_name);
-		return;
-	}
-
+void mainGame(char* rand_name, player j[2], board map){
 	//PLAYER 1
 	if(!fork()) {
 		int fd_p1 = open(rand_name, O_WRONLY);
@@ -51,6 +48,14 @@ void initGameplay() {
 		}
 	}
 	else {
+		int fd_players = open(rand_name, O_RDONLY);
+		if(fd_players == -1) {
+			perror(rand_name);
+			return;
+		}
+		while(1){//while both player are alive
+
+		}
 
 	}
 }
