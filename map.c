@@ -45,7 +45,6 @@ void launch_game(char* folder){
 	if(game_line == -1){
 		perror("impossible d'ouvrir le fichier de deroulement de la partie");
 		my_print_err(string1);
-		sleep(5);
 		exit(-1);
 	}
 	free(string1);
@@ -84,7 +83,7 @@ void launch_game(char* folder){
 		
 
 		//-------------------end---------------------------
-		sleep(2);
+		// sleep(2);
 		print_line2(CLEAR_TERM);
 		free(string2);
 		del_board(map);

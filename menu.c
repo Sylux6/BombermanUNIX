@@ -8,6 +8,7 @@
 
 #define ENTER 13
 #define DEL 127
+#define ESC 27
 
 #define UP_ARROW 65
 #define DOWN_ARROW 66
@@ -32,9 +33,18 @@ void print_title(int x,int y){
 }
 
 void print_commande(){
-    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 14, 5);
-    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 16, 5);
-    sleep(5);
+    printf_line("press enter to continue",18,5);
+    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 10, 5);
+    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 13, 5);
+    char* quit = malloc(1);
+    int ret;
+    do{
+        ret = read(0,quit,1);
+        if(ret == -1){
+            perror("print_commande : read");
+            exit(-1);
+        }
+    }while(*quit != ENTER);
 }
 //let the player choose the folder to launch the game
 void wich_folder(){
@@ -204,6 +214,9 @@ void launchMenu(menu m, int pos_x, int pos_y) {
                 return;
             }
         }
+        // if(*direction == ESC){
+        //     leave();
+        // }
     }
 }
 
