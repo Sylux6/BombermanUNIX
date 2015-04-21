@@ -39,7 +39,6 @@ void mainGame(char* rand_name, struct player *p1, struct player *p2, struct boar
 			return;
 		}
 		// move zqsd,a
-		my_print_err("ok1\n");
 		while(p1->life > 0){//while both player are alive
 
 		}
@@ -55,7 +54,6 @@ void mainGame(char* rand_name, struct player *p1, struct player *p2, struct boar
 		}
 		// move up/left/down/right , "end"
 
-		my_print_err("ok2\n");
 		while(p2->life > 0){//while both player are alive
 
 		}
@@ -69,7 +67,6 @@ void mainGame(char* rand_name, struct player *p1, struct player *p2, struct boar
 			perror(rand_name);
 			return;
 		}
-		my_print_err("ok\n");
 		while(bool){//while both player are alive
 
 			//si un fils est mot , tuer l'autre (plus bool = 0)

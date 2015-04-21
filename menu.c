@@ -8,7 +8,6 @@
 
 #define ENTER 13
 #define DEL 127
-#define ESC 27
 
 #define UP_ARROW 65
 #define DOWN_ARROW 66
