@@ -33,7 +33,6 @@ void print_title(int x,int y){
 }
 
 void print_commande(){
-<<<<<<< HEAD
     printf_line("press enter to continue",18,5);
     printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 10, 5);
     printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 13, 5);
@@ -46,7 +45,6 @@ void print_commande(){
             exit(-1);
         }
     }while(*quit != ENTER);
->>>>>>> f2c46150409fd39a6c226a2690ced15b34e6c0c5
 }
 //let the player choose the folder to launch the game
 void wich_folder(){
