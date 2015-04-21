@@ -1,13 +1,13 @@
 #include "gameplay.h"
+#include "mylib.h"
 
 char* random_named_pipe() {
-	srand(time(NULL));
-	size_t len = rand() % 10 + 4;	//Generates a random number between 4 and 13
+	size_t len = my_rand(4, 13);	//Generates a random number between 4 and 13
 	char *random_name = malloc(len * sizeof(char) + 2);
 	random_name[0] = 'b';
 	int i;
 	for(i = 0; i < len; i++) {
-		random_name[i+1] = rand() % 10 + 48;	//Generates a random char value between '0' and '9'
+		random_name[i+1] = my_rand(48, 57);	//Generates a random char value between '0' and '9'
 	}
 	random_name[i+1] = '\0';
 
