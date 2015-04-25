@@ -1,23 +1,5 @@
 #include "map.h"
 
-
-#define SAV_CUR "\x1b[s"
-#define LOAD_CUR "\x1b[u"
-
-#define CLEAR_AFTER_CUR "\x1b[0J"
-#define CLEAR_BEFOR_CUR "\x1b[1J"
-#define CLEAR_TERM "\x1b[2J\x1b[;H"
-#define CUR_ON "\x1b[?25h"
-#define CUR_OFF "\x1b[?25l"
-
-#define ENTER 13
-#define DEL 127
-
-#define UP_ARROW 65
-#define DOWN_ARROW 66
-#define RIGHT_ARROW 67
-#define LEFT_ARROW 68
-
 //print the map and launch the game 
 
 void launch_game(char* folder){
@@ -66,8 +48,8 @@ void launch_game(char* folder){
 		// print_map(map);
 
 		// -----------launch the game here------------------
-		player p1 = create_player(0);
-		player p2 = create_player(1);
+		player p1 = create_player(1);
+		player p2 = create_player(2);
 		spawn(&p1, map);
 		spawn(&p2, map);
 		print_map(map,p1,p2);
@@ -83,7 +65,7 @@ void launch_game(char* folder){
 		
 
 		//-------------------end---------------------------
-		// sleep(2);
+		sleep(2);
 		print_line2(CLEAR_TERM);
 		free(string2);
 		del_board(map);

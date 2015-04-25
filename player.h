@@ -25,6 +25,7 @@ struct bombe{
 };
 
 struct player{
+	int nb;
 	char* name;
 	char* view;
 	char *color;

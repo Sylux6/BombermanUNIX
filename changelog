@@ -21,3 +21,5 @@
 	-ajout d'un membre a struct board ( postion joueur) //ne pose pas de probleme mais pas tres evolutif
 
 21/04
+*Nettoyage du code
+*Mise en place des actions joueur (gameplay.c/.h)

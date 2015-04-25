@@ -2,7 +2,7 @@
 
 struct player create_player(int nb){
 	player p;
-	
+	p.nb = nb;
 	p.name = malloc(2);
 	//let him choose his name (later)
 	sprintf(p.name,"p");
@@ -11,7 +11,7 @@ struct player create_player(int nb){
 	p.color = malloc(12);
 	p.view = malloc(2);
 	strcpy(p.view,"P");// = "p";
-	if(nb){
+	if(nb == 1){
 		p.color = "\033[01;33m"; 
 	}else{
 		p.color = "\033[01;36m"; 
