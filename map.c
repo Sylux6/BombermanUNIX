@@ -32,10 +32,11 @@ void launch_game(char* folder){
 	free(string1);
 
 	string1 = read_line(game_line);//name of the game
-	print_line(string1,1,1);
+	print_line(string1,1,(atoi(getenv("COLUMNS"))-strlen(string1))/2);
 	free(string1);
 	//now string1 est egale au nom du niveau
 	char* string2;//contiendra le path du lvl
+	char playerslife;
 	while((string1 = read_line(game_line)) != NULL){
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
@@ -50,11 +51,24 @@ void launch_game(char* folder){
 		// -----------launch the game here------------------
 		player p1 = create_player(1);
 		player p2 = create_player(2);
+		print_line(p1.name,1,1);
+		print_line(p2.name,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1);
+
+		//--------- faudrai les afficher autre par dans le code je pense -----------
+		//print carac to player 1
+		print_line("life :",2,1);
+		sprintf(&playerslife,"%d",p1.life);
+		print_line(&playerslife,2,8);
+		//print carac to player 2
+		print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
+		sprintf(&playerslife,"%d",p2.life);
+		print_line(&playerslife,2,atoi(getenv("COLUMNS")));
+		//--------fin des truc a afficher autre part 
+		
 		spawn(&p1, map);
 		spawn(&p2, map);
 		print_map(map,p1,p2);
-		print_line("on app mainGame",19,1);
-		mainGame(initGameplay(), &p1, &p2, map);
+		mainGame(/*initGameplay(), */&p1, &p2, map);
 		// set_pos(17,3);
 		// printf("%s %d - %d","j1",p1.pos.x,p1.pos.y );
 		// set_pos(18,3);
@@ -79,9 +93,9 @@ void print_map(struct board *map, const struct player p1, const struct player p2
 		//print the map
 		int i;
 		//calcul of the position to the upper left cornerof the map
-		char* buffer = malloc(100);
-		sprintf(buffer,"%d - %d ",map->up_left_corner.x,map->up_left_corner.y);
-		print_line(buffer,2,2);
+		// char* buffer = malloc(100);
+		// sprintf(buffer,"%d - %d ",map->up_left_corner.x,map->up_left_corner.y);
+		// print_line(buffer,2,2);
 		for (i = 0; i < map->x; ++i)
 		{
 			print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
@@ -101,13 +115,25 @@ void print_player(const struct player p,struct board *map){
 	strcat(color,"\x1b[0m");
 	print_line(color,map->up_left_corner.x + p.pos.x, map->up_left_corner.y + p.pos.y);
 
+	for(int i = 0; i < p.nb_bomb ; i++){
+		if(p.bomb_own[i].state == 1){
+			char* bomb = malloc(30);
+			strcpy(bomb,"\033[22;31m\x1b[5m");
+			strcat(bomb,"@");
+			strcat(bomb,"\x1b[0m");
+			print_line(bomb,map->up_left_corner.x + p.bomb_own[i].x,map->up_left_corner.y + p.bomb_own[i].y);
+			free(bomb);
+		}
+	}
+	free(color);
+
 }
 
 
 void map_init(struct board* map,char* file/*,int x,int y*/){
 	char *buffer2 = malloc(100);
 	char* tmp;
-	print_line(file,2,2);
+	// print_line(file,2,2);
 	int lvl1 = open(file,O_RDONLY); // open the map's file
 	int n=0;
 	unsigned int line,columns;

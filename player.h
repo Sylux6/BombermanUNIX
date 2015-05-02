@@ -19,9 +19,11 @@
 struct board;
 
 // structure primaire a amelioré
-struct bombe{
+struct bomb{
 	int time; //explose dans time seconde
 	int state; // 0 = none , 1 = poser , 2 = exploser
+	int x;
+	int y;
 };
 
 struct player{
@@ -34,10 +36,12 @@ struct player{
 		int y;
 	}pos;
 	uint8_t life;
-	uint8_t nb_bombe;
-	uint8_t speed;
+	uint8_t nb_bomb;
+	int speed;
+	int wait;
 	uint8_t radius_bomb;
-	struct bombe bombe_own[10]; // max 10 bombe (c'est bien non ?)
+	struct bomb* bomb_own; // max 10 bombe (c'est bien non ?)
+	int bomb_max;
 };
 
 typedef struct player player;

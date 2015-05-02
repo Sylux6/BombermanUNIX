@@ -29,7 +29,11 @@ char* initGameplay() {
 	while(ret == -1);
 	return rand_name;
 }
-void mainGame(char* rand_name, struct player *p1, struct player *p2, struct board *map){
+
+
+
+
+void mainGame(/*char* rand_name, */struct player *p1, struct player *p2, struct board *map){
 	//PLAYER 1
 	int fils1[2];
 
@@ -45,36 +49,50 @@ void mainGame(char* rand_name, struct player *p1, struct player *p2, struct boar
 		char move;
 		char to_write;
 		while(1){
-					read(0, &move, 1);
-					if((to_write = code_action(move)) > 0){
-						char *carac = malloc(100);
-						sprintf(carac,"%d -ecrit\n",to_write);
-						my_print_err(carac);
-						if(write(fils1[1], &to_write, 1) == -1)
-							perror("error communication");
-					}
-				}
+			read(0, &move, 1);
+			if((to_write = code_action(move)) > 0){
+				char *carac = malloc(100);
+				sprintf(carac,"%d -ecrit\n",to_write);
+				my_print_err(carac);
+				if(write(fils1[1], &to_write, 1) == -1)
+					perror("error communication");
+			}
+		}
 		exit(1);
 	}
 	else {
 		//the father read this number and do the action aproprié
 		char buff;
+		struct pollfd act[1];
+		act[1].fd = fils1[0];
+		int timeout = 1000;
+		// struct itimerval start;
+		// struct itimerval end;
+
+		// start.it_interval.tv_sec = 0;
+		// start.it_interval.tv_usec = 0;
+		// int time_left;
+
 		while(1) {
-						read(fils1[0] , &buff , 1);
-						char *carac = malloc(100);
-						sprintf(carac,"%d lu\n",buff);
-						my_print_err(carac);
-						if(buff-5 <= 0){
-							if(do_action(buff,p1,map) ){
-								print_map(map,*p1,*p2);
-							}
-						}else{
-							if(do_action(buff-5,p2,map) ){
-								print_map(map,*p1,*p2);
-							}	
-						}
+			// time_left = time_poll(start,act,1,timeout);
+			poll(act,1,timeout);
+			
+
+			
+
+
+			read(fils1[0] , &buff , 1);
+			if(buff-5 <= 0){
+				if(do_action(buff,p1,p2,map) ){
+					print_map(map,*p1,*p2);
+				}
+			}else{
+				if(do_action(buff-5,p2,p1,map) ){
+					print_map(map,*p1,*p2);
+				}	
 			}
 		}
+	}
 }
 
 char code_action(int action){
@@ -115,23 +133,21 @@ char code_action(int action){
 	// }
 	return action;
 }
-char do_action(char action, struct player *p, struct board *map){
+char do_action(char action, struct player *p,struct player *other, struct board *map){
 	if(action != 5 ){
-		return tryMove(action,p,map);
+		return tryMove(action,p,other,map);
 	}else {
 		return tryDropBombe(p,map);
 	}
 }
 
-int tryMove(char direction, struct player *p,struct board *map){
+int tryMove(char direction, struct player *p,struct player *other,struct board *map){
 	// a implementer
-	char *carac = malloc(100);
-	sprintf(carac,"act j%d %d-%d\n",p->nb,p->pos.x,p->pos.y);
-	// map->map[p->pos.x][p->pos.y] = ' ';
-	my_print_err(carac);
+	int x = p->pos.x;
+	int y = p->pos.y;
 	switch(direction){
 		case 1://up
-			if(map->map[p->pos.x -1 ][p->pos.y] == ' '){
+			if(isEmpty(p,other,map,x-1,y)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x--;
@@ -142,11 +158,12 @@ int tryMove(char direction, struct player *p,struct board *map){
 				}
 				map->changed = 1;
 				map->map[p->pos.x][p->pos.y] = 'P';
+				p->wait = 500;
 				return 1;
 			}
 			break;
 		case 2://down
-			if(map->map[p->pos.x +1][p->pos.y ] == ' '){
+			if(isEmpty(p,other,map,x+1,y)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x++;	
@@ -156,14 +173,14 @@ int tryMove(char direction, struct player *p,struct board *map){
 					map->p2.x++;
 				}
 				map->changed = 1;
-				
+				p->wait = 500;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
 
 			break;
 		case 3://right
-			if(map->map[p->pos.x][p->pos.y +1] == ' '){
+			if(isEmpty(p,other,map,x,y+1)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y++;
@@ -173,13 +190,13 @@ int tryMove(char direction, struct player *p,struct board *map){
 					map->p2.y++;
 				}
 				map->changed = 1;
-				
+				p->wait = 500;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
 			break;
 		case 4://left
-			if(map->map[p->pos.x][p->pos.y -1] == ' '){
+			if(isEmpty(p,other,map,x,y-1)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y--;
@@ -189,7 +206,7 @@ int tryMove(char direction, struct player *p,struct board *map){
 					map->p2.y--;
 				}
 				map->changed = 1;
-				
+				p->wait = 500;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
@@ -200,5 +217,46 @@ int tryMove(char direction, struct player *p,struct board *map){
 
 int tryDropBombe(struct player *p,struct board *map){
 	// a implementer aussi ;)
-	return 1;
+	int i;
+	for(i = 0 ; i < p->nb_bomb ; i++){
+		if(p->bomb_own[i].state == 0){
+			p->bomb_own[i].state = 1;
+			p->bomb_own[i].x = p->pos.x;
+			p->bomb_own[i].y = p->pos.y;
+			p->bomb_own[i].time = 2500;
+			map->map[p->pos.x][p->pos.y] = '@';
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y){// p is le player who want to move
+	if(map->map[x][y] == ' ' && !isBomb(p,p_,x,y)){
+		return 1;
+	}
+	return 0;
+}
+
+int isBomb(struct player *p,struct player *p_,int x,int y){
+	for(int i = 0 ; i < p->nb_bomb ; i++){
+		if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
+			return 1;
+		}
+	}
+	return 0;
+}
+
+int time_poll(struct itimerval start,struct pollfd *act,int nb,int timeout){
+	int microS,seconde,milliS;
+	start.it_value.tv_sec = 60;
+	start.it_value.tv_usec = 0;
+	setitimer(ITIMER_REAL, &start,NULL);	
+	poll(act,nb,timeout);
+	getitimer(ITIMER_REAL, &start);	
+
+	seconde = 59-start.it_value.tv_sec;
+	microS = 1000000-start.it_value.tv_usec + seconde*1000000;
+	milliS = microS/1000;
+	return milliS;
 }

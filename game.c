@@ -23,7 +23,7 @@ int main(int argc,char** argv){
 			setenv("COLUMNS","80",1);
 			char size[10];
 			sprintf(size,"%sx%s",getenv("COLUMNS"),getenv("LINES"));
-			execlp("xterm","xterm","-bcf","1000","-geometry",size,"-e",argv[0],"lancement_du_jeu",NULL);
+			execlp("xterm","xterm","-bcf","100","-geometry",size,"-e",argv[0],"lancement_du_jeu",NULL);
 		}
 	}
 	else if(strcmp(getenv("continue"),"true") == 0){

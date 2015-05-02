@@ -3,23 +3,26 @@
 struct player create_player(int nb){
 	player p;
 	p.nb = nb;
-	p.name = malloc(2);
+	p.name = malloc(10);
 	//let him choose his name (later)
-	sprintf(p.name,"p");
+	sprintf(p.name,"Player%d",nb);
 	p.pos.x = 0;
 	p.pos.y = 0;
 	p.color = malloc(12);
 	p.view = malloc(2);
-	strcpy(p.view,"P");// = "p";
+	strcpy(p.view,"P");
 	if(nb == 1){
 		p.color = "\033[01;33m"; 
 	}else{
 		p.color = "\033[01;36m"; 
 	}
 	p.life = 3;
-	p.nb_bombe = 1;
-	p.speed = 10;
+	p.nb_bomb = 1;
+	p.speed = 500;
+	p.wait = 0;
 	p.radius_bomb = 1;
+	// p.bomb_max = 10;
+	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
 	return p;
 }
 

@@ -8,6 +8,7 @@
 #include <time.h>
 #include <poll.h>
 #include <sys/socket.h>
+#include <sys/time.h>
 
 #include "term.h"
 #include "player.h"
@@ -32,13 +33,19 @@ char* initGameplay();
 
 char *random_named_pipe();
 
-void mainGame(char* rand_name, struct player *p1, struct player *p2, struct board *map);
+void mainGame(/*char* rand_name, */struct player *p1, struct player *p2, struct board *map);
 
 char code_action(int action);
 
-char do_action(char action, struct player *p, struct board *map);
+char do_action(char action, struct player *p,struct player *other, struct board *map);
 
-int tryMove(char action, struct player *p, struct board *map); // return 1 if ok 0 else
+int tryMove(char action, struct player *p,struct player *other, struct board *map); // return 1 if ok 0 else
 
 int tryDropBombe(struct player *p,struct board *map); // return 1 if ok 0 else
+
+int isBomb(struct player *p,struct player *p_,int x,int y);
+
+int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y);
+
+int time_poll(struct itimerval start,struct pollfd *act,int nb,int timeout);
 #endif
