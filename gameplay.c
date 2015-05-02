@@ -12,6 +12,7 @@ char* random_named_pipe() {
 	random_name[i+1] = '\0';
 
 	return random_name;
+	
 }
 
 char* initGameplay() {
