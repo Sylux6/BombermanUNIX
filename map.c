@@ -102,8 +102,8 @@ void print_map(struct board *map, const struct player p1, const struct player p2
 
 		}
 		//print les 2 player
-		print_player(p1, map);
 		print_player(p2, map);
+		print_player(p1, map);
 
 	}
 
@@ -123,6 +123,15 @@ void print_player(const struct player p,struct board *map){
 			strcat(bomb,"\x1b[0m");
 			print_line(bomb,map->up_left_corner.x + p.bomb_own[i].x,map->up_left_corner.y + p.bomb_own[i].y);
 			free(bomb);
+		}
+		if(p.bomb_own[i].state == 2){
+			//print explosion
+			char* bomb = malloc(15);
+			strcat(bomb," ");
+			strcat(bomb,"\x1b[0m");
+			print_line(bomb,map->up_left_corner.x + p.bomb_own[i].x,map->up_left_corner.y + p.bomb_own[i].y);
+			free(bomb);	
+			p.bomb_own[i].state = 0;
 		}
 	}
 	free(color);

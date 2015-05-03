@@ -2,7 +2,7 @@ EXEC=Bomberman
 SOURCES=gameplay.c game.c menu.c map.c term.c mylib.c player.c
 OBJECTS=$(SOURCES:.c=.o)
 CC=gcc
-CFLAGES=-Wall -Werror -std=gnu99
+CFLAGES= -std=gnu99 -Wall -Werror
 .PHONY: default clean
 
 default: $(EXEC)

@@ -12,6 +12,12 @@ void print_line(char* line,int x,int y){
 void print_line2(char* line){
 	mywrite(1,line,strlen(line));
 }
+void print_number(int nb,int x,int y){
+	char* buffer = malloc(50);
+	sprintf(buffer, "\x1b[%d;%dH(%d)\x1b[0m", x, y, nb);
+	mywrite(1,buffer,strlen(buffer));
+	free(buffer);	
+}
 
 void printf_line(char* line,int x,int y){
 	char* tmp = NULL;

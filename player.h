@@ -40,7 +40,7 @@ struct player{
 	int speed;
 	int wait;
 	uint8_t radius_bomb;
-	struct bomb* bomb_own; // max 10 bombe (c'est bien non ?)
+	struct bomb* bomb_own;
 	int bomb_max;
 };
 

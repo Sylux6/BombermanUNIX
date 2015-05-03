@@ -12,7 +12,7 @@ char* random_named_pipe() {
 	random_name[i+1] = '\0';
 
 	return random_name;
-	
+
 }
 
 char* initGameplay() {
@@ -63,35 +63,39 @@ void mainGame(/*char* rand_name, */struct player *p1, struct player *p2, struct 
 	}
 	else {
 		//the father read this number and do the action aproprié
-		char buff;
+		char buff[100];
 		struct pollfd act[1];
-		act[1].fd = fils1[0];
-		int timeout = 1000;
-		// struct itimerval start;
+		act[0].fd = fils1[0];
+		act[0].events = POLLIN;
+		int timeout = 100;
+		struct itimerval start;
 		// struct itimerval end;
 
-		// start.it_interval.tv_sec = 0;
-		// start.it_interval.tv_usec = 0;
+		start.it_interval.tv_sec = 0;
+		start.it_interval.tv_usec = 0;
 		// int time_left;
 
+		int milliS;
 		while(1) {
-			// time_left = time_poll(start,act,1,timeout);
-			poll(act,1,timeout);
-			
 
-			
+			milliS = time_poll(start,act,1,timeout);
+			updateTimeBomb(milliS,p1,p2);
+			map->changed = 1;
+			if(milliS < timeout) 
+				read(fils1[0] , buff , 1);
+			else
+				*buff = 0;
+			p1->wait -= milliS;
+			p2->wait -= milliS;
 
-
-			read(fils1[0] , &buff , 1);
-			if(buff-5 <= 0){
-				if(do_action(buff,p1,p2,map) ){
-					print_map(map,*p1,*p2);
-				}
+			if(*buff-5 <= 0){
+				if(p1->wait <=0)
+					do_action(*buff,p1,p2,map);
 			}else{
-				if(do_action(buff-5,p2,p1,map) ){
-					print_map(map,*p1,*p2);
-				}	
+				if(p2->wait <= 0)
+					do_action(*buff-5,p2,p1,map);
 			}
+			print_map(map,*p1,*p2);
 		}
 	}
 }
@@ -260,4 +264,27 @@ int time_poll(struct itimerval start,struct pollfd *act,int nb,int timeout){
 	microS = 1000000-start.it_value.tv_usec + seconde*1000000;
 	milliS = microS/1000;
 	return milliS;
+}
+
+void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
+	for(int i = 0 ; i < p1->nb_bomb ; i++){
+		if(p1->bomb_own[i].state == 1){
+			p1->bomb_own[i].time -= milliS;
+			if(p1->bomb_own[i].time <= 0){
+
+				// BOOOMMMM
+				p1->bomb_own[i].state = 2;
+			}
+		}
+	}
+	for(int i = 0 ; i < p2->nb_bomb ; i++){
+		if(p2->bomb_own[i].state == 1){
+			p2->bomb_own[i].time -= milliS;
+			if(p2->bomb_own[i].time <= 0){
+
+				// BOOOMMMM
+				p2->bomb_own[i].state = 2;
+			}
+		}
+	}
 }

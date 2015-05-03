@@ -9,6 +9,7 @@
 #include <poll.h>
 #include <sys/socket.h>
 #include <sys/time.h>
+#include <time.h>
 
 #include "term.h"
 #include "player.h"
@@ -48,4 +49,6 @@ int isBomb(struct player *p,struct player *p_,int x,int y);
 int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y);
 
 int time_poll(struct itimerval start,struct pollfd *act,int nb,int timeout);
+
+void updateTimeBomb(int milliS,struct player *p1,struct player *p2);
 #endif
