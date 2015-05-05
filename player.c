@@ -8,18 +8,24 @@ struct player create_player(int nb){
 	sprintf(p.name,"Player%d",nb);
 	p.pos.x = 0;
 	p.pos.y = 0;
-	p.color = malloc(12);
+	
 	p.view = malloc(2);
 	strcpy(p.view,"P");
+	
+	p.color = malloc(12);
 	if(nb == 1){
 		p.color = "\033[01;33m"; 
 	}else{
 		p.color = "\033[01;36m"; 
 	}
+	p.effet = malloc(12);
+	strcpy(p.effet,"\x1B[0m"); 
 	p.life = 3;
 	p.nb_bomb = 1;
 	p.speed = 500;
 	p.wait = 0;
+	p.invinsible = 0;
+	p.invinsible_time = 0;
 	p.radius_bomb = 1;
 	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
 		for(int i = 0 ; i < p.nb_bomb ; i++){
@@ -74,7 +80,7 @@ void explode(int x, int y, struct player p, struct board *map){
 		}else if(map->map[x-i][y] == '1'){
 			map->map[x-i][y] = 'X';
 		}else if(map->map[x][y+i] == 'X'){
-			map->map[x][y+i] = 'd';
+			map->map[x][y+i] = 'X';
 		}else{
 			switch(map->map[x-i][y]){
 				case '2':
@@ -259,50 +265,74 @@ void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struc
 	for(i=0; i<=range ; i++){
 		
 		if(map->map[x-i][y] == 'P' || map->map[x-i][y] == ' '|| map->map[x-i][y] == 'X'){
-			if(p1->pos.x == x-i && p1->pos.y == y){
+			if((p1->pos.x == x-i && p1->pos.y == y) && p1->invinsible == 0){
 				p1->life--;
+				p1->invinsible = 1;
+				p1->invinsible_time = 2000;
+				strcpy(p1->effet,"\x1B[5m");
 			}
-			if(p2->pos.x == x-i && p2->pos.y == y){
+			if((p2->pos.x == x-i && p2->pos.y == y) && p2->invinsible == 0){
 				p2->life--;
+				p2->invinsible = 1;
+				p2->invinsible_time = 2000;
+				strcpy(p2->effet,"\x1B[5m");	
 			}
 		}else{
 			break;
 		}
 	}
 
-	for(i=0; i<=range ; i++){
+	for(i=1; i<=range ; i++){
 		if(map->map[x+i][y] == 'P' || map->map[x+i][y] == ' '|| map->map[x+i][y] == 'X'){
-			if(p1->pos.x == x+i && p1->pos.y == y){
+			if((p1->pos.x == x+i && p1->pos.y == y) && p1->invinsible == 0){
 				p1->life--;
+				p1->invinsible = 1;
+				p1->invinsible_time = 2000;
+				strcpy(p1->effet,"\x1B[5m");
 			}
-			if(p2->pos.x == x+i && p2->pos.y == y){
+			if((p2->pos.x == x+i && p2->pos.y == y) && p2->invinsible == 0){
 				p2->life--;
+				p2->invinsible = 1;
+				p2->invinsible_time = 2000;
+				strcpy(p2->effet,"\x1B[5m");
 			}
 		}else{
 			break;
 		}
 	}
 
-	for(i=0; i<=range ; i++){
+	for(i=1; i<=range ; i++){
 		if(map->map[x][y-i] == 'P' || map->map[x][y-i] == ' '|| map->map[x][y-i] == 'X'){
-			if(p1->pos.x == x && p1->pos.y == y-i){
+			if((p1->pos.x == x && p1->pos.y == y-i) && p1->invinsible == 0){
 				p1->life--;
+				p1->invinsible = 1;
+				p1->invinsible_time = 2000;
+				strcpy(p1->effet,"\x1B[5m");
 			}
-			if(p2->pos.x == x && p2->pos.y == y-i){
+			if((p2->pos.x == x && p2->pos.y == y-i) && p2->invinsible == 0){
 				p2->life--;
+				p2->invinsible = 1;
+				p2->invinsible_time = 2000;
+				strcpy(p2->effet,"\x1B[5m");
 			}
 		}else{
 			break;
 		}
 	}
 
-	for(i=0; i<=range ; i++){
+	for(i=1; i<=range ; i++){
 		if(map->map[x][y+i] == 'P' || map->map[x][y+i] == ' '|| map->map[x][y+i] == 'X'){
-			if(p1->pos.x == x && p1->pos.y == y+i){
+			if((p1->pos.x == x && p1->pos.y == y+i) && p1->invinsible == 0){
 				p1->life--;
+				p1->invinsible = 1;
+				p1->invinsible_time = 2000;
+				strcpy(p1->effet,"\x1B[5m");
 			}
-			if(p2->pos.x == x && p2->pos.y == y+i){
+			if((p2->pos.x == x && p2->pos.y == y+i) && p2->invinsible == 0){
 				p2->life--;
+				p2->invinsible = 1;
+				p2->invinsible_time = 2000;
+				strcpy(p2->effet,"\x1B[5m");
 			}
 		}else{
 			break;

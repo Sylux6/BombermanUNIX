@@ -35,9 +35,9 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 		struct itimerval start;
 		struct itimerval other;
 
-		int time_left;
+		int time_left=0;
 
-		int milliS;
+		int milliS=0;
 		while(p1->life >0 && p2->life >0) {
 
 			milliS = time_poll(&start,act,1,timeout);
@@ -48,7 +48,7 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 			else
 				*buff = 0;
 
-			updateData(milliS,p1,p2,map);
+			updateData(milliS+time_left,p1,p2,map);
 
 			if(*buff-5 <= 0){
 				if(p1->wait <=0 && *buff != 5)
@@ -61,21 +61,17 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,p1,map);
 			}
-			//
-			//
-
-
-			time_left = get_timer(&other);
-			updateData(time_left,p1,p2,map);
+			// updateData(time_left,p1,p2,map);
 			if(nextBomb(p1,p2) == -1){
 				timeout = 100;
 			}else{
 				timeout = (nextBomb(p1,p2) > 100)? 100 : nextBomb(p1,p2);
 			}
 			print_map(map,p1,p2);
-			// is_touch(p1,p2,map);
+			is_touch(p1,p2,map);
 			print_carac(*p1,*p2);
 
+			time_left = get_timer(&other);
 
 		}
 		kill(child, SIGTERM);
@@ -280,7 +276,19 @@ void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
 void updateData(int milliS,struct player *p1,struct player *p2,struct board *map){
 	updateTimeBomb(milliS,p1,p2);
 	p1->wait -= milliS;
+	p1->invinsible_time -= milliS;
+	if(p1->invinsible_time <= 0){
+		p1->invinsible_time = 0;
+		p1->invinsible = 0;
+		strcpy(p1->effet,"\x1B[0m"); 
+	}
 	p2->wait -= milliS;
+	p2->invinsible_time -= milliS;
+	if(p2->invinsible_time <= 0){
+		p2->invinsible_time = 0;
+		p2->invinsible = 0;
+		strcpy(p2->effet,"\x1B[0m"); 
+	}
 	map->changed = 1;	
 }
 

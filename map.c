@@ -8,7 +8,7 @@ void launch_game(char* folder){
 	DIR* mod = opendir(folder); // tester avec un access peut etre plutot
 	if(mod == NULL){
 		my_print_err(folder);
-		my_print_err("ouverture du dossier de mod impossible");
+		my_print_err("ouverture du dossier de mod impossible\n");
 		sleep(5);
 		exit(-1);
 	}
@@ -51,21 +51,8 @@ void launch_game(char* folder){
 		// -----------launch the game here------------------
 		player p1 = create_player(1);
 		player p2 = create_player(2);
-		print_line(p1.name,1,1);
-		print_line(p2.name,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1);
-
-		print_carac(p1, p2);
-		//--------- faudrai les afficher autre par dans le code je pense -----------
-		//print carac to player 1
-		// print_line("life :",2,1);
-		// sprintf(&playerslife,"%d",p1.life);
-		// print_line(&playerslife,2,8);
-		// //print carac to player 2
-		// print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
-		// sprintf(&playerslife,"%d",p2.life);
-		// print_line(&playerslife,2,atoi(getenv("COLUMNS")));
-		//--------fin des truc a afficher autre part 
-		
+	
+		print_carac(p1, p2);		
 		spawn(&p1, map);
 		spawn(&p2, map);
 		print_map(map,&p1,&p2);
@@ -103,9 +90,9 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 
 		}
 		//print les 2 player
-		print_player(p2, map);
 		print_player(p1, map);
-		is_touch(p1,p2,map);
+		print_player(p2, map);
+		// is_touch(p1,p2,map);
 
 	}
 
@@ -113,7 +100,8 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 void print_player(struct player *p,struct board *map){
 	char* color = malloc(20);
 
-	strcpy(color,p->color);
+	strcpy(color,p->effet);
+	strcat(color,p->color);
 	strcat(color,p->view);
 	strcat(color,"\x1b[0m");
 	print_line(color,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y);// afficher le joueur
@@ -132,11 +120,11 @@ void print_player(struct player *p,struct board *map){
 			//print explosion
 			// p->bomb_own[i].time_explode = 1000;
 			explode(p->bomb_own[i].x, p->bomb_own[i].y,*p,map);
-			char* bomb = malloc(15);
-			strcat(bomb," ");
-			strcat(bomb,"\x1b[0m");
-			print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
-			free(bomb);	
+			// char* bomb = malloc(15);
+			// strcat(bomb," ");
+			// strcat(bomb,"\x1b[0m");
+			// print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
+			// free(bomb);	
 			p->bomb_own[i].state = 3;
 		}
 		else if(p->bomb_own[i].state == 3){
@@ -218,11 +206,28 @@ void del_board(struct board *map){
 }
 
 void print_carac(struct player p1,struct player p2){
+	char* name_player = malloc(30);
+	//name player 1
+	strcpy(name_player,p1.color);
+	strcat(name_player,p1.name);
+	print_line(name_player,1,1);
+	free(name_player);
+	//name player 2
+	name_player = malloc(30);
+	strcpy(name_player,p2.color);
+	strcat(name_player,p2.name);
+	print_line(name_player,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1);
+	//--- end of printf name ------------
+
+	//their life 
 	char *playerslife = calloc(10,1);
+
+	// player1's life
 	print_line("life :",2,1);
 	sprintf(playerslife,"%d",p1.life);
 	print_line(playerslife,2,8);
-	//print carac to player 2
+
+	//player2's life
 	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
 	sprintf(playerslife,"%d",p2.life);
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));

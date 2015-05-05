@@ -30,7 +30,8 @@ struct player{
 	int nb;
 	char* name;
 	char* view;
-	char *color;
+	char* color;
+	char* effet;
 	struct position_{
 		int x;
 		int y;
@@ -39,6 +40,8 @@ struct player{
 	uint8_t nb_bomb;
 	int speed;
 	int wait;
+	int invinsible;
+	int invinsible_time;
 	uint8_t radius_bomb;
 	struct bomb* bomb_own;
 	int bomb_max;
