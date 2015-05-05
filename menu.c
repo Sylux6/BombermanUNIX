@@ -1,57 +1,43 @@
 #include "menu.h"
 
-#define CLEAR_AFTER_CUR "\x1b[0J"
-#define CLEAR_BEFOR_CUR "\x1b[1J"
-#define CLEAR_TERM "\x1b[2J\x1b[;H"
-#define CUR_ON "\x1b[?25h"
-#define CUR_OFF "\x1b[?25l"
+void print_title(int x,int y){
+    char* line[5] = {"    ____                  __                                  ",
+                    "   / __ )____  ____ ___  / /_  ___  _________ ___  ____ _____ ",
+                    "  / __  / __ \\/ __ `__ \\/ __ \\/ _ \\/ ___/ __ `__ \\/ __ `/ __ \\", 
+                    " / /_/ / /_/ / / / / / / /_/ /  __/ /  / / / / / / /_/ / / / /",
+                    "/_____/\\____/_/ /_/ /_/_.___/\\___/_/  /_/ /_/ /_/\\__,_/_/ /_/ "};       
 
-#define ENTER 13
-#define DEL 127
-
-#define UP_ARROW 65
-#define DOWN_ARROW 66
-#define RIGHT_ARROW 67
-#define LEFT_ARROW 68
-
-void print_title(int x, int y){
-	char* line[5] = {"    ____                  __                                  ",
-					"   / __ )____  ____ ___  / /_  ___  _________ ___  ____ _____ ",
-					"  / __  / __ \\/ __ `__ \\/ __ \\/ _ \\/ ___/ __ `__ \\/ __ `/ __ \\",	
-					" / /_/ / /_/ / / / / / / /_/ /  __/ /  / / / / / / /_/ / / / /",
-					"/_____/\\____/_/ /_/ /_/_.___/\\___/_/  /_/ /_/ /_/\\__,_/_/ /_/ "};		
-
-	int i;
-	char* buffer = malloc(100);
-	for(i = 0; i < 5 ; i++){
-		sprintf(buffer, "\x1b[%d;%dH%s", x, y, line[i]);
-		write(1, buffer, strlen(buffer));
-		x++;
-	}
-	free(buffer);
+    int i;
+    char* buffer = malloc(100);
+    for(i = 0; i < 5 ; i++){
+        sprintf(buffer, "\x1b[%d;%dH%s", x, y,line[i]);
+        write(1,buffer,strlen(buffer));
+        x++;
+    }
+    free(buffer);
 }
 
 void print_commande(){
-    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 8, 5);
-    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 11, 5);
-    print_line("press enter to continue :", 19, 5);
-    char* cmd = malloc(1);
+    printf_line("press enter to continue",18,5);
+    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 10, 5);
+    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 13, 5);
+    char* quit = malloc(1);
     int ret;
     do{
-        ret = read(0, cmd, 1);
-        if(ret < 0){
-            my_print_err("erreur read dans commande");
+        ret = read(0,quit,1);
+        if(ret == -1){
+            perror("print_commande : read");
+            exit(-1);
         }
-
-    }while(*cmd != ENTER);
+    }while(*quit != ENTER);
 }
 //let the player choose the folder to launch the game
 void wich_folder(){
-    print_line("write the name of the folder : ", 10, 5);
+    print_line("write the name of the folder : ",10,5);
     term_cannonique();
     print_line2(CUR_ON);
     char* buff = malloc(100);
-    int i = read(0, buff, 100);
+    int i = read(0,buff,100);
     term_raw();
     buff[i-1] = '\0';
     launch_game(buff);
@@ -59,7 +45,7 @@ void wich_folder(){
 }
 
 //////////////////////////////////////////////////////////
-//							MENU						//
+//                          MENU                        //
 //////////////////////////////////////////////////////////
 
 menu createMenu(const char* text) {
@@ -166,10 +152,10 @@ int numberOfItems(menu m){
 }
 void launchMenu(menu m, int pos_x, int pos_y) {
     
-    int nb_item = numberOfItems(m), ret, x = 0, y = 0;
+    int nb_item = numberOfItems(m),ret,x = 0,y = 0;
     char direction[1];
     // selection de l'item
-    print_menu(m, pos_x, pos_y);
+    print_menu(m,pos_x,pos_y);
 
     print_line("->", pos_x, pos_y);
     while(1){
@@ -177,18 +163,18 @@ void launchMenu(menu m, int pos_x, int pos_y) {
         if(ret < 0){
             exit(-1);
         }
-        print_line("  ", pos_x + x, pos_y + y);
+        print_line("  ",pos_x + x, pos_y + y);
         if(*direction == UP_ARROW){
-            x = mymodulo(x-1, nb_item);
+            x = mymodulo(x-1,nb_item);
         }
         if(*direction == DOWN_ARROW){
-            x = mymodulo(x+1, nb_item);
+            x = mymodulo(x+1,nb_item);
         }
         print_line("->", pos_x + x, pos_y + y);
         if(*direction == ENTER){
-            print_line(CLEAR_AFTER_CUR, pos_x, pos_y);
+            print_line(CLEAR_AFTER_CUR,pos_x,pos_y);
             if(m->items[x]->kind == 1){
-                launchMenu(m->items[x]->item_kind.submenu, pos_x, pos_y);
+                launchMenu(m->items[x]->item_kind.submenu,pos_x,pos_y);
             }else{
                 if(m->items[x]->item_kind.action->kind == 1){
                     m->items[x]->item_kind.action->action_kind.f();
@@ -203,13 +189,13 @@ void launchMenu(menu m, int pos_x, int pos_y) {
                     print_line(m->items[i]->item_kind.action->name, pos_x+i, pos_y+2);
                 }
             }
-            print_menu(m, pos_x, pos_y);
-            print_line("->", pos_x + x, pos_y + y);
+            print_menu(m,pos_x,pos_y);
+            print_line("->",pos_x+x,pos_y+y);
         }
         if(*direction == DEL){
             if(m->parent != NULL){
-                print_line(CLEAR_AFTER_CUR, pos_x, pos_y);
-                launchMenu(m->parent, pos_x, pos_y);
+                print_line(CLEAR_AFTER_CUR,pos_x,pos_y);
+                launchMenu(m->parent,pos_x,pos_y);
                 return;
             }
         }
@@ -219,18 +205,18 @@ void launchMenu(menu m, int pos_x, int pos_y) {
 void print_menu(menu m, int pos_x, int pos_y){
     print_line2(CLEAR_TERM);
     print_line2(CUR_OFF);
-    print_title(1, 10);
+    print_title(1,10);
     int nb_item = numberOfItems(m);
-    if(atoi(getenv("LINES")) < pos_x + nb_item){
+    if(atoi(getenv("LINES")) < pos_x+nb_item){
         my_print_err("impossible to print menu : height too small ");
     }
     //affichage des sous menu et action
     for(int i = 0 ; i < nb_item ; i++){
         //if menu ->
         if(m->items[i]->kind == 1){
-            print_line(m->items[i]->item_kind.submenu->name, pos_x + i, pos_y + 2);
+            print_line(m->items[i]->item_kind.submenu->name, pos_x+i, pos_y+2);
         }else{
-            print_line(m->items[i]->item_kind.action->name, pos_x + i, pos_y + 2);
+            print_line(m->items[i]->item_kind.action->name, pos_x+i, pos_y+2);
         }
     }
 }

@@ -1,57 +1,208 @@
 #include "player.h"
 
-player create_player(int nb){
+struct player create_player(int nb){
 	player p;
-	
-	p.name = malloc(3);
-	sprintf(p.name,"p%d",nb);
+	p.nb = nb;
+	p.name = malloc(10);
+	//let him choose his name (later)
+	sprintf(p.name,"Player%d",nb);
 	p.pos.x = 0;
 	p.pos.y = 0;
+	p.color = malloc(12);
 	p.view = malloc(2);
-	p.view = "p"; 
-
+	strcpy(p.view,"P");
+	if(nb == 1){
+		p.color = "\033[01;33m"; 
+	}else{
+		p.color = "\033[01;36m"; 
+	}
 	p.life = 3;
-	p.nb_bombe = 1;
-	p.speed = 10;
+	p.nb_bomb = 1;
+	p.speed = 500;
+	p.wait = 0;
 	p.radius_bomb = 1;
+	// p.bomb_max = 10;
+	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
+		for(int i = 0 ; i < p.nb_bomb ; i++){
+		p.bomb_own[i].state = 0;
+		p.bomb_own[i].time = -1;
+		// p.bomb_own[i].time_explode = -1;
+		p.bomb_own[i].x = 0;
+		p.bomb_own[i].y = 0;
 
+	}
 	return p;
 }
 
+void spawn(struct player *p, struct board *map){
 
-void spawn(player *p,int pos_x,int pos_y,int width,int length){
-
-	int randX = my_rand(0,width);
-	int randY = my_rand(0,length);
+	int randX = my_rand(0,map->x-1);
+	int randY = my_rand(0,map->y-1);
 	int bool = 1;
 	// tand que la case est non vide 
-	char* buff = malloc(2);
-	
-	// printf("la map fait %d - %d \n",width,length );
-
 	do{
-		set_pos(pos_x+randX,pos_y+randY);
-		my_print_err("on lit le caractere\n");
-		if(read(0,buff,1) <= 0){// cette lecture ne fonctionne pas // faire avec un tableau (plus chiant)
-			my_print_err("lecture position impossible");
-			exit(-1);
-		}
-		set_pos(15,4);
-		write(1,buff,1 );
-		if(*buff == ' '){
+		if(map->map[randX][randY] == ' '){
 			bool = 0;
-			// my_print_err("good");
 		}else{
-			// my_print_err("err");
-			randX = my_rand(0,width);
-			randY = my_rand(0,length);
+			randX = my_rand(0,map->x-1);
+			randY = my_rand(0,map->y-1);
 		}
 
 	}while(bool);
-	free(buff);
-	p->pos.x = pos_x + randX;
-	p->pos.y = pos_y + randY;
-		set_pos(15,4);
-	printf("x->%d , y->%d\n",randX,randY );
-	// sleep(2);
+	map->map[randX][randY] = *(p->view);
+	p->pos.x = randX;
+	p->pos.y = randY;
+	map->changed = 1;
 }
+
+
+void explode(int x, int y, struct player p, struct board *map){
+	//make the explosion
+	int i = 1;
+	map->map[x][y] = 'X';
+
+	do{ //NORTH
+		if(map->map[x-i][y] == '0'){
+			break;
+		}else if(map->map[x-i][y] == ' '){
+			map->map[x-i][y] = 'X';
+		}else if(map->p1.x == x-1 && map->p1.y == y){
+
+			break;
+		}else if(map->p2.x == x-1 && map->p2.y == y){
+
+			break;
+		}else if(map->map[x-i][y] == '1'){
+			map->map[x-i][y] = 'X';
+		}else if(map->map[x][y+i] == 'X'){
+			map->map[x][y+i] = 'd';
+		}else{
+			switch(map->map[x-i][y]){
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					map->map[x-i][y]--;
+				
+
+			}
+			// map->map[x-i][y]--;
+			break;
+		}
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+
+	do{//SOUTH
+		
+		if(map->map[x+i][y] == '0'){
+			break;
+		}else if(map->map[x+i][y] == ' '){
+			map->map[x+i][y] = 'X';
+		}else if(map->p1.x == x-1 && map->p1.y == y){
+
+			break;
+		}else if(map->p2.x == x-1 && map->p2.y == y){
+
+			break;
+		}else if(map->map[x+i][y] == '1'){
+			map->map[x+i][y] = 'X';
+		}else{
+			switch(map->map[x+i][y]){
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					map->map[x+i][y]--;
+				
+
+			}
+			// map->map[x-i][y]--;
+			break;
+		}
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+	do{//WEST
+		if(map->map[x][y-i] == '0'){
+			break;
+		}else if(map->map[x][y-i] == ' '){
+			map->map[x][y-i] = 'X';
+		}else if(map->p1.x == x-1 && map->p1.y == y){
+
+			break;
+		}else if(map->p2.x == x-1 && map->p2.y == y){
+
+			break;
+		}else if(map->map[x][y-i] == '1'){
+			map->map[x][y-i] = 'X';
+		}else{
+			switch(map->map[x][y-i]){
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					map->map[x][y-i]--;
+				
+
+			}
+			// map->map[x-i][y]--;
+			break;
+		}
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+	do{//EAST
+		if(map->map[x][y+i] == '0'){
+			break;
+		}else if(map->map[x][y+i] == ' '){
+			map->map[x][y+i] = 'X';
+		}else if(map->p1.x == x-1 && map->p1.y == y){
+
+			break;
+		}else if(map->p2.x == x-1 && map->p2.y == y){
+
+			break;
+		}else if(map->map[x][y+i] == '1'){
+			map->map[x][y+i] = 'X';
+			break;
+		}else{
+			switch(map->map[x][y+i]){
+				case '2':
+				case '3':
+				case '4':
+				case '5':
+				case '6':
+				case '7':
+				case '8':
+				case '9':
+					map->map[x][y+i]--;
+				
+
+			}
+			// map->map[x-i][y]--;
+			break;
+		}
+		i++;
+	}while(i < p.radius_bomb);
+
+}
+
+void clear_range_bomb(int x, int y, struct player p, struct board *map){
+
+}	

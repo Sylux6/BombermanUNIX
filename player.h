@@ -14,26 +14,45 @@
 
 #include "mylib.h"
 #include "term.h"
+#include "map.h"
 
+struct board;
 
-struct position{
-	unsigned int x;
-	unsigned int y;
+// structure primaire a amelioré
+struct bomb{
+	int time; //explose dans time milliseconde 
+	int state; // 0 = none , 1 = poser , 2 = explosert
+	int time_explode;
+	int x;
+	int y;
 };
-typedef struct position position;
 struct player{
+	int nb;
 	char* name;
 	char* view;
-	struct position pos;
+	char *color;
+	struct position_{
+		int x;
+		int y;
+	}pos;
 	uint8_t life;
-	uint8_t nb_bombe;
-	uint8_t speed;
+	uint8_t nb_bomb;
+	int speed;
+	int wait;
 	uint8_t radius_bomb;
+	struct bomb* bomb_own;
+	int bomb_max;
 };
+
 typedef struct player player;
 
-void spawn(player *p,int pos_x,int pos_y,int width,int length);
 
-player create_player(int nb);
+void spawn(struct player *p, struct board *map);
+
+struct player create_player(int nb);
+
+void explode(int x, int y, struct player p,struct board *map);
+
+void clear_range_bomb(int x, int y, struct player p, struct board *map);
 
 #endif

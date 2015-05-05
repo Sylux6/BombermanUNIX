@@ -17,6 +17,21 @@
 #include "mylib.h"
 #include "map.h"
 
+#define CLEAR_AFTER_CUR "\x1b[0J"
+#define CLEAR_BEFOR_CUR "\x1b[1J"
+#define CLEAR_TERM "\x1b[2J\x1b[;H"
+#define CUR_ON "\x1b[?25h"
+#define CUR_OFF "\x1b[?25l"
+
+#define ENTER 13
+#define DEL 127
+#define ESC 27
+
+#define UP_ARROW 65
+#define DOWN_ARROW 66
+#define RIGHT_ARROW 67
+#define LEFT_ARROW 68
+
 
 struct menu {
     struct menu* parent;
