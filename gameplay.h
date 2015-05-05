@@ -10,6 +10,7 @@
 #include <sys/socket.h>
 #include <sys/time.h>
 #include <time.h>
+#include <signal.h>
 
 #include "term.h"
 #include "player.h"

@@ -23,6 +23,10 @@
 21/04
 *Nettoyage du code
 *Mise en place des actions joueur (gameplay.c/.h)
-03/04
+
+03/05
 *deplacement des joueur bridé
 *disparition des bombe quand elle doit exploser (a peut près)
+
+05/05
+*Fin de partie corrigée : terminaison du processus fils + fermeture du tube

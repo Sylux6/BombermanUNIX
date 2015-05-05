@@ -1,13 +1,9 @@
 #include "gameplay.h"
-#include "mylib.h"
-
-
-
-
 
 void mainGame(struct player *p1, struct player *p2, struct board *map){
 	//PLAYER 1
 	int fils1[2];
+	pid_t child;
 
 	// int ret1 = socketpair(AF_UNIX,SOCK_STREAM,0,fils1); ligne a garder , utilisation des soket unix sur une meme machine
 	int ret1 = pipe(fils1);
@@ -17,7 +13,7 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 		exit(-1);
 	}
 	// both son send a number for a request to move or drop a bombe
-	if(!fork()) {
+	if(!(child = fork())) {
 		char move;
 		char to_write;
 		while(1){
@@ -30,7 +26,7 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 		exit(1);
 	}
 	else {
-		//the father read this number and do the action aproprié
+		//the father read this number and do the action
 		char buff[100];
 		struct pollfd act[1];
 		act[0].fd = fils1[0];
@@ -82,6 +78,8 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 
 
 		}
+		kill(child, SIGTERM);
+		close(fils1[0]);
 	}
 }
 
