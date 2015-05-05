@@ -328,4 +328,3 @@ int nextBomb(struct player *p1,struct player *p2){
 
 	return time_;
 }
-
