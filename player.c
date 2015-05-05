@@ -21,7 +21,6 @@ struct player create_player(int nb){
 	p.speed = 500;
 	p.wait = 0;
 	p.radius_bomb = 1;
-	// p.bomb_max = 10;
 	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
 		for(int i = 0 ; i < p.nb_bomb ; i++){
 		p.bomb_own[i].state = 0;
@@ -66,12 +65,12 @@ void explode(int x, int y, struct player p, struct board *map){
 			break;
 		}else if(map->map[x-i][y] == ' '){
 			map->map[x-i][y] = 'X';
-		}else if(map->p1.x == x-1 && map->p1.y == y){
+		}else if(map->p1.x == x-i && map->p1.y == y){
 
-			break;
-		}else if(map->p2.x == x-1 && map->p2.y == y){
+			// break;
+		}else if(map->p2.x == x-i && map->p2.y == y){
 
-			break;
+			// break;
 		}else if(map->map[x-i][y] == '1'){
 			map->map[x-i][y] = 'X';
 		}else if(map->map[x][y+i] == 'X'){
@@ -104,10 +103,10 @@ void explode(int x, int y, struct player p, struct board *map){
 			break;
 		}else if(map->map[x+i][y] == ' '){
 			map->map[x+i][y] = 'X';
-		}else if(map->p1.x == x-1 && map->p1.y == y){
+		}else if(map->p1.x == x+i && map->p1.y == y){
 
 			break;
-		}else if(map->p2.x == x-1 && map->p2.y == y){
+		}else if(map->p2.x == x+i && map->p2.y == y){
 
 			break;
 		}else if(map->map[x+i][y] == '1'){
@@ -138,10 +137,10 @@ void explode(int x, int y, struct player p, struct board *map){
 			break;
 		}else if(map->map[x][y-i] == ' '){
 			map->map[x][y-i] = 'X';
-		}else if(map->p1.x == x-1 && map->p1.y == y){
+		}else if(map->p1.x == x && map->p1.y-i == y){
 
 			break;
-		}else if(map->p2.x == x-1 && map->p2.y == y){
+		}else if(map->p2.x == x && map->p2.y-i == y){
 
 			break;
 		}else if(map->map[x][y-i] == '1'){
@@ -172,10 +171,10 @@ void explode(int x, int y, struct player p, struct board *map){
 			break;
 		}else if(map->map[x][y+i] == ' '){
 			map->map[x][y+i] = 'X';
-		}else if(map->p1.x == x-1 && map->p1.y == y){
+		}else if(map->p1.x == x && map->p1.y+i == y){
 
 			break;
-		}else if(map->p2.x == x-1 && map->p2.y == y){
+		}else if(map->p2.x == x && map->p2.y+i == y){
 
 			break;
 		}else if(map->map[x][y+i] == '1'){
@@ -204,5 +203,110 @@ void explode(int x, int y, struct player p, struct board *map){
 }
 
 void clear_range_bomb(int x, int y, struct player p, struct board *map){
+	int i = 1;
+	map->map[x][y] = ' ';
+
+	do{ //NORTH
+		if(map->map[x-i][y] == 'X')
+			map->map[x-i][y] = ' ';
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+
+	do{//SOUTH
+		
+		if(map->map[x+i][y] == 'X')
+			map->map[x+i][y] = ' ';
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+	do{//WEST
+		if(map->map[x][y-i] == 'X')
+			map->map[x][y-i] = ' ';
+		i++;
+	}while(i < p.radius_bomb);
+	i = 1;
+
+	do{//EAST
+		if(map->map[x][y+i] == 'X'){
+			map->map[x][y+i] = ' ';
+		}
+		i++;
+	}while(i < p.radius_bomb);
 
 }	
+
+void is_touch(struct player *p1, struct player *p2,struct board *map){
+	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
+
+	for(int i = 0 ; i < p1->nb_bomb ; i++){
+		if(p1->bomb_own[i].state == 3){
+			in_explode(p1,p2,p1->bomb_own[i].x,p1->bomb_own[i].y,p1->radius_bomb,map);
+		}
+	}
+	for(int i = 0 ; i < p2->nb_bomb ; i++){
+		if(p2->bomb_own[i].state == 3){
+			in_explode(p1,p2,p2->bomb_own[i].x,p2->bomb_own[i].y,p2->radius_bomb,map);
+		}
+	}
+}
+
+void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struct board *map){
+	int i;
+
+	for(i=0; i<=range ; i++){
+		
+		if(map->map[x-i][y] == 'P' || map->map[x-i][y] == ' '|| map->map[x-i][y] == 'X'){
+			if(p1->pos.x == x-i && p1->pos.y == y){
+				p1->life--;
+			}
+			if(p2->pos.x == x-i && p2->pos.y == y){
+				p2->life--;
+			}
+		}else{
+			break;
+		}
+	}
+
+	for(i=0; i<=range ; i++){
+		if(map->map[x+i][y] == 'P' || map->map[x+i][y] == ' '|| map->map[x+i][y] == 'X'){
+			if(p1->pos.x == x+i && p1->pos.y == y){
+				p1->life--;
+			}
+			if(p2->pos.x == x+i && p2->pos.y == y){
+				p2->life--;
+			}
+		}else{
+			break;
+		}
+	}
+
+	for(i=0; i<=range ; i++){
+		if(map->map[x][y-i] == 'P' || map->map[x][y-i] == ' '|| map->map[x][y-i] == 'X'){
+			if(p1->pos.x == x && p1->pos.y == y-i){
+				p1->life--;
+			}
+			if(p2->pos.x == x && p2->pos.y == y-i){
+				p2->life--;
+			}
+		}else{
+			break;
+		}
+	}
+
+	for(i=0; i<=range ; i++){
+		if(map->map[x][y+i] == 'P' || map->map[x][y+i] == ' '|| map->map[x][y+i] == 'X'){
+			if(p1->pos.x == x && p1->pos.y == y+i){
+				p1->life--;
+			}
+			if(p2->pos.x == x && p2->pos.y == y+i){
+				p2->life--;
+			}
+		}else{
+			break;
+		}
+	}
+
+}

@@ -59,6 +59,8 @@ void print_map(struct board* map,struct player *p1, struct player *p2);
 
 void print_player(struct player *p,struct board *map);
 
+void print_carac(struct player p1,struct player p2);
+
 void del_board(struct board *map);
 
 #endif

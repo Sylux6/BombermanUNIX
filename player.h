@@ -55,4 +55,8 @@ void explode(int x, int y, struct player p,struct board *map);
 
 void clear_range_bomb(int x, int y, struct player p, struct board *map);
 
+
+void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struct board *map);
+
+void is_touch(struct player *p1, struct player *p2,struct board *map);
 #endif

@@ -71,9 +71,11 @@ void launch_game(char* folder){
 		mainGame(&p1, &p2, map);
 		
 		
-
+		p1.life = 3;
+		p2.life = 3;
 		//-------------------end---------------------------
 		sleep(2);
+		// print who carried the game
 		print_line2(CLEAR_TERM);
 		free(string2);
 		del_board(map);
@@ -102,6 +104,7 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 		//print les 2 player
 		print_player(p2, map);
 		print_player(p1, map);
+		is_touch(p1,p2,map);
 
 	}
 
@@ -136,9 +139,11 @@ void print_player(struct player *p,struct board *map){
 			p->bomb_own[i].state = 3;
 		}
 		else if(p->bomb_own[i].state == 3){
+			//print explode 
 			if(p->bomb_own[i].time_explode <= 0){
 				p->bomb_own[i].state = 0;
 				
+				clear_range_bomb(p->bomb_own[i].x, p->bomb_own[i].y, *p, map);
 			}
 		}
 	}
@@ -209,4 +214,15 @@ void del_board(struct board *map){
 		free(map->map[i]);
 	free(map->map);
 	free(map);
+}
+
+void print_carac(struct player p1,struct player p2){
+	char *playerslife = calloc(10,1);
+	print_line("life :",2,1);
+	sprintf(playerslife,"%d",p1.life);
+	print_line(playerslife,2,8);
+	//print carac to player 2
+	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
+	sprintf(playerslife,"%d",p2.life);
+	print_line(playerslife,2,atoi(getenv("COLUMNS")));
 }

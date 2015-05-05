@@ -42,7 +42,7 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 		int time_left;
 
 		int milliS;
-		while(1) {
+		while(p1->life >0 && p2->life >0) {
 
 			milliS = time_poll(&start,act,1,timeout);
 			init_timer(&other);
@@ -65,6 +65,10 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,p1,map);
 			}
+			//
+			//
+
+
 			time_left = get_timer(&other);
 			updateData(time_left,p1,p2,map);
 			if(nextBomb(p1,p2) == -1){
@@ -73,11 +77,8 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 				timeout = (nextBomb(p1,p2) > 100)? 100 : nextBomb(p1,p2);
 			}
 			print_map(map,p1,p2);
-			
-			print_number(p1->pos.x,4,1);
-			print_number(p1->pos.y,4,6);
-			print_number(p2->pos.x,5,1);
-			print_number(p2->pos.y,5,6);
+			// is_touch(p1,p2,map);
+			print_carac(*p1,*p2);
 
 
 		}
@@ -221,7 +222,7 @@ int tryDropBombe(struct player *p,struct board *map){
 }
 
 int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y){// p is le player who want to move
-	if(map->map[x][y] == ' ' && !isBomb(p,p_,x,y)){
+	if((map->map[x][y] == ' ' || map->map[x][y] == 'X')&& !isBomb(p,p_,x,y)){
 		return 1;
 	}
 	return 0;
@@ -229,8 +230,13 @@ int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y){/
 
 int isBomb(struct player *p,struct player *p_,int x,int y){
 	for(int i = 0 ; i < p->nb_bomb ; i++){
-		if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
-			return 1;
+		if(p->bomb_own[i].state != 0){
+			if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
+				return 1;
+			}
+			
+		}else{
+			return 0;
 		}
 	}
 	return 0;
@@ -253,10 +259,8 @@ void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
 			p1->bomb_own[i].time -= milliS;
 			if(p1->bomb_own[i].time <= 0){
 
-				// BOOOMMMM
 				p1->bomb_own[i].state = 2;
-
-			p1->bomb_own[i].time_explode = 100;
+				p1->bomb_own[i].time_explode = 333;
 			}
 		}
 	}
@@ -268,9 +272,8 @@ void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
 			p2->bomb_own[i].time -= milliS;
 			if(p2->bomb_own[i].time <= 0){
 
-				// BOOOMMMM
 				p2->bomb_own[i].state = 2;
-				p2->bomb_own[i].time_explode = 100;
+				p2->bomb_own[i].time_explode = 333;
 			}
 		}
 	}
@@ -327,3 +330,4 @@ int nextBomb(struct player *p1,struct player *p2){
 
 	return time_;
 }
+
