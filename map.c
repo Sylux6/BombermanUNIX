@@ -36,7 +36,7 @@ void launch_game(char* folder){
 	free(string1);
 	//now string1 est egale au nom du niveau
 	char* string2;//contiendra le path du lvl
-	char playerslife;
+	// char playerslife;
 	while((string1 = read_line(game_line)) != NULL){
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
@@ -54,15 +54,16 @@ void launch_game(char* folder){
 		print_line(p1.name,1,1);
 		print_line(p2.name,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1);
 
+		print_carac(p1, p2);
 		//--------- faudrai les afficher autre par dans le code je pense -----------
 		//print carac to player 1
-		print_line("life :",2,1);
-		sprintf(&playerslife,"%d",p1.life);
-		print_line(&playerslife,2,8);
-		//print carac to player 2
-		print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
-		sprintf(&playerslife,"%d",p2.life);
-		print_line(&playerslife,2,atoi(getenv("COLUMNS")));
+		// print_line("life :",2,1);
+		// sprintf(&playerslife,"%d",p1.life);
+		// print_line(&playerslife,2,8);
+		// //print carac to player 2
+		// print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
+		// sprintf(&playerslife,"%d",p2.life);
+		// print_line(&playerslife,2,atoi(getenv("COLUMNS")));
 		//--------fin des truc a afficher autre part 
 		
 		spawn(&p1, map);
