@@ -33,3 +33,7 @@
 
 06/05
 *Implémentation powerup (powerup.c/.h)
+
+07/05
+*Petite correction récupération des powerups
+*Suppression du fichier "Informations sur le jeu" (vers README)
