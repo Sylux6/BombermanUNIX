@@ -9,6 +9,33 @@ void print_line(char* line,int x,int y){
 	free(buffer);
 }
 
+
+void print_line_(char* line,int nb_arg,...){
+	va_list ap;
+	va_start(ap,nb_arg);
+	// int i=0;
+	if(nb_arg == 1){//juste color
+		char* color =malloc(strlen(line)+10);
+		strcpy(color,va_arg(ap,char*));
+		strcat(color,line);
+		print_line2(color);
+		free(color);
+	}else if(nb_arg == 2){//juste position
+		int x = va_arg(ap,int);
+		int y = va_arg(ap,int);
+		print_line(line,x,y);
+	}else if(nb_arg == 3){//both
+		int x = va_arg(ap,int);
+		int y = va_arg(ap,int);
+		char* color =malloc(strlen(line)+10);
+		strcpy(color,va_arg(ap,char*));
+		strcat(color,line);
+		print_line(color,x,y);
+		free(color);
+	}else{//print normal
+		print_line2(line);
+	}
+}
 void print_line2(char* line){
 	mywrite(1,line,strlen(line));
 }

@@ -19,9 +19,8 @@ void launch_game(char* folder){
 	char* string1 = malloc(100);//contiendra le path du deroulement
 	
 	//make the link of "deroulement"
-	string1 = mystrcpy(string1,folder);
-	strcat(string1,"/");
-	strcat(string1,"deroulement");
+
+	string1 = my_str_cpy_cat(string1,folder,"/deroulement",NULL);
 	//end of deroulement's link
 	int game_line = open(string1,O_RDONLY);
 	if(game_line == -1){
@@ -40,11 +39,7 @@ void launch_game(char* folder){
 	while((string1 = read_line(game_line)) != NULL){
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
-		strcpy(string2,folder);
-		strcat(string2,"/");
-		strcat(string2,"niveaux");
-		strcat(string2,"/");
-		strcat(string2,string1);
+		string2 = my_str_cpy_cat(string2,folder,"/niveaux/",string1,NULL);		
 		map_init(map,string2);
 		// print_map(map);
 
@@ -131,7 +126,7 @@ void print_player(struct player *p,struct board *map){
 			//print explode 
 			if(p->bomb_own[i].time_explode <= 0){
 				p->bomb_own[i].state = 0;
-				
+				p->bomb_own[i].time_explode = -1;
 				clear_range_bomb(p->bomb_own[i].x, p->bomb_own[i].y, *p, map);
 			}
 		}
@@ -186,6 +181,8 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->up_left_corner.x = x;
 	map->up_left_corner.y = y;
 
+	my_print_err("COUCOU!");
+
 	map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	do{
@@ -206,17 +203,11 @@ void del_board(struct board *map){
 }
 
 void print_carac(struct player p1,struct player p2){
-	char* name_player = malloc(30);
 	//name player 1
-	strcpy(name_player,p1.color);
-	strcat(name_player,p1.name);
-	print_line(name_player,1,1);
-	free(name_player);
+	print_line_(p1.name,3,1,1,BROWN);
 	//name player 2
-	name_player = malloc(30);
-	strcpy(name_player,p2.color);
-	strcat(name_player,p2.name);
-	print_line(name_player,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1);
+	print_line_(p2.name,3,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1,CYAN_CLAIRE);
+
 	//--- end of printf name ------------
 
 	//their life 

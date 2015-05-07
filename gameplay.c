@@ -43,7 +43,7 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 			milliS = time_poll(&start,act,1,timeout);
 			init_timer(&other);
 			
-			if(milliS < timeout) 
+			if(act->revents & POLLIN) 
 				read(fils1[0] , buff , 1);
 			else
 				*buff = 0;
@@ -142,7 +142,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				}
 				map->changed = 1;
 				map->map[p->pos.x][p->pos.y] = 'P';
-				p->wait = 500;
+				p->wait = p->speed;
 				return 1;
 			}
 			break;
@@ -157,7 +157,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 					map->p2.x++;
 				}
 				map->changed = 1;
-				p->wait = 500;
+				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
@@ -174,7 +174,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 					map->p2.y++;
 				}
 				map->changed = 1;
-				p->wait = 500;
+				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
@@ -190,7 +190,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 					map->p2.y--;
 				}
 				map->changed = 1;
-				p->wait = 500;
+				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				return 1;
 			}
@@ -228,13 +228,18 @@ int isBomb(struct player *p,struct player *p_,int x,int y){
 			if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
 				return 1;
 			}
-			
+		}else if(p_->bomb_own[i].state != 0){
+			if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
+				return 1;
+			}
+		
 		}else{
 			return 0;
 		}
 	}
 	return 0;
 }
+
 
 int time_poll(struct itimerval *start,struct pollfd *act,int nb,int timeout){
 	int milliS;
@@ -248,6 +253,9 @@ void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
 	for(int i = 0 ; i < p1->nb_bomb ; i++){
 		if(p1->bomb_own[i].state == 3){
 			p1->bomb_own[i].time_explode -= milliS;
+			if(p1->bomb_own[i].time_explode <= 0){
+				p1->bomb_own[i].time_explode = -1;
+			}
 		}
 		if(p1->bomb_own[i].state == 1){
 			p1->bomb_own[i].time -= milliS;
@@ -261,6 +269,9 @@ void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
 	for(int i = 0 ; i < p2->nb_bomb ; i++){
 		if(p2->bomb_own[i].state == 3){
 			p2->bomb_own[i].time_explode -= milliS;
+			if(p2->bomb_own[i].time_explode <= 0){
+				p2->bomb_own[i].time_explode = -1;
+			}
 		}
 		if(p2->bomb_own[i].state == 1){
 			p2->bomb_own[i].time -= milliS;
@@ -278,16 +289,16 @@ void updateData(int milliS,struct player *p1,struct player *p2,struct board *map
 	p1->wait -= milliS;
 	p1->invinsible_time -= milliS;
 	if(p1->invinsible_time <= 0){
-		p1->invinsible_time = 0;
+		p1->invinsible_time = -1;
 		p1->invinsible = 0;
-		strcpy(p1->effet,"\x1B[0m"); 
+		strcpy(p1->effet,NORMAL); 
 	}
 	p2->wait -= milliS;
 	p2->invinsible_time -= milliS;
 	if(p2->invinsible_time <= 0){
-		p2->invinsible_time = 0;
+		p2->invinsible_time = -1;
 		p2->invinsible = 0;
-		strcpy(p2->effet,"\x1B[0m"); 
+		strcpy(p2->effet,NORMAL); 
 	}
 	map->changed = 1;	
 }
@@ -319,9 +330,17 @@ int nextBomb(struct player *p1,struct player *p2){
 			time_ = p1->bomb_own[i].time;
 			initialisation = 0;
 		}
+		if(p1->invinsible == 1){
+			if(p1->invinsible_time <= 0){
+				p1->invinsible_time = -1;
+			}
+		}
 		if(p1->bomb_own[i].state == 1)
 			if(time_ > p1->bomb_own[i].time)
 				time_ = p1->bomb_own[i].time;
+		if(p1->bomb_own[i].state == 3)
+			if(time_ > p1->bomb_own[i].time_explode)
+				time_ = p1->bomb_own[i].time_explode;
 
 	} 
 	for(int i = 0 ; i < p2->nb_bomb ; i++){
@@ -332,6 +351,14 @@ int nextBomb(struct player *p1,struct player *p2){
 		if(p2->bomb_own[i].state == 1)
 			if(time_ > p2->bomb_own[i].time)
 				time_ = p2->bomb_own[i].time;
+		if(p2->bomb_own[i].state == 3)
+			if(time_ > p2->bomb_own[i].time_explode)
+				time_ = p2->bomb_own[i].time_explode;	
+		if(p2->invinsible == 1){
+			if(p2->invinsible_time <= 0){
+				p2->invinsible_time = -1;
+			}
+		}	
 	} 
 
 	return time_;

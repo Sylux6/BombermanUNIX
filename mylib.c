@@ -120,3 +120,16 @@ int my_rand(int min,int max){
     close(f);
     return min+random%(max-min+1);
 }
+
+char* my_str_cpy_cat(char* dest,char *from,...){
+    va_list ap;
+    va_start(ap,from);
+    char* tmp = from;
+    *dest = 0;
+    do{
+        strcat(dest,tmp);
+        tmp = va_arg(ap,char*);
+    }while(tmp != NULL);
+    my_print_err(dest);
+    return dest;
+}

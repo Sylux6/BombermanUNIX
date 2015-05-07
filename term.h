@@ -12,12 +12,17 @@
 #include <dirent.h>
 #include <termios.h>
 #include <math.h>
+#include <stdarg.h>
 
 #include "mylib.h"
 
 void print_line(char* line , int x , int y);
 void print_line2(char* line);
 void print_number(int nb,int x,int y);
+
+//
+void print_line_(char* line,int nb_arg,...);
+//
 void printf_line(char* line,int x,int y);
 void term_cannonique();
 void save_old();

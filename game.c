@@ -17,14 +17,12 @@
 
 int main(int argc,char** argv){
 	if(argc == 1){
-		if(fork() == 0){
 			setenv("continue","true",1);
 			setenv("LINES","20",1);
 			setenv("COLUMNS","80",1);
 			char size[10];
 			sprintf(size,"%sx%s",getenv("COLUMNS"),getenv("LINES"));
 			execlp("xterm","xterm","-bcf","100","-geometry",size,"-e",argv[0],"lancement_du_jeu",NULL);
-		}
 	}
 	else if(strcmp(getenv("continue"),"true") == 0){
 		new_stderr(); // create a strerr.log to save all the error
