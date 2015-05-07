@@ -1,5 +1,5 @@
-#ifndef MAP
-#define MAP
+#ifndef _MAP_INCLUDED
+#define _MAP_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +17,7 @@
 #include "player.h"
 #include "mylib.h"
 #include "gameplay.h"
+#include "powerup.h"
 
 #define SAV_CUR "\x1b[s"
 #define LOAD_CUR "\x1b[u"
@@ -42,7 +43,8 @@ struct position{
 struct player;
 
 struct board{
-	char** map;
+	char **map;
+	struct powerup **powerups;
 	struct position up_left_corner;
 	int x;
 	int y;

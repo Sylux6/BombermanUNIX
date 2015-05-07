@@ -82,7 +82,6 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 					print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);// afficher le joueur
 				}
 			}
-
 		}
 		//print les 2 player
 		print_player(p1, map);
@@ -132,7 +131,6 @@ void print_player(struct player *p,struct board *map){
 		}
 	}
 	free(color);
-
 }
 
 
@@ -141,9 +139,9 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	char* tmp;
 	// print_line(file,2,2);
 	int lvl1 = open(file,O_RDONLY); // open the map's file
-	int n=0;
+	int n = 0;
 	unsigned int line,columns;
-	char* map_buf;
+	char* buf;
 	if(lvl1 == -1){
 		my_print_err(file);
 		perror("ouverture map1");
@@ -165,15 +163,15 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	}
 
 	// copy this map to the memory 
-	int i =0;
-	map_buf = malloc(columns+1);
+	int i = 0, j;
+	buf = malloc(columns+1);
 	map->x = line;
 	map->y = columns;
 
 	// if(x+line > atoi(getenv("LINES")) || y+columns > atoi(getenv("COLUMNS")))
 	if(map->y > atoi(getenv("COLUMNS")) || map->x >atoi(getenv("LINES"))-2 )
 	{
-		my_print_err("map to big to be print");
+		my_print_err("the map is too big!");
 		exit(-1);
 	}
 	int x = (atoi(getenv("LINES"))+2-map->x)/2;
@@ -186,19 +184,66 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	do{
-		map->map[i] = malloc(sizeof(char)*(map->y+1));
-		myread(lvl1,map_buf,columns+1);
-		map_buf[columns]='\0';
-		map->map[i] = mystrcpy(map->map[i], map_buf);
+		map->map[i] = malloc(sizeof(powerup)*(map->y+1));
+		myread(lvl1,buf,columns+1);
+		buf[columns]='\0';
+		map->map[i] = mystrcpy(map->map[i], buf);
 		i++;
 	}while(i < line);
+	free(buf);
+
+	///////////////////////////
+	//GETTING POWERUPS
+	///////////////////////////
+	buf = malloc(sizeof(char));
+	map->powerups = malloc(sizeof(powerup*)*map->x);
+	for(i = 0; i < line; i++) {
+		for(j = 0; j < columns; j++) {
+			n = myread(lvl1, buf, 1);
+			if(n == 0) {
+				//Remplir le reste de la ligne du tableau de powerup vide
+				while(j < columns) {
+					map->powerups[i] = createPowerup(EMPTY, 0);
+					j++;
+				}
+			}
+			else {
+				switch(*buf) {
+					case ' ':
+						map->powerups[i] = createPowerup(EMPTY, 0);
+						break;
+					case '+':
+						map->powerups[i] = createPowerup(SPEED, -100);
+						break;
+					case '*':
+						map->powerups[i] = createPowerup(BOMB_RADIUS, 1);
+						break;
+					case '@':
+						map->powerups[i] = createPowerup(BOMB_MAX, 1);
+						break;
+					case '\n':
+						//Remplir le reste de la ligne du tableau de powerup vide
+						while(j < columns) {
+							map->powerups[i] = createPowerup(EMPTY, 0);
+							j++;
+						}
+						break;
+					default:
+						map->powerups[i] = createPowerup(EMPTY, 0);
+				}
+			}
+		}
+	}
 }
 
 void del_board(struct board *map){
 	int i;
-	for(i=0 ; i< map->x ; i++)
+	for(i = 0; i < map->x; i++) {
 		free(map->map[i]);
+		free(map->powerups[i]);
+	}
 	free(map->map);
+	free(map->powerups);
 	free(map);
 }
 

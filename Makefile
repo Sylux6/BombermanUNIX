@@ -1,5 +1,5 @@
 EXEC=Bomberman
-SOURCES=gameplay.c game.c menu.c map.c term.c mylib.c player.c
+SOURCES=powerup.c gameplay.c game.c menu.c map.c term.c mylib.c player.c
 OBJECTS=$(SOURCES:.c=.o)
 CC=gcc
 CFLAGES= -std=gnu99 -Wall -Werror
@@ -14,6 +14,7 @@ map.o: map.c map.h
 term.o: term.c term.h
 mylib.o: mylib.c mylib.h
 gameplay.o: gameplay.c gameplay.h
+powerup.o: powerup.c powerup.h
 
 %.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGES)

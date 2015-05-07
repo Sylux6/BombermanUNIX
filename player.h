@@ -1,5 +1,5 @@
-#ifndef PLAYER
-#define PLAYER
+#ifndef _PLAYER_INCLUDED
+#define _PLAYER_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,15 +18,7 @@
 
 struct board;
 
-// structure primaire a amelioré
-struct bomb{
-	int time; //explose dans time milliseconde 
-	int state; // 0 = none , 1 = poser , 2 = explosert
-	int time_explode;
-	int x;
-	int y;
-};
-struct player{
+struct player {
 	int nb;
 	char* name;
 	char* view;
@@ -46,20 +38,28 @@ struct player{
 	struct bomb* bomb_own;
 	int bomb_max;
 };
-
 typedef struct player player;
 
+// structure primaire a ameliorer
+struct bomb {
+	int time; //explose dans time milliseconde 
+	int state; // 0 = none , 1 = poser , 2 = explosert
+	int time_explode;
+	int x;
+	int y;
+	player owner;
+};
 
 void spawn(struct player *p, struct board *map);
 
-struct player create_player(int nb);
+player create_player(int nb);
 
 void explode(int x, int y, struct player p,struct board *map);
 
 void clear_range_bomb(int x, int y, struct player p, struct board *map);
 
-
 void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struct board *map);
 
 void is_touch(struct player *p1, struct player *p2,struct board *map);
+
 #endif

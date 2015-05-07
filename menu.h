@@ -1,5 +1,5 @@
-#ifndef MENU
-#define MENU
+#ifndef _MENU_INCLUDED
+#define _MENU_INCLUDED
 
 #include <stdio.h>
 #include <stdlib.h>
