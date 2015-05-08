@@ -77,8 +77,8 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
-				map->map[x-i][y] = 'X';
-				// map->map[x-i][y] = ' ';
+				// map->map[x-i][y] = 'X';
+				map->map[x-i][y] = ' ';
 				break;
 			case ' ':
 				destroyPowerup(&(map->powerups[x-i][y]));// map->powerups[x-i][y].symbol = 
@@ -111,7 +111,7 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
-				map->map[x+i][y] = 'X';
+				map->map[x+i][y] = ' ';
 
 				break;
 			case ' ':
@@ -142,7 +142,7 @@ void explode(int x, int y, struct player p, struct board *map){
 		
 			case '1':
 				continue_ = 0;
-				map->map[x][y-i] = 'X';
+				map->map[x][y-i] = ' ';
 				break;
 			case ' ':
 				destroyPowerup(&(map->powerups[x][y-i]));
@@ -176,7 +176,7 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
-				map->map[x][y+i] = 'X';
+				map->map[x][y+i] = ' ';
 				break;
 			case ' ':
 				destroyPowerup(&(map->powerups[x][y+i]));
