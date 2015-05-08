@@ -27,7 +27,7 @@ struct player create_player(int nb){
 	p.wait = 0;
 	p.invinsible = 0;
 	p.invinsible_time = 0;
-	p.radius_bomb = 2;
+	p.radius_bomb = 1;
 	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
 		for(int i = 0 ; i < p.nb_bomb ; i++){
 		p.bomb_own[i].state = 0;
