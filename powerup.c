@@ -1,42 +1,50 @@
 #include "powerup.h"
 
-powerup createPowerup(const int type, int value) {
-	powerup newPowerup = malloc(sizeof(struct powerup));
-	newPowerup->type = type;
-	newPowerup->value = value;
+struct powerup createPowerup(const int type, int value) {
+	struct powerup newPowerup ;//= malloc(sizeof(struct powerup));
+	newPowerup.type = type;
+	newPowerup.value = value;
 	switch(type) {
 		case EMPTY:
-			newPowerup->symbol = ' ';
+			newPowerup.symbol = ' '; 
 			break;
 		case SPEED:
-			newPowerup->symbol = '+';
+			newPowerup.symbol = '+';
 			break;
 		case BOMB_RADIUS:
-			newPowerup->symbol = '*';
+			newPowerup.symbol = '*';
 			break;
 		case BOMB_MAX:
-			newPowerup->symbol = '@';
+			newPowerup.symbol = '@';
 			break;
 		default:
-			newPowerup->symbol = ' ';
+			newPowerup.symbol = ' ';
 			break;
 	}
 	return newPowerup;
 }
 
-// int getPowerup(player user, powerup pow) {
-// 	switch(pow->type) {
-// 		case SPEED:
-// 			user.speed += pow->value;
-// 			break;
-// 		case BOMB_RADIUS:
-// 			user.radius_bomb += pow->value;
-// 			break;
-// 		case BOMB_MAX:
-// 			user.bomb_max += pow->value;
-// 			break;
-// 		default:
-// 			return EMPTY;
-// 	}
-// 	return pow->type;
-// }
+void lootPowerup(struct player* p, struct powerup* pow) {
+	switch(pow->type) {
+		case SPEED:
+			p->speed += pow->value;
+			break;
+		case BOMB_RADIUS:
+			p->radius_bomb += pow->value;
+			break;
+		case BOMB_MAX:
+			p->bomb_max += pow->value;
+			upgradeNumberBomb(p);
+			break;
+		// default:
+			//return EMPTY;
+	}
+	destroyPowerup(pow);
+	// return pow->type;
+}
+
+void destroyPowerup(struct powerup* pow){
+	pow->type = EMPTY;
+	pow->symbol = ' ';
+	pow->value = 0;
+}

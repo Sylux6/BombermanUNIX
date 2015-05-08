@@ -16,10 +16,13 @@ struct powerup {
 	char symbol;
 	int value;
 };
-typedef struct powerup* powerup;
+struct player;
+// typedef struct powerup* powerup;
 
-powerup createPowerup(const int, int);
+struct powerup createPowerup(const int, int);
 
-// int getPowerup(player, powerup);
+void lootPowerup(struct player* p, struct powerup* pow);
+
+void destroyPowerup(struct powerup* pow);
 
 #endif

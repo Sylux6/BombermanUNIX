@@ -40,6 +40,11 @@ struct player create_player(int nb){
 	return p;
 }
 
+void upgradeNumberBomb(struct player* p){
+	p->nb_bomb++;
+	p->bomb_own = realloc(p->bomb_own,sizeof(struct bomb)*p->nb_bomb);
+}
+
 void spawn(struct player *p, struct board *map){
 
 	int randX = my_rand(0,map->x-1);
@@ -72,7 +77,11 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
+				map->map[x-i][y] = 'X';
+				// map->map[x-i][y] = ' ';
+				break;
 			case ' ':
+				destroyPowerup(&(map->powerups[x-i][y]));// map->powerups[x-i][y].symbol = 
 				map->map[x-i][y] = 'X';
 				break;
 			case 'X':
@@ -88,6 +97,8 @@ void explode(int x, int y, struct player p, struct board *map){
 				map->map[x-i][y]--;
 			case '0':
 				continue_ = 0;
+				break;
+			// default:
 
 		}
 		i++;
@@ -100,7 +111,11 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
+				map->map[x+i][y] = 'X';
+
+				break;
 			case ' ':
+				destroyPowerup(&(map->powerups[x+i][y]));
 				map->map[x+i][y] = 'X';
 				break;
 			case '2':
@@ -114,6 +129,8 @@ void explode(int x, int y, struct player p, struct board *map){
 				map->map[x+i][y]--;
 			case '0':
 				continue_ = 0;
+				break;
+			// default:
 		}
 		i++;
 	}while(i <= p.radius_bomb && continue_);
@@ -125,7 +142,10 @@ void explode(int x, int y, struct player p, struct board *map){
 		
 			case '1':
 				continue_ = 0;
+				map->map[x][y-i] = 'X';
+				break;
 			case ' ':
+				destroyPowerup(&(map->powerups[x][y-i]));
 				map->map[x][y-i] = 'X';
 				break;
 			case 'X':
@@ -141,6 +161,8 @@ void explode(int x, int y, struct player p, struct board *map){
 				map->map[x][y-i]--;
 			case '0':
 				continue_ = 0;
+				break;
+			// default:
 			
 
 		}
@@ -154,7 +176,10 @@ void explode(int x, int y, struct player p, struct board *map){
 			
 			case '1':
 				continue_ = 0;
+				map->map[x][y+i] = 'X';
+				break;
 			case ' ':
+				destroyPowerup(&(map->powerups[x][y+i]));
 				map->map[x][y+i] = 'X';
 				break;
 			case 'X':
@@ -170,6 +195,8 @@ void explode(int x, int y, struct player p, struct board *map){
 				map->map[x][y+i]--;
 			case '0':
 				continue_ = 0;
+				break;
+			// default:
 			
 
 		}
@@ -185,6 +212,8 @@ void clear_range_bomb(int x, int y, struct player p, struct board *map){
 	do{ //NORTH
 		if(map->map[x-i][y] == 'X')
 			map->map[x-i][y] = ' ';
+		else
+			break;
 		i++;
 	}while(i <= p.radius_bomb);
 	i = 1;
@@ -194,6 +223,8 @@ void clear_range_bomb(int x, int y, struct player p, struct board *map){
 		
 		if(map->map[x+i][y] == 'X')
 			map->map[x+i][y] = ' ';
+		else
+			break;
 		i++;
 	}while(i <= p.radius_bomb);
 	i = 1;
@@ -201,14 +232,17 @@ void clear_range_bomb(int x, int y, struct player p, struct board *map){
 	do{//WEST
 		if(map->map[x][y-i] == 'X')
 			map->map[x][y-i] = ' ';
+		else
+			break;
 		i++;
 	}while(i <= p.radius_bomb);
 	i = 1;
 
 	do{//EAST
-		if(map->map[x][y+i] == 'X'){
+		if(map->map[x][y+i] == 'X')
 			map->map[x][y+i] = ' ';
-		}
+		else
+			break;
 		i++;
 	}while(i <= p.radius_bomb);
 

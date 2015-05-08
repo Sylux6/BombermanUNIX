@@ -79,7 +79,10 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 					strcpy(color,"\033[22;31m");
 					strcat(color,"X");
 					strcat(color,"\x1b[0m");
-					print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);// afficher le joueur
+					print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
+				}else if(map->map[i][j] == ' '){
+					// map->powerup[i][j].symbol
+					print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
 				}
 			}
 		}
@@ -179,12 +182,12 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->up_left_corner.x = x;
 	map->up_left_corner.y = y;
 
-	my_print_err("COUCOU!");
-
 	map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
+	map->powerups = malloc(sizeof(struct powerup*)*map->x);
 	do{
-		map->map[i] = malloc(sizeof(powerup)*(map->y+1));
+		map->powerups[i] = malloc(sizeof(struct powerup)*(map->y));
+		map->map[i] = malloc(sizeof(char)*(map->y+1));
 		myread(lvl1,buf,columns+1);
 		buf[columns]='\0';
 		map->map[i] = mystrcpy(map->map[i], buf);
@@ -195,44 +198,49 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	///////////////////////////
 	//GETTING POWERUPS
 	///////////////////////////
+	// lseek(lvl1,-1,SEEK_CUR);
 	buf = malloc(sizeof(char));
-	map->powerups = malloc(sizeof(powerup*)*map->x);
 	for(i = 0; i < line; i++) {
 		for(j = 0; j < columns; j++) {
 			n = myread(lvl1, buf, 1);
 			if(n == 0) {
 				//Remplir le reste de la ligne du tableau de powerup vide
 				while(j < columns) {
-					map->powerups[i] = createPowerup(EMPTY, 0);
+					my_print_err(" ");
+					map->powerups[i][j] = createPowerup(EMPTY, 0);
 					j++;
 				}
 			}
 			else {
 				switch(*buf) {
 					case ' ':
-						map->powerups[i] = createPowerup(EMPTY, 0);
+						map->powerups[i][j] = createPowerup(EMPTY, 0);
 						break;
 					case '+':
-						map->powerups[i] = createPowerup(SPEED, -100);
+						map->powerups[i][j] = createPowerup(SPEED, -100);
 						break;
 					case '*':
-						map->powerups[i] = createPowerup(BOMB_RADIUS, 1);
+						map->powerups[i][j] = createPowerup(BOMB_RADIUS, 1);
 						break;
 					case '@':
-						map->powerups[i] = createPowerup(BOMB_MAX, 1);
+						map->powerups[i][j] = createPowerup(BOMB_MAX, 1);
 						break;
 					case '\n':
 						//Remplir le reste de la ligne du tableau de powerup vide
 						while(j < columns) {
-							map->powerups[i] = createPowerup(EMPTY, 0);
+							my_print_err(" ");
+							map->powerups[i][j] = createPowerup(EMPTY, 0);
 							j++;
 						}
 						break;
 					default:
-						map->powerups[i] = createPowerup(EMPTY, 0);
+						map->powerups[i][j] = createPowerup(EMPTY, 0);
 				}
 			}
+			// my_print_err(&(map->powerups[i][j].symbol));
 		}
+			// char* a = "\n";
+			// my_print_err("\n");
 	}
 }
 

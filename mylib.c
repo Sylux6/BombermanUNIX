@@ -130,6 +130,6 @@ char* my_str_cpy_cat(char* dest,char *from,...){
         strcat(dest,tmp);
         tmp = va_arg(ap,char*);
     }while(tmp != NULL);
-    my_print_err(dest);
+    // my_print_err(dest);
     return dest;
 }

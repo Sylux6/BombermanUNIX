@@ -15,6 +15,7 @@
 #include "mylib.h"
 #include "term.h"
 #include "map.h"
+#include "powerup.h"
 
 struct board;
 
@@ -53,7 +54,7 @@ struct bomb {
 void spawn(struct player *p, struct board *map);
 
 player create_player(int nb);
-
+void upgradeNumberBomb(struct player* p);
 void explode(int x, int y, struct player p,struct board *map);
 
 void clear_range_bomb(int x, int y, struct player p, struct board *map);

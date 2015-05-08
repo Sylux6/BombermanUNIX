@@ -142,6 +142,8 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				}
 				map->changed = 1;
 				map->map[p->pos.x][p->pos.y] = 'P';
+				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
+
 				p->wait = p->speed;
 				return 1;
 			}
@@ -159,6 +161,8 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
+
+				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}
 
@@ -176,6 +180,8 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
+
+				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}
 			break;
@@ -192,6 +198,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
+				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}
 			break;
