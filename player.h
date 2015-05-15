@@ -25,10 +25,10 @@ struct player {
 	char* view;
 	char* color;
 	char* effet;
-	struct position_{
+	struct position_ {
 		int x;
 		int y;
-	}pos;
+	} pos;
 	uint8_t life;
 	uint8_t nb_bomb;
 	int speed;
@@ -36,25 +36,16 @@ struct player {
 	int invinsible;
 	int invinsible_time;
 	uint8_t radius_bomb;
-	struct bomb* bomb_own;
 	int bomb_max;
 };
-typedef struct player player;
-
-// structure primaire a ameliorer
-struct bomb {
-	int time; //explose dans time milliseconde 
-	int state; // 0 = none , 1 = poser , 2 = explosert
-	int time_explode;
-	int x;
-	int y;
-	player owner;
-};
+typedef struct player *player;
 
 void spawn(struct player *p, struct board *map);
 
 player create_player(int nb);
+
 void upgradeNumberBomb(struct player* p);
+
 void explode(int x, int y, struct player p,struct board *map);
 
 void clear_range_bomb(int x, int y, struct player p, struct board *map);

@@ -40,3 +40,6 @@
 
 08/05
 *Mécanique des powerups fonctionnelle
+
+15/05
+*Début de réimplémentation des bombes (bomb.c/.h)

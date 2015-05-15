@@ -1,7 +1,6 @@
 #include "map.h"
 
 //print the map and launch the game 
-
 void launch_game(char* folder){
 	struct board* map;
 	print_line2(CLEAR_TERM);
@@ -185,9 +184,11 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	map->powerups = malloc(sizeof(struct powerup*)*map->x);
+	map->bombs = malloc(sizeof(struct bomb*)*map->x);
 	do{
-		map->powerups[i] = malloc(sizeof(struct powerup)*(map->y));
 		map->map[i] = malloc(sizeof(char)*(map->y+1));
+		map->powerups[i] = malloc(sizeof(struct powerup)*map->y);
+		map->bombs[i] = malloc(sizeof(struct bomb)*map->y);
 		myread(lvl1,buf,columns+1);
 		buf[columns]='\0';
 		map->map[i] = mystrcpy(map->map[i], buf);
@@ -198,7 +199,6 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	///////////////////////////
 	//GETTING POWERUPS
 	///////////////////////////
-	// lseek(lvl1,-1,SEEK_CUR);
 	buf = malloc(sizeof(char));
 	for(i = 0; i < line; i++) {
 		for(j = 0; j < columns; j++) {
@@ -237,11 +237,14 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 						map->powerups[i][j] = createPowerup(EMPTY, 0);
 				}
 			}
-			// my_print_err(&(map->powerups[i][j].symbol));
 		}
-			// char* a = "\n";
-			// my_print_err("\n");
 	}
+	///////////////////////////
+	//BOMBS ARRAY INIT
+	///////////////////////////
+	for(i = 0; i < line; i++)
+		for(j = 0; j < columns; j++)
+			map->bombs[i][j] = NULL;
 }
 
 void del_board(struct board *map){

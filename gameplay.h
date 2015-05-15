@@ -57,4 +57,5 @@ int get_timer(struct itimerval *timer);
 void init_timer(struct itimerval *timer);
 
 int nextBomb(struct player *p1,struct player *p2);
+
 #endif
