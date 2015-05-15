@@ -31,6 +31,7 @@ struct player {
 	} pos;
 	uint8_t life;
 	uint8_t nb_bomb;
+	uint8_t nb_bomb_set;
 	int speed;
 	int wait;
 	int invinsible;
