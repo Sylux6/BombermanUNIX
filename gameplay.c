@@ -1,58 +1,34 @@
 #include "gameplay.h"
 
-void mainGame(struct player *p1, struct player *p2, struct board *map){
-	//PLAYER 1
-	int fils1[2];
-	pid_t child;
-
-	// int ret1 = socketpair(AF_UNIX,SOCK_STREAM,0,fils1); ligne a garder , utilisation des soket unix sur une meme machine
-	int ret1 = pipe(fils1);
-
-	if( ret1 == -1){
-		perror("erreur socket");
-		exit(-1);
-	}
-	// both son send a number for a request to move or drop a bombe
-	if(!(child = fork())) {
-		char move;
-		char to_write;
-		while(1){
-			read(0, &move, 1);
-			if((to_write = code_action(move)) > 0){
-				if(write(fils1[1], &to_write, 1) == -1)
-					perror("error communication");
-			}
-		}
-		exit(1);
-	}
-	else {
-		//the father read this number and do the action
-		char buff[100];
+void mainGame(player p1, player p2, board map,listBomb bombs){
+		char buff[1];
 		struct pollfd act[1];
-		act[0].fd = fils1[0];
+		act[0].fd = 0;
 		act[0].events = POLLIN;
+		
 		int timeout = 100;
 		struct itimerval start;
 		struct itimerval other;
 
 		int time_left=0;
-
 		int milliS=0;
+
 		while(p1->life >0 && p2->life >0) {
 
 			milliS = time_poll(&start,act,1,timeout);
 			init_timer(&other);
 			
 			if(act->revents & POLLIN) 
-				read(fils1[0] , buff , 1);
+				read(0 , buff , 1);
 			else
 				*buff = 0;
-
+			*buff = code_action(*buff);
 			updateData(milliS+time_left,p1,p2,map);
 
 			if(*buff-5 <= 0){
 				if(p1->wait <=0 && *buff != 5)
-					do_action(*buff,p1,p2,map);
+					// do_action(*buff,p1,p2,map);
+					tryMove(*buff,p1,p2,map);
 				else if(*buff == 5)
 					do_action(*buff,p1,p2,map);
 			}else{
@@ -72,10 +48,6 @@ void mainGame(struct player *p1, struct player *p2, struct board *map){
 			print_carac(*p1,*p2);
 
 			time_left = get_timer(&other);
-
-		}
-		kill(child, SIGTERM);
-		close(fils1[0]);
 	}
 }
 
@@ -135,12 +107,11 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x--;
-				if(p->nb == 1){
-					map->p1.x--;
-				}else{
-					map->p2.x--;
-				}
-				map->changed = 1;
+				// if(p->nb == 1){
+				// 	map->p1.x--;
+				// }else{
+				// 	map->p2.x--;
+				// }
 				map->map[p->pos.x][p->pos.y] = 'P';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 
@@ -153,12 +124,12 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x++;	
-				if(p->nb == 1){
-					map->p1.x++;
-				}else{
-					map->p2.x++;
-				}
-				map->changed = 1;
+				// if(p->nb == 1){
+				// 	map->p1.x++;
+				// }else{
+				// 	map->p2.x++;
+				// }
+				// map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 
@@ -172,12 +143,12 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y++;
-				if(p->nb == 1){
-					map->p1.y++;
-				}else{
-					map->p2.y++;
-				}
-				map->changed = 1;
+				// if(p->nb == 1){
+				// 	map->p1.y++;
+				// }else{
+				// 	map->p2.y++;
+				// }
+				// map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 
@@ -190,12 +161,12 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y--;
-				if(p->nb == 1){
-					map->p1.y--;
-				}else{
-					map->p2.y--;
-				}
-				map->changed = 1;
+				// if(p->nb == 1){
+				// 	map->p1.y--;
+				// }else{
+				// 	map->p2.y--;
+				// }
+				// map->changed = 1;
 				p->wait = p->speed;
 				map->map[p->pos.x][p->pos.y] = 'P';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);

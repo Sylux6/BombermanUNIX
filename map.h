@@ -48,11 +48,10 @@ struct board{
 	struct position up_left_corner;
 	int x;
 	int y;
-	int changed;
-	position p1;
-	position p2;
+	// position p1;
+	// position p2;
 };
-
+typedef struct board* board;
 void map_init(struct board* tab,char* map);
 
 void launch_game(char* folder);

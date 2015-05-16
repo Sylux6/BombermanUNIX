@@ -32,7 +32,7 @@
 struct player;
 struct board;
 
-void mainGame(/*char* rand_name, */struct player *p1, struct player *p2, struct board *map);
+void mainGame(player p1, player p2, board map, listBomb bombs);
 
 char code_action(int action);
 

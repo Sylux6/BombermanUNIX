@@ -28,15 +28,15 @@ struct player create_player(int nb){
 	p.invinsible = 0;
 	p.invinsible_time = 0;
 	p.radius_bomb = 1;
-	p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
-		for(int i = 0 ; i < p.nb_bomb ; i++){
-		p.bomb_own[i].state = 0;
-		p.bomb_own[i].time = -1;
-		// p.bomb_own[i].time_explode = -1;
-		p.bomb_own[i].x = 0;
-		p.bomb_own[i].y = 0;
+	// p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
+	// 	for(int i = 0 ; i < p.nb_bomb ; i++){
+	// 	p.bomb_own[i].state = 0;
+	// 	p.bomb_own[i].time = -1;
+	// 	// p.bomb_own[i].time_explode = -1;
+	// 	p.bomb_own[i].x = 0;
+	// 	p.bomb_own[i].y = 0;
 
-	}
+	// }
 	return p;
 }
 
@@ -65,7 +65,7 @@ void spawn(struct player *p, struct board *map){
 	p->pos.y = randY;
 	map->changed = 1;
 }
-
+/*
 
 void explode(int x, int y, struct player p, struct board *map){
 	//make the explosion
@@ -343,4 +343,4 @@ void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struc
 		}
 	}
 
-}
+}*/

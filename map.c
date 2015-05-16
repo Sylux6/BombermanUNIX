@@ -49,8 +49,9 @@ void launch_game(char* folder){
 		print_carac(p1, p2);		
 		spawn(&p1, map);
 		spawn(&p2, map);
+		listBomb bombs = initList();
 		print_map(map,&p1,&p2);
-		mainGame(&p1, &p2, map);
+		mainGame(&p1, &p2, map,bombs);
 		
 		
 		p1.life = 3;
@@ -66,31 +67,27 @@ void launch_game(char* folder){
 }
 
 void print_map(struct board *map,struct player *p1,struct player *p2){
-	if(map->changed != 0){
-		map->changed = 0;
-		int i;
-		for (i = 0; i < map->x; ++i)
-		{
-			print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
-			for(int j = 0 ; j < map->y ; j++){
-				if(map->map[i][j] == 'X'){
-					char* color = malloc(20);
-					strcpy(color,"\033[22;31m");
-					strcat(color,"X");
-					strcat(color,"\x1b[0m");
-					print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
-				}else if(map->map[i][j] == ' '){
-					// map->powerup[i][j].symbol
-					print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
-				}
+	int i;
+	for (i = 0; i < map->x; ++i)
+	{
+		print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
+		for(int j = 0 ; j < map->y ; j++){
+			if(map->map[i][j] == 'X'){
+				char* color = malloc(20);
+				strcpy(color,"\033[22;31m");
+				strcat(color,"X");
+				strcat(color,"\x1b[0m");
+				print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
+			}else if(map->map[i][j] == ' '){
+				// map->powerup[i][j].symbol
+				print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
 			}
 		}
-		//print les 2 player
-		print_player(p1, map);
-		print_player(p2, map);
-		// is_touch(p1,p2,map);
-
 	}
+	//print les 2 player
+	print_player(p1, map);
+	print_player(p2, map);
+	// is_touch(p1,p2,map);
 
 }
 void print_player(struct player *p,struct board *map){

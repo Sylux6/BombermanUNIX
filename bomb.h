@@ -5,12 +5,18 @@
 
 #include "player.h"
 
-#define NONE 0
-#define SET 1
-#define EXPLODING 2
 
-#define BOMB_TIME 2500 //milliseconds
-#define BOMB_EXPLODE 333 //milliseconds 
+#define NORTH 	0
+#define SOUTH 	1
+#define WEST 	2
+#define EAST	3
+
+#define NONE 		0
+#define SET 		1
+#define EXPLODING 	2
+
+#define BOMB_TIME 		2500 //milliseconds
+#define BOMB_EXPLODE 	333 //milliseconds 
 
 typedef struct player *player;
 

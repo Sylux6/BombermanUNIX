@@ -37,7 +37,6 @@ struct player {
 	int invinsible;
 	int invinsible_time;
 	uint8_t radius_bomb;
-	int bomb_max;
 };
 typedef struct player *player;
 

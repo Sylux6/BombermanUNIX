@@ -79,6 +79,9 @@ void updateTimer(listBomb l, int ms) {
 	listBomb c = l->next;
 	while(c != NULL) {
 		c->bomb->time -= ms;
+		if(c->bomb->time <= 0){
+			changeState(c->bomb,EXPLODING);
+		}
 		c = c->next;
 	}
 }
