@@ -27,25 +27,25 @@ void mainGame(player p1, player p2, board map,listBomb l){
 
 			if(*buff-5 <= 0){
 				if(p1->wait <=0 && *buff != 5)
-					// do_action(*buff,p1,p2,map);
-					tryMove(*buff,p1,l,map);
-				else if(*buff == 5)
-					do_action(*buff,p1,p2,map);
+					do_action(*buff,p1,l,map);
+					// tryMove(*buff,p1,l,map);
+				else if(*buff == 5){
+					do_action(*buff,p1,l,map);
+				}
 			}else{
 				if(p2->wait <= 0 && *buff-5 != 5)
-					// do_action(*buff-5,p2,p1,map);
-					tryMove(*buff,p2,l,map);
+					do_action(*buff-5,p2,l,map);
+					// tryMove(*buff,p2,l,map);
 				else if(*buff-5 == 5)
-					do_action(*buff-5,p2,p1,map);
+					do_action(*buff-5,p2,l,map);
 			}
-			// updateData(time_left,p1,p2,map);
-			if(nextEvent(p1,p2,l) == -1){
+			// if(nextEvent(p1,p2,l) == -1){
 				timeout = 100;
-			}else{
-				timeout = (nextEvent(p1,p2,l) > 100)? 100 : nextEvent(p1,p2,l);
-			}
+			// }else{
+			// 	timeout = (nextEvent(p1,p2,l) > 100)? 100 : nextEvent(p1,p2,l);
+			// }
 			print_map(map,p1,p2);
-			is_touch(p1,p2,map);
+			// is_touch(p1,p2,map);
 			print_carac(*p1,*p2);
 
 			time_left = get_timer(&other);
@@ -94,7 +94,7 @@ char do_action(char action, player p, listBomb l, board map){
 	if(action != 5 ){
 		return tryMove(action,p,l,map);
 	}else {
-		return tryDropBombe(p,l);
+		return tryDropBombe(p,l,map);
 	}
 }
 
@@ -178,13 +178,15 @@ int tryMove(char direction, player p,listBomb l, board map){
 	return 0;
 }
 
-int tryDropBombe(player p,listBomb l){
+int tryDropBombe(player p,listBomb l,board map){
+	sleep(1);
 	int launch = addBombToList(l,createBomb(p));
-
+	sleep(1);
 	if(launch == 1){
 		map->map[p->pos.x][p->pos.y] = '@';
 		
 	}
+	sleep(1);
 	return launch;
 }
 

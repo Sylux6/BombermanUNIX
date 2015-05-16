@@ -53,4 +53,6 @@ void deletUseless(listBomb l);
 
 int isBomb(listBomb l,int x,int y);
 
+int nextBombEvent(listBomb l);
+
 #endif

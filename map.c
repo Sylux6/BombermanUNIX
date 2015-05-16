@@ -46,16 +46,16 @@ void launch_game(char* folder){
 		player p1 = create_player(1);
 		player p2 = create_player(2);
 	
-		print_carac(p1, p2);		
-		spawn(&p1, map);
-		spawn(&p2, map);
+		print_carac(*p1, *p2);		
+		spawn(p1, map);
+		spawn(p2, map);
 		listBomb bombs = initList();
-		print_map(map,&p1,&p2);
-		mainGame(&p1, &p2, map,bombs);
+		print_map(map,p1,p2);
+		mainGame(p1, p2, map,bombs);
 		
 		
-		p1.life = 3;
-		p2.life = 3;
+		p1->life = 3;
+		p2->life = 3;
 		//-------------------end---------------------------
 		sleep(2);
 		// print who carried the game
@@ -100,35 +100,35 @@ void print_player(struct player *p,struct board *map){
 	print_line(color,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y);// afficher le joueur
 
 	// afficher les bombe 
-	for(int i = 0; i < p->nb_bomb ; i++){
-		if(p->bomb_own[i].state == 1){
-			char* bomb = malloc(30);
-			strcpy(bomb,"\033[22;31m\x1b[5m");
-			strcat(bomb,"@");
-			strcat(bomb,"\x1b[0m");
-			print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
-			free(bomb);
-		}
-		else if(p->bomb_own[i].state == 2){
-			//print explosion
-			// p->bomb_own[i].time_explode = 1000;
-			explode(p->bomb_own[i].x, p->bomb_own[i].y,*p,map);
-			// char* bomb = malloc(15);
-			// strcat(bomb," ");
-			// strcat(bomb,"\x1b[0m");
-			// print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
-			// free(bomb);	
-			p->bomb_own[i].state = 3;
-		}
-		else if(p->bomb_own[i].state == 3){
-			//print explode 
-			if(p->bomb_own[i].time_explode <= 0){
-				p->bomb_own[i].state = 0;
-				p->bomb_own[i].time_explode = -1;
-				clear_range_bomb(p->bomb_own[i].x, p->bomb_own[i].y, *p, map);
-			}
-		}
-	}
+	// for(int i = 0; i < p->nb_bomb ; i++){
+	// 	if(p->bomb_own[i].state == 1){
+	// 		char* bomb = malloc(30);
+	// 		strcpy(bomb,"\033[22;31m\x1b[5m");
+	// 		strcat(bomb,"@");
+	// 		strcat(bomb,"\x1b[0m");
+	// 		print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
+	// 		free(bomb);
+	// 	}
+	// 	else if(p->bomb_own[i].state == 2){
+	// 		//print explosion
+	// 		// p->bomb_own[i].time_explode = 1000;
+	// 		explode(p->bomb_own[i].x, p->bomb_own[i].y,*p,map);
+	// 		// char* bomb = malloc(15);
+	// 		// strcat(bomb," ");
+	// 		// strcat(bomb,"\x1b[0m");
+	// 		// print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
+	// 		// free(bomb);	
+	// 		p->bomb_own[i].state = 3;
+	// 	}
+	// 	else if(p->bomb_own[i].state == 3){
+	// 		//print explode 
+	// 		if(p->bomb_own[i].time_explode <= 0){
+	// 			p->bomb_own[i].state = 0;
+	// 			p->bomb_own[i].time_explode = -1;
+	// 			clear_range_bomb(p->bomb_own[i].x, p->bomb_own[i].y, *p, map);
+	// 		}
+		// }
+	// }
 	free(color);
 }
 
@@ -178,7 +178,7 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->up_left_corner.x = x;
 	map->up_left_corner.y = y;
 
-	map->changed = 1;
+	// map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	map->powerups = malloc(sizeof(struct powerup*)*map->x);
 	map->bombs = malloc(sizeof(struct bomb*)*map->x);
@@ -239,9 +239,9 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	///////////////////////////
 	//BOMBS ARRAY INIT
 	///////////////////////////
-	for(i = 0; i < line; i++)
-		for(j = 0; j < columns; j++)
-			map->bombs[i][j] = NULL;
+	// for(i = 0; i < line; i++)
+	// 	for(j = 0; j < columns; j++)
+	// 		map->bombs[i][j] = NULL;
 }
 
 void del_board(struct board *map){

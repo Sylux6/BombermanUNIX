@@ -45,7 +45,7 @@ char do_action(char action, player p, listBomb l, board map);
 
 int tryMove(char direction, player p,listBomb l, board map); // return 1 if ok 0 else
 
-int tryDropBombe(player p,board map); // return 1 if ok 0 else
+int tryDropBombe(player p,listBomb l,board map); // return 1 if ok 0 else
 
 
 int isPassable(board map,listBomb l,int x,int y);

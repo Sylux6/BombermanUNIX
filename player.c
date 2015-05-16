@@ -1,48 +1,44 @@
 #include "player.h"
 
-struct player create_player(int nb){
-	player p;
-	p.nb = nb;
-	p.name = malloc(10);
+player create_player(int nb){
+	player p = malloc(sizeof(struct player));
+	p->nb = nb;
+	p->name = malloc(10);
 	//let him choose his name (later)
-	sprintf(p.name,"Player%d",nb);
-	p.pos.x = 0;
-	p.pos.y = 0;
+	sprintf(p->name,"Player%d",nb);
+	p->pos.x = 0;
+	p->pos.y = 0;
 	
-	p.view = malloc(2);
-	strcpy(p.view,"P");
+	p->view = malloc(2);
+	strcpy(p->view,"P");
 	
-	p.color = malloc(12);
+	p->color = malloc(12);
 	if(nb == 1){
-		p.color = YELLOW; 
+		p->color = YELLOW; 
 	}else{
-		p.color = CYAN; 
+		p->color = CYAN; 
 	}
-	p.effet = malloc(12);
-	strcpy(p.effet,NORMAL); 
+	p->effet = malloc(12);
+	strcpy(p->effet,NORMAL); 
 
-	p.life = 3;
-	p.nb_bomb = 1;
-	p.speed = 500;
-	p.wait = 0;
-	p.invinsible = 0;
-	p.invinsible_time = 0;
-	p.radius_bomb = 1;
-	// p.bomb_own = malloc(sizeof(struct bomb)*p.nb_bomb);
-	// 	for(int i = 0 ; i < p.nb_bomb ; i++){
-	// 	p.bomb_own[i].state = 0;
-	// 	p.bomb_own[i].time = -1;
-	// 	// p.bomb_own[i].time_explode = -1;
-	// 	p.bomb_own[i].x = 0;
-	// 	p.bomb_own[i].y = 0;
+	p->life = 3;
+	//about bomb
+	p->nb_bomb = 1;
+	p->nb_bomb_set = 0;
+	p->radius_bomb = 1;
 
-	// }
+	//about move
+	p->speed = 500;
+	p->wait = 0;
+
+	//about bonus
+	p->invinsible = 0;
+	p->invinsible_time = 0;
 	return p;
 }
 
 void upgradeNumberBomb(struct player* p){
 	p->nb_bomb++;
-	p->bomb_own = realloc(p->bomb_own,sizeof(struct bomb)*p->nb_bomb);
 }
 
 void spawn(struct player *p, struct board *map){
@@ -63,7 +59,6 @@ void spawn(struct player *p, struct board *map){
 	map->map[randX][randY] = *(p->view);
 	p->pos.x = randX;
 	p->pos.y = randY;
-	map->changed = 1;
 }
 /*
 
