@@ -179,8 +179,10 @@ int tryMove(char direction, player p,listBomb l, board map){
 }
 
 int tryDropBombe(player p,listBomb l,board map){
+	// sleep(1);
+	bomb b =createBomb(p);
 	sleep(1);
-	int launch = addBombToList(l,createBomb(p));
+	int launch = addBombToList(l,b);
 	sleep(1);
 	if(launch == 1){
 		map->map[p->pos.x][p->pos.y] = '@';
