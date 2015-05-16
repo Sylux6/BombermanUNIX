@@ -55,4 +55,8 @@ int isBomb(listBomb l,int x,int y);
 
 int nextBombEvent(listBomb l);
 
+int isSet(bomb b);
+
+int isEnded(bomb b);
+
 #endif

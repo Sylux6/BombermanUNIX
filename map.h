@@ -35,6 +35,8 @@
 #define DOWN_ARROW 66
 #define RIGHT_ARROW 67
 #define LEFT_ARROW 68
+typedef struct listBomb* listBomb;
+typedef struct player* player;
 
 typedef struct position{
 	int x;
@@ -45,23 +47,25 @@ struct board{
 	char **map;
 	struct powerup **powerups;
 	struct bomb **bombs;
-	struct position up_left_corner;
+	position up_left_corner;
 	int x;
 	int y;
 	// position p1;
 	// position p2;
 };
 typedef struct board* board;
-void map_init(struct board* tab,char* map);
+void map_init(board tab,char* map);
 
 void launch_game(char* folder);
 
-void print_map(struct board* map,struct player *p1, struct player *p2);
+void print_map(board map,player p1, player p2,listBomb l);
 
-void print_player(struct player *p,struct board *map);
+void print_player(player p,board map);
+
+void printBomb(listBomb l,board map);
 
 void print_carac(struct player p1,struct player p2);
 
-void del_board(struct board *map);
+void del_board(board map);
 
 #endif

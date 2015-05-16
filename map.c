@@ -50,7 +50,7 @@ void launch_game(char* folder){
 		spawn(p1, map);
 		spawn(p2, map);
 		listBomb bombs = initList();
-		print_map(map,p1,p2);
+		print_map(map,p1,p2,bombs);
 		mainGame(p1, p2, map,bombs);
 		
 		
@@ -66,7 +66,7 @@ void launch_game(char* folder){
 	// sleep(5);
 }
 
-void print_map(struct board *map,struct player *p1,struct player *p2){
+void print_map(struct board *map,struct player *p1,struct player *p2,listBomb l){
 	int i;
 	for (i = 0; i < map->x; ++i)
 	{
@@ -87,6 +87,7 @@ void print_map(struct board *map,struct player *p1,struct player *p2){
 	//print les 2 player
 	print_player(p1, map);
 	print_player(p2, map);
+	printBomb(l,map);
 	// is_touch(p1,p2,map);
 
 }
@@ -130,6 +131,17 @@ void print_player(struct player *p,struct board *map){
 		// }
 	// }
 	free(color);
+}
+
+void printBomb(listBomb l,board map){
+	listBomb c = l->next;
+	while(c != NULL) {
+		if(isSet(c->bomb))		
+			map->map[c->bomb->x][c->bomb->y] = '@';
+		if(isEnded(c->bomb))
+			map->map[c->bomb->x][c->bomb->y] = 'A';
+		c = c->next;
+	}
 }
 
 

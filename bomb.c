@@ -46,15 +46,15 @@ listBomb initList() {
 int addBombToList(listBomb l, bomb b) {
 	if(b != NULL){
 		b->owner->nb_bomb_set++;
-
 		listBomb c = l->next;
-		while(c != NULL){
-			c = c->next;
-			if(c->next == NULL){
-				c->next = malloc(sizeof(struct listBomb));
+		do{
+			if(c == NULL){
+				c = malloc(sizeof(struct listBomb));
 				break;
 			}
+			c = c->next;
 		}
+		while(c != NULL);
 		c->bomb = b;
 		c->next = NULL;
 		return 1;
@@ -154,4 +154,11 @@ int isBomb(listBomb l,int x,int y){
 		c = c->next;
 	}
 	return 0;	
+}
+
+int isSet(bomb b){
+	return (b->state == SET);
+}
+int isEnded(bomb b){
+	return (b->state == ENDED);
 }
