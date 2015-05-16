@@ -13,9 +13,13 @@
 #include <signal.h>
 
 #include "term.h"
+#include "bomb.h"
 #include "player.h"
 #include "map.h"
 #include "mylib.h"
+
+
+#define MAX(x,y) (x>y)?x:y
 
 #define P1_UP 122
 #define P1_DOWN 115
@@ -29,33 +33,31 @@
 #define P2_LEFT 68
 #define P2_BOMB 70
 
-struct player;
-struct board;
+typedef struct player* player;
+typedef struct board* board;
+typedef struct listBomb* listBomb;
 
 void mainGame(player p1, player p2, board map, listBomb bombs);
 
 char code_action(int action);
 
-char do_action(char action, struct player *p,struct player *other, struct board *map);
+char do_action(char action, player p, listBomb l, board map);
 
-int tryMove(char action, struct player *p,struct player *other, struct board *map); // return 1 if ok 0 else
+int tryMove(char direction, player p,listBomb l, board map); // return 1 if ok 0 else
 
-int tryDropBombe(struct player *p,struct board *map); // return 1 if ok 0 else
+int tryDropBombe(player p,board map); // return 1 if ok 0 else
 
-int isBomb(struct player *p,struct player *p_,int x,int y);
 
-int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y);
+int isPassable(board map,listBomb l,int x,int y);
 
 int time_poll(struct itimerval *start,struct pollfd *act,int nb,int timeout);
 
-void updateTimeBomb(int milliS,struct player *p1,struct player *p2);
-
-void updateData(int milliS,struct player *p1,struct player *p2,struct board *map);
+void updateData(int milliS,player p1,player p2,board map,listBomb l);
 
 int get_timer(struct itimerval *timer);
 
 void init_timer(struct itimerval *timer);
 
-int nextBomb(struct player *p1,struct player *p2);
+int nextEvent(player,player,listBomb);
 
 #endif

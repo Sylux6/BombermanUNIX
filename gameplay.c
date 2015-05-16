@@ -1,6 +1,6 @@
 #include "gameplay.h"
 
-void mainGame(player p1, player p2, board map,listBomb bombs){
+void mainGame(player p1, player p2, board map,listBomb l){
 		char buff[1];
 		struct pollfd act[1];
 		act[0].fd = 0;
@@ -23,25 +23,26 @@ void mainGame(player p1, player p2, board map,listBomb bombs){
 			else
 				*buff = 0;
 			*buff = code_action(*buff);
-			updateData(milliS+time_left,p1,p2,map);
+			updateData(milliS+time_left,p1,p2,map,l);
 
 			if(*buff-5 <= 0){
 				if(p1->wait <=0 && *buff != 5)
 					// do_action(*buff,p1,p2,map);
-					tryMove(*buff,p1,p2,map);
+					tryMove(*buff,p1,l,map);
 				else if(*buff == 5)
 					do_action(*buff,p1,p2,map);
 			}else{
 				if(p2->wait <= 0 && *buff-5 != 5)
-					do_action(*buff-5,p2,p1,map);
+					// do_action(*buff-5,p2,p1,map);
+					tryMove(*buff,p2,l,map);
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,p1,map);
 			}
 			// updateData(time_left,p1,p2,map);
-			if(nextBomb(p1,p2) == -1){
+			if(nextEvent(p1,p2,l) == -1){
 				timeout = 100;
 			}else{
-				timeout = (nextBomb(p1,p2) > 100)? 100 : nextBomb(p1,p2);
+				timeout = (nextEvent(p1,p2,l) > 100)? 100 : nextEvent(p1,p2,l);
 			}
 			print_map(map,p1,p2);
 			is_touch(p1,p2,map);
@@ -89,21 +90,21 @@ char code_action(int action){
 	// }
 	return action;
 }
-char do_action(char action, struct player *p,struct player *other, struct board *map){
+char do_action(char action, player p, listBomb l, board map){
 	if(action != 5 ){
-		return tryMove(action,p,other,map);
+		return tryMove(action,p,l,map);
 	}else {
-		return tryDropBombe(p,map);
+		return tryDropBombe(p,l);
 	}
 }
 
-int tryMove(char direction, struct player *p,struct player *other,struct board *map){
+int tryMove(char direction, player p,listBomb l, board map){
 	// a implementer
 	int x = p->pos.x;
 	int y = p->pos.y;
 	switch(direction){
 		case 1://up
-			if(isEmpty(p,other,map,x-1,y)){
+			if(isPassable(map,l,x-1,y)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x--;
@@ -120,7 +121,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 			}
 			break;
 		case 2://down
-			if(isEmpty(p,other,map,x+1,y)){
+			if(isPassable(map,l,x+1,y)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x++;	
@@ -139,7 +140,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 
 			break;
 		case 3://right
-			if(isEmpty(p,other,map,x,y+1)){
+			if(isPassable(map,l,x,y+1)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y++;
@@ -157,7 +158,7 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 			}
 			break;
 		case 4://left
-			if(isEmpty(p,other,map,x,y-1)){
+			if(isPassable(map,l,x,y-1)){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.y--;
@@ -177,43 +178,19 @@ int tryMove(char direction, struct player *p,struct player *other,struct board *
 	return 0;
 }
 
-int tryDropBombe(struct player *p,struct board *map){
-	// a implementer aussi ;)
-	int i;
-	for(i = 0 ; i < p->nb_bomb ; i++){
-		if(p->bomb_own[i].state == 0){
-			p->bomb_own[i].state = 1;
-			p->bomb_own[i].x = p->pos.x;
-			p->bomb_own[i].y = p->pos.y;
-			p->bomb_own[i].time = 2500;
-			map->map[p->pos.x][p->pos.y] = '@';
-			return 1;
-		}
-	}
-	return 0;
-}
+int tryDropBombe(player p,listBomb l){
+	int launch = addBombToList(l,createBomb(p));
 
-int isEmpty(struct player *p,struct player *p_, struct board *map,int x,int y){// p is le player who want to move
-	if((map->map[x][y] == ' ' || map->map[x][y] == 'X')&& !isBomb(p,p_,x,y)){
-		return 1;
-	}
-	return 0;
-}
-
-int isBomb(struct player *p,struct player *p_,int x,int y){
-	for(int i = 0 ; i < p->nb_bomb ; i++){
-		if(p->bomb_own[i].state != 0){
-			if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
-				return 1;
-			}
-		}else if(p_->bomb_own[i].state != 0){
-			if((p->bomb_own[i].x == x && p->bomb_own[i].y == y) || (p_->bomb_own[i].x == x && p_->bomb_own[i].y == y)){
-				return 1;
-			}
+	if(launch == 1){
+		map->map[p->pos.x][p->pos.y] = '@';
 		
-		}else{
-			return 0;
-		}
+	}
+	return launch;
+}
+
+int isPassable(board map,listBomb l,int x,int y){
+	if((map->map[x][y] == ' ' || map->map[x][y] == 'X')&& !isBomb(l,x,y)){
+		return 1;
 	}
 	return 0;
 }
@@ -227,58 +204,29 @@ int time_poll(struct itimerval *start,struct pollfd *act,int nb,int timeout){
 	return milliS;
 }
 
-void updateTimeBomb(int milliS,struct player *p1,struct player *p2){
-	for(int i = 0 ; i < p1->nb_bomb ; i++){
-		if(p1->bomb_own[i].state == 3){
-			p1->bomb_own[i].time_explode -= milliS;
-			if(p1->bomb_own[i].time_explode <= 0){
-				p1->bomb_own[i].time_explode = -1;
-			}
-		}
-		if(p1->bomb_own[i].state == 1){
-			p1->bomb_own[i].time -= milliS;
-			if(p1->bomb_own[i].time <= 0){
-
-				p1->bomb_own[i].state = 2;
-				p1->bomb_own[i].time_explode = 333;
-			}
-		}
-	}
-	for(int i = 0 ; i < p2->nb_bomb ; i++){
-		if(p2->bomb_own[i].state == 3){
-			p2->bomb_own[i].time_explode -= milliS;
-			if(p2->bomb_own[i].time_explode <= 0){
-				p2->bomb_own[i].time_explode = -1;
-			}
-		}
-		if(p2->bomb_own[i].state == 1){
-			p2->bomb_own[i].time -= milliS;
-			if(p2->bomb_own[i].time <= 0){
-
-				p2->bomb_own[i].state = 2;
-				p2->bomb_own[i].time_explode = 333;
-			}
-		}
-	}
-}
-
-void updateData(int milliS,struct player *p1,struct player *p2,struct board *map){
-	updateTimeBomb(milliS,p1,p2);
+void updateData(int milliS,player p1,player p2,board map,listBomb l){
+	updateTimer(l, milliS);
 	p1->wait -= milliS;
-	p1->invinsible_time -= milliS;
-	if(p1->invinsible_time <= 0){
-		p1->invinsible_time = -1;
-		p1->invinsible = 0;
-		strcpy(p1->effet,NORMAL); 
-	}
 	p2->wait -= milliS;
-	p2->invinsible_time -= milliS;
-	if(p2->invinsible_time <= 0){
-		p2->invinsible_time = -1;
-		p2->invinsible = 0;
-		strcpy(p2->effet,NORMAL); 
+
+	
+	if(p1->invinsible == 1){
+		p1->invinsible_time -= milliS;
+		if(p1->invinsible_time <= 0){
+			p1->invinsible_time = -1;
+			p1->invinsible = 0;
+			strcpy(p1->effet,NORMAL); 
+		}
 	}
-	map->changed = 1;	
+
+	if(p2->invinsible == 1){
+		p2->invinsible_time -= milliS;
+		if(p2->invinsible_time <= 0){
+			p2->invinsible_time = -1;
+			p2->invinsible = 0;
+			strcpy(p2->effet,NORMAL); 
+		}
+	}
 }
 
 void init_timer(struct itimerval *timer){
@@ -300,44 +248,15 @@ int get_timer(struct itimerval *timer){
 	return milliS;	
 }
 
-int nextBomb(struct player *p1,struct player *p2){
-	int time_= -1;
-	int initialisation = 1;
-	for(int i = 0 ; i < p1->nb_bomb ; i++){
-		if(initialisation && p1->bomb_own[i].state == 1){
-			time_ = p1->bomb_own[i].time;
-			initialisation = 0;
-		}
-		if(p1->invinsible == 1){
-			if(p1->invinsible_time <= 0){
-				p1->invinsible_time = -1;
-			}
-		}
-		if(p1->bomb_own[i].state == 1)
-			if(time_ > p1->bomb_own[i].time)
-				time_ = p1->bomb_own[i].time;
-		if(p1->bomb_own[i].state == 3)
-			if(time_ > p1->bomb_own[i].time_explode)
-				time_ = p1->bomb_own[i].time_explode;
 
-	} 
-	for(int i = 0 ; i < p2->nb_bomb ; i++){
-		if(initialisation && p2->bomb_own[i].state == 1){
-			time_ = p2->bomb_own[i].time;
-			initialisation = 0;
-		}
-		if(p2->bomb_own[i].state == 1)
-			if(time_ > p2->bomb_own[i].time)
-				time_ = p2->bomb_own[i].time;
-		if(p2->bomb_own[i].state == 3)
-			if(time_ > p2->bomb_own[i].time_explode)
-				time_ = p2->bomb_own[i].time_explode;	
-		if(p2->invinsible == 1){
-			if(p2->invinsible_time <= 0){
-				p2->invinsible_time = -1;
-			}
-		}	
-	} 
-
-	return time_;
+int nextEvent( player p1, player p2, listBomb l){
+	int event;
+	int bombsT = nextBombEvent(l);
+	int playerT = endOfInvinsibility(p1,p2);
+		
+	event = MIN(bombsT,playerT);
+	if(event == -1){
+		event = MAX(bombsT,playerT);
+	}
+	return event;
 }

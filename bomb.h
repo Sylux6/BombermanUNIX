@@ -14,6 +14,7 @@
 #define NONE 		0
 #define SET 		1
 #define EXPLODING 	2
+#define ENDED		3
 
 #define BOMB_TIME 		2500 //milliseconds
 #define BOMB_EXPLODE 	333 //milliseconds 
@@ -34,18 +35,22 @@ typedef struct listBomb {
     struct listBomb *next;
 } *listBomb;
 
-bomb createBomb(player owner, int state);
+bomb createBomb(player owner);
 
 bomb changeState(bomb b, int state);
 
 listBomb initList();
 
-void addBombToList(listBomb l, bomb b);
+int addBombToList(listBomb l, bomb b);
 
 int removeBombFromList(listBomb l, int x, int y);
 
 void removeListBomb(listBomb l);
 
 void updateTimer(listBomb l, int ms);
+
+void deletUseless(listBomb l);
+
+int isBomb(listBomb l,int x,int y);
 
 #endif

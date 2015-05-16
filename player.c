@@ -344,3 +344,24 @@ void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struc
 	}
 
 }*/
+
+int endOfInvinsibility(player p1,player p2){
+	int next = GOD_TIME + 1;
+
+	if(p1->invinsible == 1 && next > p1->invinsible_time){
+		next = p1->invinsible_time;
+	}
+
+	if(p2->invinsible == 1 && next > p2->invinsible_time){
+		next = p2->invinsible_time;
+	}
+	if(next != GOD_TIME+1)
+		return next;
+	else
+		return -1;
+}
+
+void setInvinsibility(player p){
+	p->invinsible = 1;
+	p->invinsible_time = GOD_TIME;
+}

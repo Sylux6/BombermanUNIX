@@ -17,6 +17,8 @@
 #include "map.h"
 #include "powerup.h"
 
+#define GOD_TIME 1000
+
 struct board;
 
 struct player {
