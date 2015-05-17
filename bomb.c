@@ -314,6 +314,46 @@ void explode(bomb b,board map){
 
 }
 
-void clear(bomb b,board map){
-	
+void clear_bomb(bomb b,board map){
+	int i = 1;
+	int x = b->x;
+	int y = b->y;
+	map->map[x][y] = ' ';
+
+	do{ //NORTH
+		if(map->map[x-i][y] == 'X')
+			map->map[x-i][y] = ' ';
+		else
+			break;
+		i++;
+	}while(i <= b->owner->radius_bomb);
+	i = 1;
+
+
+	do{//SOUTH
+		
+		if(map->map[x+i][y] == 'X')
+			map->map[x+i][y] = ' ';
+		else
+			break;
+		i++;
+	}while(i <= b->owner->radius_bomb);
+	i = 1;
+
+	do{//WEST
+		if(map->map[x][y-i] == 'X')
+			map->map[x][y-i] = ' ';
+		else
+			break;
+		i++;
+	}while(i <= b->owner->radius_bomb);
+	i = 1;
+
+	do{//EAST
+		if(map->map[x][y+i] == 'X')
+			map->map[x][y+i] = ' ';
+		else
+			break;
+		i++;
+	}while(i <= b->owner->radius_bomb);
 }

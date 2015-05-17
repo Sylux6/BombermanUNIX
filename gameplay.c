@@ -115,7 +115,7 @@ int tryMove(char direction, player p,listBomb l, board map){
 				// }else{
 				// 	map->p2.x--;
 				// }
-				// map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = 'P';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 
 				p->wait = p->speed;
@@ -134,7 +134,7 @@ int tryMove(char direction, player p,listBomb l, board map){
 				// }
 				// map->changed = 1;
 				p->wait = p->speed;
-				// map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = 'P';
 
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
@@ -153,7 +153,7 @@ int tryMove(char direction, player p,listBomb l, board map){
 				// }
 				// map->changed = 1;
 				p->wait = p->speed;
-				// map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = 'P';
 
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
@@ -171,7 +171,7 @@ int tryMove(char direction, player p,listBomb l, board map){
 				// }
 				// map->changed = 1;
 				p->wait = p->speed;
-				// map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = 'P';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}

@@ -55,6 +55,8 @@ int isBomb(listBomb l,int x,int y);
 
 int nextBombEvent(listBomb l);
 
+void clear_bomb(bomb b,board map);
+
 int isSet(bomb b);
 
 int isEnded(bomb b);

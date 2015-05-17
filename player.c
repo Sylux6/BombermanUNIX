@@ -67,144 +67,6 @@ void spawn(struct player *p, struct board *map){
 }
 /*
 
-void explode(int x, int y, struct player p, struct board *map){
-	//make the explosion
-	int i = 0;
-	map->map[x][y] = 'X';
-	int continue_ = 1;
-	do{ //NORTH
-		switch(map->map[x-i][y]){	
-			
-			case '1':
-				continue_ = 0;
-				// map->map[x-i][y] = 'X';
-				map->map[x-i][y] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x-i][y]));// map->powerups[x-i][y].symbol = 
-				map->map[x-i][y] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x-i][y]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-
-		}
-		i++;
-	}while(i <= p.radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-	do{ //SOUTH
-		switch(map->map[x+i][y]){	
-			
-			case '1':
-				continue_ = 0;
-				map->map[x+i][y] = ' ';
-
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x+i][y]));
-				map->map[x+i][y] = 'X';
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x+i][y]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-		}
-		i++;
-	}while(i <= p.radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-	do{ //WEST
-		switch(map->map[x][y-i]){	
-		
-			case '1':
-				continue_ = 0;
-				map->map[x][y-i] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x][y-i]));
-				map->map[x][y-i] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x][y-i]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-			
-
-		}
-		i++;
-	}while(i <= p.radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-	do{ //EAST
-		switch(map->map[x][y+i]){	
-			
-			case '1':
-				continue_ = 0;
-				map->map[x][y+i] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x][y+i]));
-				map->map[x][y+i] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x][y+i]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-			
-
-		}
-		i++;
-	}while(i <= p.radius_bomb && continue_);
-
-}
-
 void clear_range_bomb(int x, int y, struct player p, struct board *map){
 	int i = 1;
 	map->map[x][y] = ' ';
@@ -247,23 +109,33 @@ void clear_range_bomb(int x, int y, struct player p, struct board *map){
 	}while(i <= p.radius_bomb);
 
 }	
-
-void is_touch(struct player *p1, struct player *p2,struct board *map){
+*/
+void is_touch(player p1, payer p2, board map, listBomb l){
 	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
 
-	for(int i = 0 ; i < p1->nb_bomb ; i++){
-		if(p1->bomb_own[i].state == 3){
-			in_explode(p1,p2,p1->bomb_own[i].x,p1->bomb_own[i].y,p1->radius_bomb,map);
-		}
+
+	listBomb c = l->next;
+
+	while(c != NULL){
+		if(isEnded(c->bomb)){
+			in_explode(p1, p2, c->bomb,map);
+		}	
+
+		c = c->next;
 	}
-	for(int i = 0 ; i < p2->nb_bomb ; i++){
-		if(p2->bomb_own[i].state == 3){
-			in_explode(p1,p2,p2->bomb_own[i].x,p2->bomb_own[i].y,p2->radius_bomb,map);
-		}
-	}
+	// for(int i = 0 ; i < p1->nb_bomb ; i++){
+	// 	if(p1->bomb_own[i].state == 3){
+	// 		in_explode(p1,p2,p1->bomb_own[i].x,p1->bomb_own[i].y,p1->radius_bomb,map);
+	// 	}
+	// }
+	// for(int i = 0 ; i < p2->nb_bomb ; i++){
+	// 	if(p2->bomb_own[i].state == 3){
+	// 		in_explode(p1,p2,p2->bomb_own[i].x,p2->bomb_own[i].y,p2->radius_bomb,map);
+	// 	}
+	// }
 }
 
-void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struct board *map){
+void in_explode(player p1, player p2 , bomb b, board map){
 	int i;
 
 	for(i=0; i<=range ; i++){
@@ -343,7 +215,7 @@ void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struc
 		}
 	}
 
-}*/
+}
 
 int endOfInvinsibility(player p1,player p2){
 	int next = GOD_TIME + 1;

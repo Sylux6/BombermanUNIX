@@ -145,6 +145,7 @@ void printBomb(listBomb l,board map){
 		}
 		else if(isEnded(c->bomb)){
 			if(c->bomb->time_explode <= 0){
+				clear_bomb(c->bomb,map);
 				map->map[c->bomb->x][c->bomb->y] = ' ';
 				changeState(c->bomb,NONE);
 			}
