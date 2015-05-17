@@ -17,7 +17,7 @@
 #define ENDED		3
 
 #define BOMB_TIME 		2500 //milliseconds
-#define BOMB_EXPLODE 	333 //milliseconds 
+#define BOMB_EXPLODE 	1000 //milliseconds 
 
 typedef struct player *player;
 typedef struct board* board;

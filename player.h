@@ -31,14 +31,14 @@ struct player {
 		int x;
 		int y;
 	} pos;
-	uint8_t life;
-	uint8_t nb_bomb;
-	uint8_t nb_bomb_set;
+	int life;
+	int nb_bomb;
+	int nb_bomb_set;
 	int speed;
 	int wait;
 	int invinsible;
 	int invinsible_time;
-	uint8_t radius_bomb;
+	int radius_bomb;
 };
 typedef struct player *player;
 
@@ -46,15 +46,11 @@ void spawn(struct player *p, struct board *map);
 
 player create_player(int nb);
 
-void upgradeNumberBomb(struct player* p);
+void upgradeNumberBomb(struct player* p,int value);
 
-// void explode(int x, int y, struct player p,struct board *map);
+void upgradeRaduis(struct player* p,int value);
 
-// void clear_range_bomb(int x, int y, struct player p, struct board *map);
-
-// void in_explode(struct player *p1,struct player *p2 ,int x,int y,int range,struct board *map);
-
-// void is_touch(struct player *p1, struct player *p2,struct board *map);
+void upgradeSpeed(struct player* p,int value);
 
 int endOfInvinsibility(player p1,player p2);
 

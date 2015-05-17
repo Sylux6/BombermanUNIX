@@ -145,7 +145,7 @@ void printBomb(listBomb l,board map){
 		}
 		else if(isEnded(c->bomb)){
 			if(c->bomb->time_explode <= 0){
-				map->map[c->bomb->x][c->bomb->y] = 'B';
+				map->map[c->bomb->x][c->bomb->y] = ' ';
 				changeState(c->bomb,NONE);
 			}
 		}
@@ -296,4 +296,5 @@ void print_carac(struct player p1,struct player p2){
 	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
 	sprintf(playerslife,"%d",p2.life);
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
+	// printf("     speed : (%d-%d) / %d-%d\n",p1.speed,p2.speed,p1.nb_bomb,p2.nb_bomb );
 }

@@ -27,14 +27,16 @@ struct powerup createPowerup(const int type, int value) {
 void lootPowerup(struct player* p, struct powerup* pow) {
 	switch(pow->type) {
 		case SPEED:
-			p->speed += pow->value;
+			// p->speed +=pow->value;
+			upgradeSpeed(p,pow->value);
 			break;
 		case BOMB_RADIUS:
-			p->radius_bomb += pow->value;
+			// p->radius_bomb +=pow->value;
+			upgradeRaduis(p,pow->value);
 			break;
 		case BOMB_MAX:
-			p->nb_bomb += pow->value;
-			upgradeNumberBomb(p);
+			// p->nb_bomb +=pow->value;
+			upgradeNumberBomb(p,pow->value);
 			break;
 		// default:
 			//return EMPTY;

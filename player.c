@@ -37,10 +37,15 @@ player create_player(int nb){
 	return p;
 }
 
-void upgradeNumberBomb(struct player* p){
-	p->nb_bomb++;
+void upgradeNumberBomb(struct player* p,int value){
+	p->nb_bomb += value;
 }
-
+void upgradeRaduis(struct player* p,int value){
+	p->radius_bomb += value;
+}
+void upgradeSpeed(struct player* p,int value){
+	p->speed += value;
+}
 void spawn(struct player *p, struct board *map){
 
 	int randX = my_rand(0,map->x-1);

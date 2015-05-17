@@ -40,12 +40,12 @@ void mainGame(player p1, player p2, board map,listBomb l){
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,l,map);
 			}
-			// if(nextEvent(p1,p2,l) == -1){
-			// 	timeout = 100;
-			// }else{
-			// 	timeout = (nextEvent(p1,p2,l) > 100)? 100 : nextEvent(p1,p2,l);
-			// }
-			timeout = nextEvent(p1,p2,l);
+			if(nextEvent(p1,p2,l) == -1){
+				timeout = 100;
+			}else{
+				timeout = (nextEvent(p1,p2,l) > 100)? 100 : nextEvent(p1,p2,l);
+			}
+			// timeout = nextEvent(p1,p2,l);
 			print_map(map,p1,p2,l);
 			// is_touch(p1,p2,map);
 			print_carac(*p1,*p2);
@@ -181,16 +181,11 @@ int tryMove(char direction, player p,listBomb l, board map){
 }
 
 int tryDropBombe(player p,listBomb l,board map){
-	// sleep(1);
-	bomb b =createBomb(p);
-	// sleep(1);
-	int launch = addBombToList(l,b);
-	// sleep(1);
+	int launch = addBombToList(l,createBomb(p));
 	if(launch == 1){
 		map->map[p->pos.x][p->pos.y] = '@';
 		
 	}
-	// sleep(1);
 	return launch;
 }
 
