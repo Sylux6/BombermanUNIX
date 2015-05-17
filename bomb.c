@@ -180,28 +180,30 @@ void explode(bomb b, board map){
 	int i, j;
 	for(i = 0; i < 2; i++) {
 		for(j = 1; j <= b->owner->radius_bomb; j++) {
-			//BY X
-			if(i) {
-				if(!(x-j < 0)) {
-					if(map->map[x-j][y] > '0' && map->map[x-j][y] <= '9')
-						map->map[x-j][y]--;
-					else {
-						destroyPowerup(&(map->powerups[x-j][y]));
-						map->map[x-i][y] = 'X';
-					}
-				}
-				if(!(x+j) > map->x) {
-					if(map->map[x+j][y] > '0' && map->map[x+j][y] <= '9')
-						map->map[x+j][y]--;
-					else {
-						destroyPowerup(&(map->powerups[x+j][y]));
-						map->map[x+i][y] = 'X';
-					}
-				}
+			///////////////////////////////////////////////////////////
+			if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '0')
+				continue;
+			else if((map->map[x-(j*(i-1)*(i-1))][y-(j*i)] > '0') && (map->map[x-(j*(i-1)*(i-1))][y-(j*i)] <= '9')) {
+				if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '1')
+					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = ' ';
+				else 
+					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] -= 1;
 			}
-			//BY Y
 			else {
-
+				destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
+				map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+			}
+			///////////////////////////////////////////////////////////
+			if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '0')
+				continue;
+			else if((map->map[x+(j*(i-1)*(i-1))][y+(j*i)] > '0') && (map->map[x+(j*(i-1)*(i-1))][y+(j*i)] <= '9'))
+				if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '1')
+					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = ' ';
+				else 
+					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] -= 1;
+			else {
+				destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
+				map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
 			}
 		}
 	}
