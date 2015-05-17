@@ -18,7 +18,7 @@ bomb createBomb(player owner) {
 bomb changeState(bomb b, int state) {
 	switch(state) {
 		case NONE:
-			// free(b);
+			b->state = NONE;
 			return NULL;
 		case SET:
 			b->state = SET;
@@ -45,18 +45,19 @@ listBomb initList() {
 
 int addBombToList(listBomb l, bomb b) {
 	if(b != NULL){
+		listBomb add = malloc(sizeof(struct listBomb));
+		add->bomb = b;
+		add->next = NULL;
+
 		b->owner->nb_bomb_set++;
+		listBomb p = l;
 		listBomb c = l->next;
-		do{
-			if(c == NULL){
-				c = malloc(sizeof(struct listBomb));
-				break;
-			}
+		while(c != NULL){
+			p = c;
 			c = c->next;
 		}
-		while(c != NULL);
-		c->bomb = b;
-		c->next = NULL;
+		p->next = add;
+
 		return 1;
 	}
 	return 0;
@@ -102,8 +103,9 @@ void updateTimer(listBomb l, int ms) {
 			}
 		}else if(c->bomb->state == ENDED){
 			c->bomb->time_explode -=ms;
-			if(c->bomb->time_explode <= 0)
+			if(c->bomb->time_explode <= 0){
 				changeState(c->bomb,NONE);
+			}
 		}
 		c = c->next;
 	}
@@ -135,19 +137,22 @@ void deletUseless(listBomb l){
 	while(c != NULL) {
 		if(c->bomb->state == NONE) {
 			p->next = c->next;
-
 			c->bomb->owner->nb_bomb_set--;
 			free(c->bomb);
-			c = p;
+			free(c);
+			c = p->next;
+			// sleep(1);
 		}else{
 			p = c;
 			c = c->next;	
 		}
 	}
+	// sleep(1);
 }
 
 int isBomb(listBomb l,int x,int y){
-	listBomb c = l->next;
+	listBomb c = l->next
+	;
 	while(c != NULL) {
 		if(c->bomb->x == x && c->bomb->y == y)
 			return 1;
@@ -161,4 +166,21 @@ int isSet(bomb b){
 }
 int isEnded(bomb b){
 	return (b->state == ENDED);
+}
+int isExploding(bomb b){
+	return (b->state == EXPLODING);
+}
+
+void explode(bomb b,board map){
+	//a faire
+	int x = b->x;
+	int y = b->y;
+	char* X = "X";
+	map->map[x][y] = *X;
+	// print_line_(X,3,map->up_left_corner.x + x , map->up_left_corner.y + y,RED);	
+
+}
+
+void clear(bomb b,board map){
+	
 }

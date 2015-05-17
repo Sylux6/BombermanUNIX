@@ -32,9 +32,22 @@ void print_line_(char* line,int nb_arg,...){
 		strcat(color,line);
 		print_line(color,x,y);
 		free(color);
+	}else if(nb_arg == 4){//both + effect
+		int x = va_arg(ap,int);
+		int y = va_arg(ap,int);
+		char* color =malloc(strlen(line)+10);
+		strcpy(color,va_arg(ap,char*));
+		char* effet =malloc(strlen(line)+10);
+		strcpy(effet,va_arg(ap,char*));
+		strcat(color,effet);
+		strcat(color,line);
+		print_line(color,x,y);
+		free(color);
+		free(effet);
 	}else{//print normal
 		print_line2(line);
 	}
+	va_end(ap);
 }
 void print_line2(char* line){
 	mywrite(1,line,strlen(line));

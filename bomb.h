@@ -20,7 +20,7 @@
 #define BOMB_EXPLODE 	333 //milliseconds 
 
 typedef struct player *player;
-
+typedef struct board* board;
 typedef struct bomb {
     int time; //explose dans time milliseconde 
     int time_explode;
@@ -58,5 +58,9 @@ int nextBombEvent(listBomb l);
 int isSet(bomb b);
 
 int isEnded(bomb b);
+
+int isExploding(bomb b);
+
+void explode(bomb b,board map);
 
 #endif

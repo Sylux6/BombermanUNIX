@@ -72,14 +72,14 @@ void print_map(struct board *map,struct player *p1,struct player *p2,listBomb l)
 	{
 		print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		for(int j = 0 ; j < map->y ; j++){
-			if(map->map[i][j] == 'X'){
-				char* color = malloc(20);
-				strcpy(color,"\033[22;31m");
-				strcat(color,"X");
-				strcat(color,"\x1b[0m");
-				print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
-			}else if(map->map[i][j] == ' '){
-				// map->powerup[i][j].symbol
+			// if(map->map[i][j] == 'X'){
+			// 	char* color = malloc(20);
+			// 	strcpy(color,"\033[22;31m");
+			// 	strcat(color,"X");
+			// 	strcat(color,"\x1b[0m");
+			// 	print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
+			/*}else */
+			if(map->map[i][j] == ' '){
 				print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
 			}
 		}
@@ -136,10 +136,19 @@ void print_player(struct player *p,struct board *map){
 void printBomb(listBomb l,board map){
 	listBomb c = l->next;
 	while(c != NULL) {
-		if(isSet(c->bomb))		
-			map->map[c->bomb->x][c->bomb->y] = '@';
-		if(isEnded(c->bomb))
-			map->map[c->bomb->x][c->bomb->y] = 'A';
+		if(isSet(c->bomb)){
+			print_line_("@",4,map->up_left_corner.x + c->bomb->x,map->up_left_corner.y + c->bomb->y,RED,BLINK);
+		}
+		else if(isExploding(c->bomb)){
+			explode(c->bomb,map);
+			changeState(c->bomb,ENDED);
+		}
+		else if(isEnded(c->bomb)){
+			if(c->bomb->time_explode <= 0){
+				map->map[c->bomb->x][c->bomb->y] = 'B';
+				changeState(c->bomb,NONE);
+			}
+		}
 		c = c->next;
 	}
 }

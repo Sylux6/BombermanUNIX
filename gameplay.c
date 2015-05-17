@@ -24,6 +24,7 @@ void mainGame(player p1, player p2, board map,listBomb l){
 				*buff = 0;
 			*buff = code_action(*buff);
 			updateData(milliS+time_left,p1,p2,map,l);
+			
 
 			if(*buff-5 <= 0){
 				if(p1->wait <=0 && *buff != 5)
