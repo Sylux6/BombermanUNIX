@@ -50,7 +50,7 @@ player create_player(int nb);
 
 void upgradeNumberBomb(struct player* p,int value);
 
-void upgradeRaduis(struct player* p,int value);
+void upgradeRadius(struct player* p,int value);
 
 void upgradeSpeed(struct player* p,int value);
 

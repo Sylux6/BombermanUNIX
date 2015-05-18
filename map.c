@@ -263,3 +263,69 @@ void print_carac(struct player p1,struct player p2){
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
 	// printf("     speed : (%d-%d) / %d-%d\n",p1.speed,p2.speed,p1.nb_bomb,p2.nb_bomb );
 }
+
+int area_calcul(board map, int x, int y) {
+	if(map->map[x][y] != ' ')
+		return 0;
+	int area = 1, i, j, k;
+	char **tmp = malloc(sizeof(char*)*map->x);
+	for(i = 0; i < map->x; i++)
+		tmp[i] = malloc(sizeof(char)*map->y);
+
+	for(i = 0; i < map->x; i++)
+		for(j = 0; j < map->y; j++)
+			tmp[i][j] = 0;
+
+	tmp[x][y] = 1;
+	i = 1;
+	while(map->map[x+i][y] == ' ') {
+		if(tmp[x+i][y] != 1) {
+			area++;
+			tmp[x+i][y] = 1;
+		}
+		j = 1; k = 1;
+		while(map->map[x+i][y+j] == ' ' || map->map[x+i][y-k] == ' ') {
+			if(tmp[x+i][y+j] != 1) {
+				area++;
+				tmp[x+i][y+j] = 1;
+			}
+			if(map->map[x+i][y+j] == ' ')
+				j++;
+			if(tmp[x+i][y-k] != 1) {
+				area++;
+				tmp[x+i][y-k] = 1;
+			}
+			if(map->map[x+i][y-k] == ' ')
+				k++;
+		}
+		i++;
+	}
+	i = 1;
+	while(map->map[x-i][y] == ' ') {
+		if(tmp[x-i][y] != 1) {
+			area++;
+			tmp[x-i][y] = 1;
+		}
+		j = 1; k = 1;
+		while(map->map[x-i][y+j] == ' ' || map->map[x-i][y-k] == ' ') {
+			if(tmp[x-i][y+j] != 1) {
+				area++;
+				tmp[x-i][y+j] = 1;
+			}
+			if(map->map[x-i][y+j] == ' ')
+				j++;
+			if(tmp[x-i][y-k] != 1) {
+				area++;
+				tmp[x-i][y-k] = 1;
+			}
+			if(map->map[x-i][y-k] == ' ')
+				k++;
+		}
+		i++;
+	}
+
+	for(i = 0; i < map->x; i++)
+		free(tmp[i]);
+	free(tmp);
+	return area;
+}

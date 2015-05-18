@@ -55,6 +55,7 @@ struct board{
 	// position p2;
 };
 typedef struct board* board;
+
 void map_init(board tab,char* map);
 
 void launch_game(char* folder);
@@ -68,5 +69,7 @@ void printBomb(board map);
 void print_carac(struct player p1,struct player p2);
 
 void del_board(board map);
+
+int area_calcul(board, int, int);
 
 #endif
