@@ -158,11 +158,9 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 
 	map->map = malloc(sizeof(char*)*map->x);
 	map->powerups = malloc(sizeof(struct powerup*)*map->x);
-	map->bombs = malloc(sizeof(struct bomb*)*map->x);
 	do{
 		map->map[i] = malloc(sizeof(char)*(map->y+1));
 		map->powerups[i] = malloc(sizeof(struct powerup)*map->y);
-		map->bombs[i] = malloc(sizeof(struct bomb)*map->y);
 		myread(lvl1,buf,columns+1);
 		buf[columns]='\0';
 		map->map[i] = mystrcpy(map->map[i], buf);
@@ -320,33 +318,63 @@ int area_calcul(board map, int x, int y) {
 board random_map() {
 	board newBoard = malloc(sizeof(struct board));
 	int x = my_rand(5, atoi(getenv("LINES"))-2);
-	int y = my_rand(5, atoi(getenv("COLUMNS")));
+	int y = my_rand(5, atoi(getenv("COLUMNS"))) + 1;
 	int area, n, i, j;
 	char w;
-	char **map = malloc(sizeof(char*)*x);
-	for(i = 0; i < y; i++)
-		map[i] = malloc(sizeof(char)*y);
+	char **map = malloc(sizeof(char*)*y);
+	for(i = 0; i < x; i++)
+		map[i] = malloc(sizeof(char)*x);
 
 	newBoard->map = map;
 	newBoard->x = x;
-	newBoard->y = y;
-	newBoard->up_left_corner.x = (atoi(getenv("LINES"))+2-x)/2;
-	newBoard->up_left_corner.y = (atoi(getenv("COLUMNS"))-y)/2;
+	newBoard->y = y - 1;
+	newBoard->up_left_corner.x = (atoi(getenv("LINES"))+2-newBoard->x)/2;
+	newBoard->up_left_corner.y = (atoi(getenv("COLUMNS"))-newBoard->y)/2;
+	newBoard->powerups = malloc(sizeof(struct powerup*)*newBoard->x);
+	for(i = 0; i < newBoard->x; i++)
+		newBoard->powerups[i] = malloc(sizeof(struct powerup)*newBoard->y);
 	
 	//WALL OUTLINE
-	for(i = 0; i < y; i++) {
+	for(i = 0; i < newBoard->y; i++) {
 		map[0][i] = 0;
-		map[x-1][i] = 0;
+		map[newBoard->x-1][i] = 0;
+		map[newBoard->x-1][newBoard->y] = '\0';
 	}
-	for(i = 0; i < x; i++) {
+	for(i = 0; i < newBoard->x; i++) {
 		map[i][0] = 0;
-		map[i][y-1] = 0;
+		map[i][newBoard->y-1] = 0;
 	}
 
 	do {
+		//GENERATING POWERUPS
+		for(i = 0; i < newBoard->x; i++) {
+			for(j = 0; j < newBoard->y; j++) {
+				if(i == 0 || i == newBoard->x-1 || j == 0 || j == newBoard->y-1)
+					newBoard->powerups[i][j] = createPowerup(EMPTY, 0);
+				else {
+					n = my_rand(0, 100);
+					if(n < 5) {
+						n = my_rand(1, 4);
+						switch(n) {
+							case SPEED:
+								newBoard->powerups[i][j] = createPowerup(SPEED, -60);
+								break;
+							case BOMB_RADIUS:
+								newBoard->powerups[i][j] = createPowerup(BOMB_RADIUS, 1);
+								break;
+							case BOMB_MAX:
+								newBoard->powerups[i][j] = createPowerup(BOMB_MAX, 1);
+								break;
+							default:
+								newBoard->powerups[i][j] = createPowerup(EMPTY, 0);
+						}
+					}
+				}
+			}
+		}
 		//FILLING MAP
-		for(i = 1; i < x-1; i++) {
-			for(j = 1; j < y-1; j++) {
+		for(i = 1; i < newBoard->x-1; i++) {
+			for(j = 1; j < newBoard->y-1; j++) {
 				n = my_rand(0, 100);
 				if(n < 20)
 					map[i][j] = '0';
@@ -360,8 +388,8 @@ board random_map() {
 				}
 			}
 		}
-		for(i = 0; i < x-1; i++) {
-			for(j = 0; j < y-1; j++) {
+		for(i = 0; i < newBoard->x-1; i++) {
+			for(j = 0; j < newBoard->y-1; j++) {
 				if(map[i][j] == ' ') {
 					if((area = area_calcul(newBoard, i, j)) > RADIUS + 2)
 						return newBoard;

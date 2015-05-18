@@ -46,7 +46,6 @@ typedef struct position{
 struct board{
 	char **map;
 	struct powerup **powerups;
-	struct bomb **bombs;
 	listBomb listBombs;
 	position up_left_corner;
 	int x;
