@@ -43,7 +43,7 @@ void mainGame(player p1, player p2, board map){
 			// }else{
 			// 	timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
 			// }
-			timeout = nextEvent(p1,p2,l);
+			timeout = nextEvent(p1,p2,map->listBombs);
 			print_map(map,p1,p2);
 			// is_touch(p1,p2,map);
 			// print_carac(*p1,*p2);
