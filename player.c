@@ -47,20 +47,27 @@ void upgradeSpeed(struct player* p,int value){
 	p->speed += value;
 }
 void spawn(struct player *p, struct board *map){
+	int randX, randY, area;
+	// // tand que la case est non vide 
+	// do{
+	// 	if(map->map[randX][randY] == ' '){
+	// 		bool = 0;
+	// 	}else{
+	// 		randX = my_rand(0,map->x-1);
+	// 		randY = my_rand(0,map->y-1);
+	// 	}
 
-	int randX = my_rand(0,map->x-1);
-	int randY = my_rand(0,map->y-1);
-	int bool = 1;
-	// tand que la case est non vide 
-	do{
-		if(map->map[randX][randY] == ' '){
-			bool = 0;
-		}else{
-			randX = my_rand(0,map->x-1);
-			randY = my_rand(0,map->y-1);
-		}
+	// }while(bool);
+	// map->map[randX][randY] = *(p->view);
+	// p->pos.x = randX;
+	// p->pos.y = randY;
 
-	}while(bool);
+	do {
+		randX = my_rand(0, map->x-1);
+		randY = my_rand(0, map->y-1);
+		area = area_calcul(map, randX, randY);
+	}
+	while(area <= p->radius_bomb + 1);
 	map->map[randX][randY] = *(p->view);
 	p->pos.x = randX;
 	p->pos.y = randY;

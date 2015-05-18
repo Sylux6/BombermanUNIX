@@ -53,7 +53,6 @@ void upgradeRadius(struct player* p,int value);
 
 void upgradeSpeed(struct player* p,int value);
 
-
 void is_touch(player p1, player p2, board map, listBomb l);
 
 int endOfInvinsibility(player p1,player p2);
