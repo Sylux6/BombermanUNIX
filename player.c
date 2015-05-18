@@ -109,8 +109,8 @@ void clear_range_bomb(int x, int y, struct player p, struct board *map){
 	}while(i <= p.radius_bomb);
 
 }	
-*/
-void is_touch(player p1, payer p2, board map, listBomb l){
+
+void is_touch(player p1, player p2, board map, listBomb l){
 	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
 
 
@@ -216,7 +216,7 @@ void in_explode(player p1, player p2 , bomb b, board map){
 	}
 
 }
-
+*/
 int endOfInvinsibility(player p1,player p2){
 	int next = GOD_TIME + 1;
 
