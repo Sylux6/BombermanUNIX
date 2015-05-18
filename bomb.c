@@ -92,6 +92,16 @@ int removeBombFromList(listBomb l, int x, int y) {
 	return 0;
 }
 
+bomb searchBomb(listBomb l, int x, int y) {
+	listBomb c = l->next;
+	while(c != NULL) {
+		if(c->bomb->x == x && c->bomb->y == y)
+			return c->bomb;
+		c = c->next;
+	}
+	return NULL;
+}
+
 //Met à jour le timer de toutes les bombes actives
 void updateTimer(listBomb l, int ms) {
 	listBomb c = l->next;
@@ -170,7 +180,7 @@ int isExploding(bomb b){
 }
 
 void explode(bomb b,board map){
-	//a faire
+	changeState(b,ENDED);
 	int x = b->x;
 	int y = b->y;
 	map->map[x][y] = 'X';
@@ -199,8 +209,13 @@ void explode(bomb b,board map){
 						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] -= 1;
 				}
 				else {
-					destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
-					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+					bomb tmp = searchBomb(map->listBombs, x-(j*(i-1)*(i-1)), y-(j*i));
+					if(tmp != NULL && tmp->state == SET)
+						explode(tmp, map);
+					else {
+						destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
+						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+					}
 				}
 			}
 			///////////////////////////////////////////////////////////
@@ -221,13 +236,17 @@ void explode(bomb b,board map){
 						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] -= 1;
 				}
 				else {
-					destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
-					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
+					bomb tmp = searchBomb(map->listBombs, x+(j*(i-1)*(i-1)), y+(j*i));
+					if(tmp != NULL && tmp->state == SET)
+						explode(tmp, map);
+					else {
+						destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
+						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
+					}
 				}
 			}
 		}
 	}
-	changeState(b,ENDED);
 }
 
 void clear_bomb(bomb b,board map){

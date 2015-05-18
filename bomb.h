@@ -65,4 +65,6 @@ int isExploding(bomb b);
 
 void explode(bomb b,board map);
 
+bomb searchBomb(listBomb l, int x, int y);
+
 #endif
