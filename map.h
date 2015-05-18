@@ -70,4 +70,6 @@ void del_board(board map);
 
 int area_calcul(board, int, int);
 
+board random_map();
+
 #endif

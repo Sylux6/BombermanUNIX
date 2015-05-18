@@ -57,7 +57,7 @@ void launch_game(char* folder){
 		p2->life = 3;
 		//-------------------end---------------------------
 		sleep(2);
-		// print who carried the game
+		// print who won the game
 		print_line2(CLEAR_TERM);
 		free(string2);
 		del_board(map);
@@ -146,7 +146,7 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->x = line;
 	map->y = columns;
 
-	if(map->y > atoi(getenv("COLUMNS")) || map->x >atoi(getenv("LINES"))-2 )
+	if(map->y > atoi(getenv("COLUMNS")) || map->x >atoi(getenv("LINES"))-2)
 	{
 		my_print_err("the map is too big!");
 		exit(-1);
@@ -315,4 +315,61 @@ int area_calcul(board map, int x, int y) {
 		free(tmp[i]);
 	free(tmp);
 	return area;
+}
+
+board random_map() {
+	board newBoard = malloc(sizeof(struct board));
+	int x = my_rand(5, atoi(getenv("LINES"))-2);
+	int y = my_rand(5, atoi(getenv("COLUMNS")));
+	int area, n, i, j;
+	char w;
+	char **map = malloc(sizeof(char*)*x);
+	for(i = 0; i < y; i++)
+		map[i] = malloc(sizeof(char)*y);
+
+	newBoard->map = map;
+	newBoard->x = x;
+	newBoard->y = y;
+	newBoard->up_left_corner.x = (atoi(getenv("LINES"))+2-x)/2;
+	newBoard->up_left_corner.y = (atoi(getenv("COLUMNS"))-y)/2;
+	
+	//WALL OUTLINE
+	for(i = 0; i < y; i++) {
+		map[0][i] = 0;
+		map[x-1][i] = 0;
+	}
+	for(i = 0; i < x; i++) {
+		map[i][0] = 0;
+		map[i][y-1] = 0;
+	}
+
+	do {
+		//FILLING MAP
+		for(i = 1; i < x-1; i++) {
+			for(j = 1; j < y-1; j++) {
+				n = my_rand(0, 100);
+				if(n < 20)
+					map[i][j] = '0';
+				else if(n > 60)
+					map[i][j] = ' ';
+				else {
+					n = my_rand(1, 9);
+					memcpy(&w, &n, 1);
+					w += 48;
+					map[i][j] = w;
+				}
+			}
+		}
+		for(i = 0; i < x-1; i++) {
+			for(j = 0; j < y-1; j++) {
+				if(map[i][j] == ' ') {
+					if((area = area_calcul(newBoard, i, j)) > RADIUS + 2)
+						return newBoard;
+				}
+			}
+		}
+	}
+	while(area <= RADIUS + 2);
+
+	return newBoard;
 }

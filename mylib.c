@@ -113,7 +113,7 @@ int my_rand(int min,int max){
     int f;
     unsigned int random;
     if ((f = open("/dev/urandom",O_RDONLY)) == -1) {
-        perror("erreur : generation nombre aléatoir ");
+        perror("erreur : generation nombre aléatoire");
         exit(1);
     }
     myread(f, &random, 4);

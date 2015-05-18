@@ -43,3 +43,9 @@
 
 15/05
 *Début de réimplémentation des bombes (bomb.c/.h)
+
+18/05
+*Implémentation des bombes terminée
+*Explosion en chaîne fonctionnelle
+*Spawn aléatoire des joueurs fonctionnelle
+*Ajout de la fonction random_map()

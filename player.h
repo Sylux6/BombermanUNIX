@@ -18,6 +18,7 @@
 #include "powerup.h"
 
 #define GOD_TIME 2000
+#define RADIUS 1
 
 typedef struct board* board;
 typedef struct listBomb* listBomb;
