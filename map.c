@@ -262,6 +262,7 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 
 void del_board(struct board *map){
 	int i;
+	removeListBomb(map->listBombs);
 	for(i = 0; i < map->x; i++) {
 		free(map->map[i]);
 		free(map->powerups[i]);
