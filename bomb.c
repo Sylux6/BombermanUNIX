@@ -181,29 +181,33 @@ void explode(bomb b, board map){
 	for(i = 0; i < 2; i++) {
 		for(j = 1; j <= b->owner->radius_bomb; j++) {
 			///////////////////////////////////////////////////////////
-			if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '0')
-				continue;
-			else if((map->map[x-(j*(i-1)*(i-1))][y-(j*i)] > '0') && (map->map[x-(j*(i-1)*(i-1))][y-(j*i)] <= '9')) {
-				if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '1')
-					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = ' ';
-				else 
-					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] -= 1;
-			}
-			else {
-				destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
-				map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+			if(x-(j*(i-1)*(i-1)) >= 0 && y-(j*i) >= 0) {
+				if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '0')
+					continue;
+				else if((map->map[x-(j*(i-1)*(i-1))][y-(j*i)] > '0') && (map->map[x-(j*(i-1)*(i-1))][y-(j*i)] <= '9')) {
+					if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '1')
+						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = ' ';
+					else 
+						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] -= 1;
+				}
+				else {
+					destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
+					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+				}
 			}
 			///////////////////////////////////////////////////////////
-			if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '0')
-				continue;
-			else if((map->map[x+(j*(i-1)*(i-1))][y+(j*i)] > '0') && (map->map[x+(j*(i-1)*(i-1))][y+(j*i)] <= '9'))
-				if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '1')
-					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = ' ';
-				else 
-					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] -= 1;
-			else {
-				destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
-				map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
+			if(x+(j*(i-1)*(i-1)) <= map->x && y+(j*i) <= map->y) {
+				if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '0')
+					continue;
+				else if((map->map[x+(j*(i-1)*(i-1))][y+(j*i)] > '0') && (map->map[x+(j*(i-1)*(i-1))][y+(j*i)] <= '9'))
+					if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '1')
+						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = ' ';
+					else 
+						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] -= 1;
+				else {
+					destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
+					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
+				}
 			}
 		}
 	}
