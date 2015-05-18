@@ -32,7 +32,7 @@ void lootPowerup(struct player* p, struct powerup* pow) {
 			break;
 		case BOMB_RADIUS:
 			// p->radius_bomb +=pow->value;
-			upgradeRaduis(p,pow->value);
+			upgradeRadius(p,pow->value);
 			break;
 		case BOMB_MAX:
 			// p->nb_bomb +=pow->value;

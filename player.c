@@ -23,7 +23,7 @@ player create_player(int nb){
 
 	p->life = 3;
 	//about bomb
-	p->nb_bomb = 2;
+	p->nb_bomb = 1;
 	p->nb_bomb_set = 0;
 	p->radius_bomb = 1;
 
@@ -40,7 +40,7 @@ player create_player(int nb){
 void upgradeNumberBomb(struct player* p,int value){
 	p->nb_bomb += value;
 }
-void upgradeRaduis(struct player* p,int value){
+void upgradeRadius(struct player* p,int value){
 	p->radius_bomb += value;
 }
 void upgradeSpeed(struct player* p,int value){
@@ -65,51 +65,8 @@ void spawn(struct player *p, struct board *map){
 	p->pos.x = randX;
 	p->pos.y = randY;
 }
-/*
 
-void clear_range_bomb(int x, int y, struct player p, struct board *map){
-	int i = 1;
-	map->map[x][y] = ' ';
-
-	do{ //NORTH
-		if(map->map[x-i][y] == 'X')
-			map->map[x-i][y] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-
-	do{//SOUTH
-		
-		if(map->map[x+i][y] == 'X')
-			map->map[x+i][y] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-	do{//WEST
-		if(map->map[x][y-i] == 'X')
-			map->map[x][y-i] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-	do{//EAST
-		if(map->map[x][y+i] == 'X')
-			map->map[x][y+i] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-
-}	
-
+/*	
 void is_touch(player p1, player p2, board map, listBomb l){
 	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
 
