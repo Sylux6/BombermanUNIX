@@ -173,145 +173,59 @@ void explode(bomb b,board map){
 	//a faire
 	int x = b->x;
 	int y = b->y;
-	// char* X = "X";
-	// map->map[x][y] = *X;//center
-	// print_line_(X,3,map->up_left_corner.x + x , map->up_left_corner.y + y,RED);	
 	map->map[x][y] = 'X';
-	int continue_ = 1;
-	int i = 0;
-	do{ //NORTH
-		switch(map->map[x-i][y]){	
-			
-			case '1':
-				continue_ = 0;
-				// map->map[x-i][y] = 'X';
-				map->map[x-i][y] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x-i][y]));// map->powerups[x-i][y].symbol = 
-				map->map[x-i][y] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x-i][y]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
+	int i, j;
 
+	int north = 1,west = 1,south = 1, east = 1;
+	for(i = 0; i < 2; i++) {
+		for(j = 1; j <= b->owner->radius_bomb; j++) {
+			///////////////////////////////////////////////////////////
+			if(x-(j*(i-1)*(i-1)) > 0 && y-(j*i) > 0  && ((i-1)*(i-1)*north || i*west)) {
+				if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '0')
+					if((i-1)*(i-1) == 1)
+						north = 0;
+					else
+						west = 0;
+					
+				else if((map->map[x-(j*(i-1)*(i-1))][y-(j*i)] > '0') && (map->map[x-(j*(i-1)*(i-1))][y-(j*i)] <= '9') ) {
+					if((i-1)*(i-1) == 1)
+						north = 0;
+					else
+						west = 0;
+					if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '1')
+						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = ' ';
+					else 
+						map->map[x-(j*(i-1)*(i-1))][y-(j*i)] -= 1;
+				}
+				else {
+					destroyPowerup(&(map->powerups[x-(j*(i-1)*(i-1))][y-(j*i)]));
+					map->map[x-(j*(i-1)*(i-1))][y-(j*i)] = 'X';
+				}
+			}
+			///////////////////////////////////////////////////////////
+			if(x+(j*(i-1)*(i-1)) < map->x && y+(j*i) < map->y && ((i-1)*(i-1)*south || i*east)) {
+				if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '0')
+					if((i-1)*(i-1) == 1)
+						south = 0;
+					else
+						east = 0;
+				else if((map->map[x+(j*(i-1)*(i-1))][y+(j*i)] > '0') && (map->map[x+(j*(i-1)*(i-1))][y+(j*i)] <= '9')){
+					if((i-1)*(i-1) == 1)
+						south = 0;
+					else
+						east = 0;
+					if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '1')
+						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = ' ';
+					else 
+						map->map[x+(j*(i-1)*(i-1))][y+(j*i)] -= 1;
+				}
+				else {
+					destroyPowerup(&(map->powerups[x+(j*(i-1)*(i-1))][y+(j*i)]));
+					map->map[x+(j*(i-1)*(i-1))][y+(j*i)] = 'X';
+				}
+			}
 		}
-		i++;
-	}while(i <= b->owner->radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-
-	do{ //SOUTH
-		switch(map->map[x+i][y]){	
-			
-			case '1':
-				continue_ = 0;
-				map->map[x+i][y] = ' ';
-
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x+i][y]));
-				map->map[x+i][y] = 'X';
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x+i][y]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-		}
-		i++;
-	}while(i <= b->owner->radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-	do{ //WEST
-		switch(map->map[x][y-i]){	
-		
-			case '1':
-				continue_ = 0;
-				map->map[x][y-i] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x][y-i]));
-				map->map[x][y-i] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x][y-i]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-			
-
-		}
-		i++;
-	}while(i <= b->owner->radius_bomb && continue_);
-	i = 0;
-	continue_ = 1;
-
-	do{ //EAST
-		switch(map->map[x][y+i]){	
-			
-			case '1':
-				continue_ = 0;
-				map->map[x][y+i] = ' ';
-				break;
-			case ' ':
-				destroyPowerup(&(map->powerups[x][y+i]));
-				map->map[x][y+i] = 'X';
-				break;
-			case 'X':
-				break;
-			case '2':
-			case '3':
-			case '4':
-			case '5':
-			case '6':
-			case '7':
-			case '8':
-			case '9':
-				map->map[x][y+i]--;
-			case '0':
-				continue_ = 0;
-				break;
-			// default:
-			
-
-		}
-		i++;
-	}while(i <= b->owner->radius_bomb && continue_);
-
-
+	}
 }
 
 void clear_bomb(bomb b,board map){

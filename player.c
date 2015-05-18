@@ -25,7 +25,7 @@ player create_player(int nb){
 	//about bomb
 	p->nb_bomb = 1;
 	p->nb_bomb_set = 0;
-	p->radius_bomb = 1;
+	p->radius_bomb = 10;
 
 	//about move
 	p->speed = 500;
