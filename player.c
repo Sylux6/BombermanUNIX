@@ -51,6 +51,8 @@ void spawn(struct player *p, struct board *map){
 	do {
 		randX = my_rand(0, map->x-1);
 		randY = my_rand(0, map->y-1);
+		if(map->powerups[randX][randY].type != EMPTY)
+			continue;
 		area = area_calcul(map, randX, randY);
 	}
 	while(area <= p->radius_bomb + 1);
