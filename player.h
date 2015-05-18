@@ -21,6 +21,7 @@
 
 typedef struct board* board;
 typedef struct listBomb* listBomb;
+typedef struct bomb* bomb;
 
 struct player {
 	int nb;
@@ -53,8 +54,9 @@ void upgradeRaduis(struct player* p,int value);
 
 void upgradeSpeed(struct player* p,int value);
 
+void in_explode(player p1, player p2 , bomb b, board map);
 
-void is_touch(player p1, player p2, board map, listBomb l);
+void is_touch(player p1, player p2, board map);
 
 int endOfInvinsibility(player p1,player p2);
 

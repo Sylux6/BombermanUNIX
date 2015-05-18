@@ -71,14 +71,13 @@ void print_map(board map, player p1, player p2){
 	{
 		print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		for(int j = 0 ; j < map->y ; j++){
-			// if(map->map[i][j] == 'X'){
+			if(map->map[i][j] == 'X'){
 			// 	char* color = malloc(20);
 			// 	strcpy(color,"\033[22;31m");
 			// 	strcat(color,"X");
 			// 	strcat(color,"\x1b[0m");
-			// 	print_line(color,map->up_left_corner.x + i, map->up_left_corner.y + j);
-			/*}else */
-			if(map->map[i][j] == ' '){
+				print_line_("X",3,map->up_left_corner.x + i, map->up_left_corner.y + j,RED);
+			}else if(map->map[i][j] == ' '){
 				print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
 			}
 		}
@@ -87,48 +86,18 @@ void print_map(board map, player p1, player p2){
 	print_player(p1, map);
 	print_player(p2, map);
 	printBomb(map);
+	print_carac(*p1,*p2);
 	// is_touch(p1,p2,map);
 
 }
 void print_player(struct player *p,struct board *map){
 	char* color = malloc(20);
 
-	strcpy(color,p->effet);
-	strcat(color,p->color);
-	strcat(color,p->view);
-	strcat(color,"\x1b[0m");
-	print_line(color,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y);// afficher le joueur
-
-	// afficher les bombe 
-	// for(int i = 0; i < p->nb_bomb ; i++){
-	// 	if(p->bomb_own[i].state == 1){
-	// 		char* bomb = malloc(30);
-	// 		strcpy(bomb,"\033[22;31m\x1b[5m");
-	// 		strcat(bomb,"@");
-	// 		strcat(bomb,"\x1b[0m");
-	// 		print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
-	// 		free(bomb);
-	// 	}
-	// 	else if(p->bomb_own[i].state == 2){
-	// 		//print explosion
-	// 		// p->bomb_own[i].time_explode = 1000;
-	// 		explode(p->bomb_own[i].x, p->bomb_own[i].y,*p,map);
-	// 		// char* bomb = malloc(15);
-	// 		// strcat(bomb," ");
-	// 		// strcat(bomb,"\x1b[0m");
-	// 		// print_line(bomb,map->up_left_corner.x + p->bomb_own[i].x,map->up_left_corner.y + p->bomb_own[i].y);
-	// 		// free(bomb);	
-	// 		p->bomb_own[i].state = 3;
-	// 	}
-	// 	else if(p->bomb_own[i].state == 3){
-	// 		//print explode 
-	// 		if(p->bomb_own[i].time_explode <= 0){
-	// 			p->bomb_own[i].state = 0;
-	// 			p->bomb_own[i].time_explode = -1;
-	// 			clear_range_bomb(p->bomb_own[i].x, p->bomb_own[i].y, *p, map);
-	// 		}
-		// }
-	// }
+	// strcpy(color,p->effet);
+	// strcat(color,p->color);
+	// strcat(color,p->view);
+	// strcat(color,"\x1b[0m");
+	print_line_(p->view,4,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y,p->effet,p->color);// afficher le joueur
 	free(color);
 }
 

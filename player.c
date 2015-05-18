@@ -23,12 +23,12 @@ player create_player(int nb){
 
 	p->life = 3;
 	//about bomb
-	p->nb_bomb = 2;
+	p->nb_bomb = 5;
 	p->nb_bomb_set = 0;
 	p->radius_bomb = 1;
 
 	//about move
-	p->speed = 400;
+	p->speed = 100;
 	p->wait = 0;
 
 	//about bonus
@@ -65,56 +65,11 @@ void spawn(struct player *p, struct board *map){
 	p->pos.x = randX;
 	p->pos.y = randY;
 }
-/*
-
-void clear_range_bomb(int x, int y, struct player p, struct board *map){
-	int i = 1;
-	map->map[x][y] = ' ';
-
-	do{ //NORTH
-		if(map->map[x-i][y] == 'X')
-			map->map[x-i][y] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-
-	do{//SOUTH
-		
-		if(map->map[x+i][y] == 'X')
-			map->map[x+i][y] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-	do{//WEST
-		if(map->map[x][y-i] == 'X')
-			map->map[x][y-i] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-	i = 1;
-
-	do{//EAST
-		if(map->map[x][y+i] == 'X')
-			map->map[x][y+i] = ' ';
-		else
-			break;
-		i++;
-	}while(i <= p.radius_bomb);
-
-}	
-
-void is_touch(player p1, player p2, board map, listBomb l){
+void is_touch(player p1, player p2, board map){
 	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
 
 
-	listBomb c = l->next;
+	listBomb c = map->listBombs->next;
 
 	while(c != NULL){
 		if(isEnded(c->bomb)){
@@ -123,22 +78,13 @@ void is_touch(player p1, player p2, board map, listBomb l){
 
 		c = c->next;
 	}
-	// for(int i = 0 ; i < p1->nb_bomb ; i++){
-	// 	if(p1->bomb_own[i].state == 3){
-	// 		in_explode(p1,p2,p1->bomb_own[i].x,p1->bomb_own[i].y,p1->radius_bomb,map);
-	// 	}
-	// }
-	// for(int i = 0 ; i < p2->nb_bomb ; i++){
-	// 	if(p2->bomb_own[i].state == 3){
-	// 		in_explode(p1,p2,p2->bomb_own[i].x,p2->bomb_own[i].y,p2->radius_bomb,map);
-	// 	}
-	// }
 }
 
 void in_explode(player p1, player p2 , bomb b, board map){
 	int i;
-
-	for(i=0; i<=range ; i++){
+	int x = b->x;
+	int y = b->y;
+	for(i=0; i<=b->owner->radius_bomb ; i++){
 		
 		if(map->map[x-i][y] == 'P' || map->map[x-i][y] == 'X'){
 			if((p1->pos.x == x-i && p1->pos.y == y) && p1->invinsible == 0){
@@ -158,7 +104,7 @@ void in_explode(player p1, player p2 , bomb b, board map){
 		}
 	}
 
-	for(i=1; i<=range ; i++){
+	for(i=1; i<=b->owner->radius_bomb ; i++){
 		if(map->map[x+i][y] == 'P' || map->map[x+i][y] == 'X'){
 			if((p1->pos.x == x+i && p1->pos.y == y) && p1->invinsible == 0){
 				p1->life--;
@@ -177,7 +123,7 @@ void in_explode(player p1, player p2 , bomb b, board map){
 		}
 	}
 
-	for(i=1; i<=range ; i++){
+	for(i=1; i<=b->owner->radius_bomb ; i++){
 		if(map->map[x][y-i] == 'P' || map->map[x][y-i] == 'X'){
 			if((p1->pos.x == x && p1->pos.y == y-i) && p1->invinsible == 0){
 				p1->life--;
@@ -196,7 +142,7 @@ void in_explode(player p1, player p2 , bomb b, board map){
 		}
 	}
 
-	for(i=1; i<=range ; i++){
+	for(i=1; i<=b->owner->radius_bomb ; i++){
 		if(map->map[x][y+i] == 'P'|| map->map[x][y+i] == 'X'){
 			if((p1->pos.x == x && p1->pos.y == y+i) && p1->invinsible == 0){
 				p1->life--;
@@ -216,7 +162,7 @@ void in_explode(player p1, player p2 , bomb b, board map){
 	}
 
 }
-*/
+
 int endOfInvinsibility(player p1,player p2){
 	int next = GOD_TIME + 1;
 

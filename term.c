@@ -35,15 +35,18 @@ void print_line_(char* line,int nb_arg,...){
 	}else if(nb_arg == 4){//both + effect
 		int x = va_arg(ap,int);
 		int y = va_arg(ap,int);
-		char* color =malloc(strlen(line)+10);
+		char* end = malloc(100);
+		char* color =malloc(10);
+		char* effet =malloc(10);
+
 		strcpy(color,va_arg(ap,char*));
-		char* effet =malloc(strlen(line)+10);
 		strcpy(effet,va_arg(ap,char*));
-		strcat(color,effet);
-		strcat(color,line);
-		print_line(color,x,y);
+		
+		my_str_cpy_cat(end,color,effet,line,NULL);
+		print_line(end,x,y);
 		free(color);
 		free(effet);
+		free(end);
 	}else{//print normal
 		print_line2(line);
 	}
