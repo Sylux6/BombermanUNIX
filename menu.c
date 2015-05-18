@@ -39,6 +39,7 @@ void wich_folder(){
     char* buff = malloc(100);
     int i = read(0,buff,100);
     term_raw();
+    print_line2(CUR_OFF);
     buff[i-1] = '\0';
     launch_game(buff);
     free(buff);

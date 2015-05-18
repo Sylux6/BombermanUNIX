@@ -21,14 +21,14 @@ player create_player(int nb){
 	p->effet = malloc(12);
 	strcpy(p->effet,NORMAL); 
 
-	p->life = 30;
+	p->life = 3;
 	//about bomb
 	p->nb_bomb = 1;
 	p->nb_bomb_set = 0;
 	p->radius_bomb = 1;
 
 	//about move
-	p->speed = 100;
+	p->speed = 400;
 	p->wait = 0;
 
 	//about bonus
@@ -165,7 +165,7 @@ int endOfInvinsibility(player p1,player p2){
 	if(next != GOD_TIME+1 && next > 0)
 		return next;
 	else
-		return 100;
+		return -1;
 }
 
 void setInvinsibility(player p){

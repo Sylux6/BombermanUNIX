@@ -109,10 +109,15 @@ void updateTimer(listBomb l, int ms) {
 		if(c->bomb->state == SET){
 			c->bomb->time -= ms;
 			if(c->bomb->time <= 0){
+				c->bomb->time = -1;
 				changeState(c->bomb,EXPLODING);
+
 			}
 		}else if(c->bomb->state == ENDED){
 			c->bomb->time_explode -=ms;
+			if(c->bomb->time_explode < 0){
+				c->bomb->time_explode = 0;
+			}
 		}
 		c = c->next;
 	}
@@ -121,6 +126,7 @@ void updateTimer(listBomb l, int ms) {
 
 int nextBombEvent(listBomb l){
 	int next = BOMB_TIME + 1;
+	int tmp = -1;
 	listBomb c = l->next;
 	while(c != NULL){
 		// tmp = 100;
@@ -130,12 +136,16 @@ int nextBombEvent(listBomb l){
 		if(c->bomb->state == ENDED && next > c->bomb->time_explode){
 			next = c->bomb->time_explode;
 		}
+		if(c->bomb->state == EXPLODING && next > c->bomb->time_explode){
+			next = 1;
+		}
 		c = c->next;
 	}
-	if(next != BOMB_TIME+1)
+	if(next != BOMB_TIME+1 /*&& next > 0*/)
 		return next;
-	else
-		return 100;
+	else{
+		return tmp;
+	}
 }
 
 void deletUseless(listBomb l){
@@ -244,6 +254,7 @@ void explode(bomb b,board map){
 			}
 		}
 	}
+	// map->refresh = 1;
 }
 
 void clear_bomb(bomb b,board map){
