@@ -135,7 +135,7 @@ int nextBombEvent(listBomb l){
 	if(next != BOMB_TIME+1)
 		return next;
 	else
-		return -1;
+		return 100;
 }
 
 void deletUseless(listBomb l){
