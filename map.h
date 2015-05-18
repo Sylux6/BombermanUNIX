@@ -47,6 +47,7 @@ struct board{
 	char **map;
 	struct powerup **powerups;
 	struct bomb **bombs;
+	listBomb listBombs;
 	position up_left_corner;
 	int x;
 	int y;
@@ -58,11 +59,11 @@ void map_init(board tab,char* map);
 
 void launch_game(char* folder);
 
-void print_map(board map,player p1, player p2,listBomb l);
+void print_map(board map,player p1, player p2);
 
 void print_player(player p,board map);
 
-void printBomb(listBomb l,board map);
+void printBomb(board map);
 
 void print_carac(struct player p1,struct player p2);
 

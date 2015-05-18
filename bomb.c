@@ -177,18 +177,19 @@ void explode(bomb b,board map){
 	int i, j;
 
 	int north = 1,west = 1,south = 1, east = 1;
+
 	for(i = 0; i < 2; i++) {
 		for(j = 1; j <= b->owner->radius_bomb; j++) {
 			///////////////////////////////////////////////////////////
 			if(x-(j*(i-1)*(i-1)) > 0 && y-(j*i) > 0  && ((i-1)*(i-1)*north || i*west)) {
 				if(map->map[x-(j*(i-1)*(i-1))][y-(j*i)] == '0')
-					if((i-1)*(i-1) == 1)
+					if((i-1)*(i-1))
 						north = 0;
 					else
 						west = 0;
 					
 				else if((map->map[x-(j*(i-1)*(i-1))][y-(j*i)] > '0') && (map->map[x-(j*(i-1)*(i-1))][y-(j*i)] <= '9') ) {
-					if((i-1)*(i-1) == 1)
+					if((i-1)*(i-1))
 						north = 0;
 					else
 						west = 0;
@@ -205,12 +206,12 @@ void explode(bomb b,board map){
 			///////////////////////////////////////////////////////////
 			if(x+(j*(i-1)*(i-1)) < map->x && y+(j*i) < map->y && ((i-1)*(i-1)*south || i*east)) {
 				if(map->map[x+(j*(i-1)*(i-1))][y+(j*i)] == '0')
-					if((i-1)*(i-1) == 1)
+					if((i-1)*(i-1))
 						south = 0;
 					else
 						east = 0;
 				else if((map->map[x+(j*(i-1)*(i-1))][y+(j*i)] > '0') && (map->map[x+(j*(i-1)*(i-1))][y+(j*i)] <= '9')){
-					if((i-1)*(i-1) == 1)
+					if((i-1)*(i-1))
 						south = 0;
 					else
 						east = 0;
@@ -226,6 +227,7 @@ void explode(bomb b,board map){
 			}
 		}
 	}
+	changeState(b,ENDED);
 }
 
 void clear_bomb(bomb b,board map){

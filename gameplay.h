@@ -37,22 +37,22 @@ typedef struct player* player;
 typedef struct board* board;
 typedef struct listBomb* listBomb;
 
-void mainGame(player p1, player p2, board map, listBomb bombs);
+void mainGame(player p1, player p2, board map);
 
 char code_action(int action);
 
-char do_action(char action, player p, listBomb l, board map);
+char do_action(char action, player p, board map);
 
-int tryMove(char direction, player p,listBomb l, board map); // return 1 if ok 0 else
+int tryMove(char direction, player p, board map); // return 1 if ok 0 else
 
-int tryDropBombe(player p,listBomb l,board map); // return 1 if ok 0 else
+int tryDropBombe(player p, board map); // return 1 if ok 0 else
 
 
-int isPassable(board map,listBomb l,int x,int y);
+int isPassable(board map, int x,int y);
 
 int time_poll(struct itimerval *start,struct pollfd *act,int nb,int timeout);
 
-void updateData(int milliS,player p1,player p2,board map,listBomb l);
+void updateData(int milliS, player p1, player p2, listBomb l);
 
 int get_timer(struct itimerval *timer);
 

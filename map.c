@@ -49,9 +49,8 @@ void launch_game(char* folder){
 		print_carac(*p1, *p2);		
 		spawn(p1, map);
 		spawn(p2, map);
-		listBomb bombs = initList();
-		print_map(map,p1,p2,bombs);
-		mainGame(p1, p2, map,bombs);
+		print_map(map,p1,p2);
+		mainGame(p1, p2, map);
 		
 		
 		p1->life = 3;
@@ -66,7 +65,7 @@ void launch_game(char* folder){
 	// sleep(5);
 }
 
-void print_map(struct board *map,struct player *p1,struct player *p2,listBomb l){
+void print_map(board map, player p1, player p2){
 	int i;
 	for (i = 0; i < map->x; ++i)
 	{
@@ -87,7 +86,7 @@ void print_map(struct board *map,struct player *p1,struct player *p2,listBomb l)
 	//print les 2 player
 	print_player(p1, map);
 	print_player(p2, map);
-	printBomb(l,map);
+	printBomb(map);
 	// is_touch(p1,p2,map);
 
 }
@@ -133,15 +132,14 @@ void print_player(struct player *p,struct board *map){
 	free(color);
 }
 
-void printBomb(listBomb l,board map){
-	listBomb c = l->next;
+void printBomb(board map){
+	listBomb c = map->listBombs->next;
 	while(c != NULL) {
 		if(isSet(c->bomb)){
 			print_line_("@",4,map->up_left_corner.x + c->bomb->x,map->up_left_corner.y + c->bomb->y,RED,BLINK);
 		}
 		else if(isExploding(c->bomb)){
 			explode(c->bomb,map);
-			changeState(c->bomb,ENDED);
 		}
 		else if(isEnded(c->bomb)){
 			if(c->bomb->time_explode <= 0){
@@ -236,7 +234,7 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 						map->powerups[i][j] = createPowerup(EMPTY, 0);
 						break;
 					case '+':
-						map->powerups[i][j] = createPowerup(SPEED, -100);
+						map->powerups[i][j] = createPowerup(SPEED, -60);
 						break;
 					case '*':
 						map->powerups[i][j] = createPowerup(BOMB_RADIUS, 1);
@@ -258,12 +256,8 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 			}
 		}
 	}
-	///////////////////////////
-	//BOMBS ARRAY INIT
-	///////////////////////////
-	// for(i = 0; i < line; i++)
-	// 	for(j = 0; j < columns; j++)
-	// 		map->bombs[i][j] = NULL;
+	listBomb l = initList();
+	map->listBombs = l;
 }
 
 void del_board(struct board *map){

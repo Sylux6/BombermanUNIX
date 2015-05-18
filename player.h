@@ -19,7 +19,8 @@
 
 #define GOD_TIME 1000
 
-struct board;
+typedef struct board* board;
+typedef struct listBomb* listBomb;
 
 struct player {
 	int nb;
