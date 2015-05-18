@@ -17,7 +17,7 @@
 #include "map.h"
 #include "powerup.h"
 
-#define GOD_TIME 1000
+#define GOD_TIME 2000
 
 typedef struct board* board;
 typedef struct listBomb* listBomb;

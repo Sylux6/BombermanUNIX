@@ -122,8 +122,8 @@ void updateTimer(listBomb l, int ms) {
 int nextBombEvent(listBomb l){
 	int next = BOMB_TIME + 1;
 	listBomb c = l->next;
-
 	while(c != NULL){
+		// tmp = 100;
 		if(c->bomb->state == SET &&  next > c->bomb->time){
 			next = c->bomb->time;
 		}
@@ -253,7 +253,7 @@ void clear_bomb(bomb b,board map){
 	map->map[x][y] = ' ';
 
 	do{ //NORTH
-		if(map->map[x-i][y] == 'X')
+		if(map->map[x-i][y] == 'X' || map->map[x-i][y] == ' ')
 			map->map[x-i][y] = ' ';
 		else
 			break;
@@ -264,7 +264,7 @@ void clear_bomb(bomb b,board map){
 
 	do{//SOUTH
 		
-		if(map->map[x+i][y] == 'X')
+		if(map->map[x+i][y] == 'X' || map->map[x+i][y] == ' ')
 			map->map[x+i][y] = ' ';
 		else
 			break;
@@ -273,7 +273,7 @@ void clear_bomb(bomb b,board map){
 	i = 1;
 
 	do{//WEST
-		if(map->map[x][y-i] == 'X')
+		if(map->map[x][y-i] == 'X' || map->map[x][y-i] == ' ')
 			map->map[x][y-i] = ' ';
 		else
 			break;
@@ -282,7 +282,7 @@ void clear_bomb(bomb b,board map){
 	i = 1;
 
 	do{//EAST
-		if(map->map[x][y+i] == 'X')
+		if(map->map[x][y+i] == 'X' || map->map[x][y+i] == ' ')
 			map->map[x][y+i] = ' ';
 		else
 			break;

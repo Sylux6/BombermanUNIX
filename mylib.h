@@ -55,5 +55,7 @@ char* read_line(int fd);
 int my_rand(int min,int max);
 
 char* my_str_cpy_cat(char* dest,char *from,...);
+
+int isNeg(int nb);
  
 #endif

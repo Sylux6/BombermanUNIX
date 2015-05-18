@@ -133,3 +133,6 @@ char* my_str_cpy_cat(char* dest,char *from,...){
     // my_print_err(dest);
     return dest;
 }
+int isNeg(int nb){
+    return nb<0;
+}

@@ -39,12 +39,13 @@ void mainGame(player p1, player p2, board map){
 					do_action(*buff-5,p2,map);
 			}
 			// if(nextEvent(p1,p2,map->listBombs) == -1){
-				timeout = 100;
+			// 	timeout = 100;
 			// }else{
-				// timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
+			// 	timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
 			// }
-			// timeout = nextEvent(p1,p2,map->listBombs);
+			timeout = nextEvent(p1,p2,map->listBombs);
 			print_map(map,p1,p2);
+			printf("%d\n",timeout );
 			is_touch(p1,p2,map);
 
 			time_left = get_timer(&other);
@@ -177,9 +178,11 @@ int time_poll(struct itimerval *start,struct pollfd *act,int nb,int timeout){
 
 void updateData(int milliS,player p1,player p2,listBomb l){
 	updateTimer(l, milliS);
-	p1->wait -= milliS;
-	p2->wait -= milliS;
-
+	// p1->wait -= milliS;
+	// p2->wait -= milliS;
+	
+	p1->wait = (isNeg(p1->wait-milliS))?-1:p1->wait - milliS;
+	p2->wait = (isNeg(p2->wait-milliS))?-1:p2->wait - milliS;
 	
 	if(p1->invinsible == 1){
 		p1->invinsible_time -= milliS;
@@ -226,8 +229,8 @@ int nextEvent( player p1, player p2, listBomb l){
 	int playerT = endOfInvinsibility(p1,p2);
 		
 	event = MIN(bombsT,playerT);
-	if(event == -1){
-		event = MAX(bombsT,playerT);
-	}
+	// if(event == -1){
+	// 	event = MAX(bombsT,playerT);
+	// }
 	return event;
 }
