@@ -38,11 +38,11 @@ void mainGame(player p1, player p2, board map){
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,map);
 			}
-			if(nextEvent(p1,p2,map->listBombs) == -1){
+			// if(nextEvent(p1,p2,map->listBombs) == -1){
 				timeout = 100;
-			}else{
-				timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
-			}
+			// }else{
+				// timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
+			// }
 			// timeout = nextEvent(p1,p2,map->listBombs);
 			print_map(map,p1,p2);
 			is_touch(p1,p2,map);
@@ -98,7 +98,6 @@ char do_action(char action, player p, board map){
 }
 
 int tryMove(char direction, player p, board map){
-	// a implementer
 	int x = p->pos.x;
 	int y = p->pos.y;
 	switch(direction){
@@ -107,7 +106,7 @@ int tryMove(char direction, player p, board map){
 				map->map[p->pos.x][p->pos.y] = ' ';
 
 				p->pos.x--;
-				map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = ' ';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 
 				p->wait = p->speed;
@@ -120,7 +119,7 @@ int tryMove(char direction, player p, board map){
 
 				p->pos.x++;	
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = ' ';
 
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
@@ -133,7 +132,7 @@ int tryMove(char direction, player p, board map){
 
 				p->pos.y++;
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = ' ';
 
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
@@ -145,7 +144,7 @@ int tryMove(char direction, player p, board map){
 
 				p->pos.y--;
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = 'P';
+				map->map[p->pos.x][p->pos.y] = ' ';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}

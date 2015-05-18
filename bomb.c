@@ -113,9 +113,6 @@ void updateTimer(listBomb l, int ms) {
 			}
 		}else if(c->bomb->state == ENDED){
 			c->bomb->time_explode -=ms;
-			// if(c->bomb->time_explode <= 0){
-			// 	changeState(c->bomb,NONE);
-			// }
 		}
 		c = c->next;
 	}

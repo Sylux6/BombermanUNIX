@@ -72,10 +72,6 @@ void print_map(board map, player p1, player p2){
 		print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		for(int j = 0 ; j < map->y ; j++){
 			if(map->map[i][j] == 'X'){
-			// 	char* color = malloc(20);
-			// 	strcpy(color,"\033[22;31m");
-			// 	strcat(color,"X");
-			// 	strcat(color,"\x1b[0m");
 				print_line_("X",3,map->up_left_corner.x + i, map->up_left_corner.y + j,RED);
 			}else if(map->map[i][j] == ' '){
 				print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
@@ -87,16 +83,11 @@ void print_map(board map, player p1, player p2){
 	print_player(p2, map);
 	printBomb(map);
 	print_carac(*p1,*p2);
-	// is_touch(p1,p2,map);
 
 }
 void print_player(struct player *p,struct board *map){
 	char* color = malloc(20);
 
-	// strcpy(color,p->effet);
-	// strcat(color,p->color);
-	// strcat(color,p->view);
-	// strcat(color,"\x1b[0m");
 	print_line_(p->view,4,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y,p->effet,p->color);// afficher le joueur
 	free(color);
 }
@@ -125,7 +116,6 @@ void printBomb(board map){
 void map_init(struct board* map,char* file/*,int x,int y*/){
 	char *buffer2 = malloc(100);
 	char* tmp;
-	// print_line(file,2,2);
 	int lvl1 = open(file,O_RDONLY); // open the map's file
 	int n = 0;
 	unsigned int line,columns;
@@ -156,7 +146,6 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->x = line;
 	map->y = columns;
 
-	// if(x+line > atoi(getenv("LINES")) || y+columns > atoi(getenv("COLUMNS")))
 	if(map->y > atoi(getenv("COLUMNS")) || map->x >atoi(getenv("LINES"))-2 )
 	{
 		my_print_err("the map is too big!");
@@ -167,7 +156,6 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 	map->up_left_corner.x = x;
 	map->up_left_corner.y = y;
 
-	// map->changed = 1;
 	map->map = malloc(sizeof(char*)*map->x);
 	map->powerups = malloc(sizeof(struct powerup*)*map->x);
 	map->bombs = malloc(sizeof(struct bomb*)*map->x);
@@ -261,7 +249,6 @@ void print_carac(struct player p1,struct player p2){
 	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
 	sprintf(playerslife,"%d",p2.life);
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
-	// printf("     speed : (%d-%d) / %d-%d\n",p1.speed,p2.speed,p1.nb_bomb,p2.nb_bomb );
 }
 
 int area_calcul(board map, int x, int y) {

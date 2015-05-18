@@ -157,7 +157,7 @@ void launchMenu(menu m, int pos_x, int pos_y) {
     // selection de l'item
     print_menu(m,pos_x,pos_y);
 
-    print_line_("->",3, pos_x, pos_y,RED);
+    print_line_("->",4, pos_x, pos_y,RED,BOLD);
     while(1){
         ret = read(0, direction, 1);
         if(ret < 0){
@@ -170,7 +170,7 @@ void launchMenu(menu m, int pos_x, int pos_y) {
         if(*direction == DOWN_ARROW){
             x = mymodulo(x+1,nb_item);
         }
-        print_line_("->",3, pos_x + x, pos_y + y,RED);
+        print_line_("->",4, pos_x + x, pos_y + y,RED,BOLD);
         if(*direction == ENTER){
             print_line(CLEAR_AFTER_CUR,pos_x,pos_y);
             if(m->items[x]->kind == 1){
@@ -190,7 +190,7 @@ void launchMenu(menu m, int pos_x, int pos_y) {
                 }
             }
             print_menu(m,pos_x,pos_y);
-            print_line_("->",3,pos_x+x,pos_y+y,RED);
+            print_line_("->",4,pos_x+x,pos_y+y,RED,BOLD);
         }
         if(*direction == DEL){
             if(m->parent != NULL){
@@ -212,7 +212,6 @@ void print_menu(menu m, int pos_x, int pos_y){
     }
     //affichage des sous menu et action
     for(int i = 0 ; i < nb_item ; i++){
-        //if menu ->
         if(m->items[i]->kind == 1){
             print_line(m->items[i]->item_kind.submenu->name, pos_x+i, pos_y+2);
         }else{

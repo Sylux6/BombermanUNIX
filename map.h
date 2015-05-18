@@ -51,8 +51,6 @@ struct board{
 	position up_left_corner;
 	int x;
 	int y;
-	// position p1;
-	// position p2;
 };
 typedef struct board* board;
 
