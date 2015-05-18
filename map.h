@@ -46,7 +46,6 @@ typedef struct position{
 struct board{
 	char **map;
 	struct powerup **powerups;
-	struct bomb **bombs;
 	listBomb listBombs;
 	position up_left_corner;
 	int x;
@@ -70,5 +69,7 @@ void print_carac(struct player p1,struct player p2);
 void del_board(board map);
 
 int area_calcul(board, int, int);
+
+board random_map();
 
 #endif
