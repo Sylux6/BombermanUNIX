@@ -265,6 +265,7 @@ void print_carac(struct player p1,struct player p2){
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
 }
 
+//tmp must be initialized !
 int area_calcul(char** tmp, board map, int x, int y) {
 	if(map->map[x][y] != ' ')
 		return 0;
@@ -320,67 +321,6 @@ int area_calcul(char** tmp, board map, int x, int y) {
 		return 1;
 
 	return 0;
-	// int area = 1, i, j, k;
-	// char **tmp = malloc(sizeof(char*)*map->x);
-	// for(i = 0; i < map->x; i++)
-	// 	tmp[i] = malloc(sizeof(char)*map->y);
-
-	// for(i = 0; i < map->x; i++)
-	// 	for(j = 0; j < map->y; j++)
-	// 		tmp[i][j] = 0;
-
-	// tmp[x][y] = 1;
-	// i = 1;
-	// while(map->map[x+i][y] == ' ') {
-	// 	if(tmp[x+i][y] != 1) {
-	// 		area++;
-	// 		tmp[x+i][y] = 1;
-	// 	}
-	// 	j = 1; k = 1;
-	// 	while(map->map[x+i][y+j] == ' ' || map->map[x+i][y-k] == ' ') {
-	// 		if(tmp[x+i][y+j] != 1) {
-	// 			area++;
-	// 			tmp[x+i][y+j] = 1;
-	// 		}
-	// 		if(map->map[x+i][y+j] == ' ')
-	// 			j++;
-	// 		if(tmp[x+i][y-k] != 1) {
-	// 			area++;
-	// 			tmp[x+i][y-k] = 1;
-	// 		}
-	// 		if(map->map[x+i][y-k] == ' ')
-	// 			k++;
-	// 	}
-	// 	i++;
-	// }
-	// i = 1;
-	// while(map->map[x-i][y] == ' ') {
-	// 	if(tmp[x-i][y] != 1) {
-	// 		area++;
-	// 		tmp[x-i][y] = 1;
-	// 	}
-	// 	j = 1; k = 1;
-	// 	while(map->map[x-i][y+j] == ' ' || map->map[x-i][y-k] == ' ') {
-	// 		if(tmp[x-i][y+j] != 1) {
-	// 			area++;
-	// 			tmp[x-i][y+j] = 1;
-	// 		}
-	// 		if(map->map[x-i][y+j] == ' ')
-	// 			j++;
-	// 		if(tmp[x-i][y-k] != 1) {
-	// 			area++;
-	// 			tmp[x-i][y-k] = 1;
-	// 		}
-	// 		if(map->map[x-i][y-k] == ' ')
-	// 			k++;
-	// 	}
-	// 	i++;
-	// }
-
-	// for(i = 0; i < map->x; i++)
-	// 	free(tmp[i]);
-	// free(tmp);
-	// return area;
 }
 
 board random_map() {
