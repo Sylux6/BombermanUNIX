@@ -45,6 +45,16 @@ void wich_folder(){
     free(buff);
 }
 
+void RandomlyCreated(){
+    player p1 = create_player(1);
+    player p2 = create_player(2);
+    board map = random_map();
+    spawn(p1, map);
+    spawn(p2, map);
+    print_map(map,p1,p2);
+    mainGame(p1, p2, map);
+}
+
 //////////////////////////////////////////////////////////
 //                          MENU                        //
 //////////////////////////////////////////////////////////
@@ -230,7 +240,7 @@ menu menuINIT() {
 
     addMenuAction2(game, "mod1", launch_game);
     addMenuAction2(game, "mod2", launch_game);
-    addMenuAction2(game, "Randomly generated", launch_game);
+    addMenuAction2(game, "Randomly generated", RandomlyCreated);
     addMenuAction1(game, "Custom", wich_folder);
     return main_;
 }

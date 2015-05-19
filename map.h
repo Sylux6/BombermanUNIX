@@ -12,6 +12,7 @@
 #include <dirent.h>
 #include <termios.h>
 #include <math.h>
+#include <time.h>
 
 #include "term.h"
 #include "mylib.h"
@@ -71,5 +72,7 @@ void del_board(board map);
 int area_calcul(board, int, int);
 
 board random_map();
+
+void printEndOfMap(board map);
 
 #endif

@@ -16,6 +16,11 @@
 #include "term.h"
 #include "mylib.h"
 #include "map.h"
+#include "player.h"
+
+typedef struct listBomb* listBomb;
+typedef struct player* player;
+typedef struct board* board;
 
 #define CLEAR_AFTER_CUR "\x1b[0J"
 #define CLEAR_BEFOR_CUR "\x1b[1J"

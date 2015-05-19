@@ -129,7 +129,6 @@ int nextBombEvent(listBomb l){
 	int tmp = -1;
 	listBomb c = l->next;
 	while(c != NULL){
-		// tmp = 100;
 		if(c->bomb->state == SET &&  next > c->bomb->time){
 			next = c->bomb->time;
 		}
@@ -141,7 +140,7 @@ int nextBombEvent(listBomb l){
 		}
 		c = c->next;
 	}
-	if(next != BOMB_TIME+1 /*&& next > 0*/)
+	if(next != BOMB_TIME+1)
 		return next;
 	else{
 		return tmp;
@@ -254,7 +253,6 @@ void explode(bomb b,board map){
 			}
 		}
 	}
-	// map->refresh = 1;
 }
 
 void clear_bomb(bomb b,board map){

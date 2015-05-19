@@ -46,23 +46,33 @@ void launch_game(char* folder){
 		player p1 = create_player(1);
 		player p2 = create_player(2);
 	
-		print_carac(*p1, *p2);		
 		spawn(p1, map);
 		spawn(p2, map);
 		print_map(map,p1,p2);
 		mainGame(p1, p2, map);
-		
-		
-		p1->life = 3;
-		p2->life = 3;
+
 		//-------------------end---------------------------
-		sleep(2);
+		// sleep(5);
 		// print who won the game
 		print_line2(CLEAR_TERM);
 		free(string2);
 		del_board(map);
 	}
-	// sleep(5);
+}
+
+void printEndOfMap(board map){
+	int x,y;
+	struct timespec* rec = malloc(sizeof(struct timespec));
+	rec->tv_sec = 0;
+	rec->tv_nsec = 10000;
+	for(x=0; x < map->x ; x++){
+		for(y = 0; y < map->y ; y++){
+			print_line(" ",map->up_left_corner.x  +x , map->up_left_corner.y +y);
+			nanosleep(rec,NULL);
+			rec->tv_sec = 0;
+			rec->tv_nsec = 10000000;
+		}
+	}
 }
 
 void print_map(board map, player p1, player p2){

@@ -38,24 +38,16 @@ void mainGame(player p1, player p2, board map){
 				else if(*buff-5 == 5)
 					do_action(*buff-5,p2,map);
 			}
-			// if(nextEvent(p1,p2,map->listBombs) == -1){
-			// 	timeout = 100;
-			// }else{
-			// 	timeout = (nextEvent(p1,p2,map->listBombs) > 100)? 100 : nextEvent(p1,p2,map->listBombs);
-			// }
-			// if(!map->refresh)
+
 			timeout = nextEvent(p1,p2,map->listBombs);
-			// else{
-			// 	timeout = 1;
-			// 	map->refresh = 0;
-			// }
+
 			print_map(map,p1,p2);
-			// printf(CLEAR_BEFOR_CUR);
-			print_number(timeout,3,6 );
 			is_touch(p1,p2,map);
 
 			time_left = get_timer(&other);
 	}
+	printEndOfMap(map);
+	sleep(2);
 }
 
 char code_action(int action){
