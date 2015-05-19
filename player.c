@@ -48,10 +48,11 @@ void upgradeSpeed(struct player* p,int value){
 }
 void spawn(player p1, player p2, board map){
 	int randX, randY, area = 0, i, j, ok = 0;
-	char** tmp = malloc(sizeof(char*)*map->x);
-	for(i = 0; i < map->x; i++)
-		tmp[i] = malloc(sizeof(char)*map->y);
+	char** tmp; 
 	do{
+		tmp = malloc(sizeof(char*)*map->x);
+		for(i = 0; i < map->x; i++)
+			tmp[i] = malloc(sizeof(char)*map->y);
 		do {
 			randX = my_rand(1, map->x-1);
 			randY = my_rand(1, map->y-1);
