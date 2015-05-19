@@ -42,8 +42,8 @@ void mainGame(player p1, player p2, board map) {
 
 			timeout = nextEvent(p1,p2,map->listBombs);
 
-			print_map(map,p1,p2);
 			is_touch(p1,p2,map);
+			print_map(map,p1,p2);
 			time_left = get_timer(&other);
 	}
 	printEndOfMap(map);

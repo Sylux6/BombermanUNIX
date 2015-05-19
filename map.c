@@ -32,6 +32,9 @@ void launch_game(char* folder){
 	free(string1);
 	//string1 = current level name
 	char* string2;//contiendra le path du lvl
+	int win1=0;
+	int win2=0;
+
 	while((string1 = read_line(game_line)) != NULL){
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
@@ -49,8 +52,31 @@ void launch_game(char* folder){
 		//-------------------end---------------------------
 		// print who won the game
 		print_line2(CLEAR_TERM);
+		if(p1->life == 0 && p2->life != 0){
+			win2++;
+			print_line_("Player 2 won this round",3,5,20,GREEN);
+			sleep(4);
+		}else if(p1->life != 0 && p2->life == 0){
+			win1++;
+			print_line_("Player 1 won this round",3,5,20,GREEN);
+			sleep(4);
+		}else{
+			print_line_("Nobody won this round",3,5,20,RED);
+			sleep(4);
+		}
 		free(string2);
 		del_board(map);
+		print_line2(CLEAR_TERM);
+	}
+	if(win1 > win2){
+		print_line_("Player 1 won game",3,5,20,GREEN);
+        sleep(4);
+	}else if(win1 < win2){
+		print_line_("Player 2 won game",3,5,20,GREEN);
+        sleep(4);
+	}else{
+		print_line_("Nobody won game",3,5,20,RED);
+        sleep(4);
 	}
 }
 
