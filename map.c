@@ -333,6 +333,7 @@ board random_map() {
 	newBoard->powerups = malloc(sizeof(struct powerup*)*newBoard->x);
 	for(i = 0; i < newBoard->x; i++)
 		newBoard->powerups[i] = malloc(sizeof(struct powerup)*newBoard->y);
+	newBoard->listBombs = initList();
 	
 	//WALL OUTLINE
 	for(i = 0; i < newBoard->y; i++) {
