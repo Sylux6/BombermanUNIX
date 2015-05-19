@@ -47,14 +47,24 @@ void upgradeSpeed(struct player* p,int value){
 	p->speed += value;
 }
 void spawn(player p1, player p2, board map){
-	int randX, randY, area,ok=0;
+	int randX, randY, area = 0, i, j, ok = 0;
+	char** tmp = malloc(sizeof(char*)*map->x);
+	for(i = 0; i < map->x; i++)
+		tmp[i] = malloc(sizeof(char)*map->y);
 	do{
 		do {
-			randX = my_rand(0, map->x-1);
-			randY = my_rand(0, map->y-1);
+			randX = my_rand(1, map->x-1);
+			randY = my_rand(1, map->y-1);
 			if(map->powerups[randX][randY].type != EMPTY)
 				continue;
-			area = area_calcul(map, randX, randY);
+			for(i = 0; i < map->x; i++)
+				for(j = 0; j < map->y; j++) {
+					if(map->map[i][j] != ' ')
+						tmp[i][j] = 1;
+					else
+						tmp[i][j] = 0;
+				}
+			area = area_calcul(tmp, map, randX, randY);
 		}
 		while(area <= p1->radius_bomb + 1);
 		map->map[randX][randY] = ' ';//*(p->view);
@@ -67,13 +77,26 @@ void spawn(player p1, player p2, board map){
 			randY = my_rand(0, map->y-1);
 			if(map->powerups[randX][randY].type != EMPTY)
 				continue;
-			area = area_calcul(map, randX, randY);
+			for(i = 0; i < map->x; i++)
+				for(j = 0; j < map->y; j++) {
+					if(map->map[i][j] != ' ')
+						tmp[i][j] = 1;
+					else
+						tmp[i][j] = 0;
+				}
+			area = area_calcul(tmp, map, randX, randY);
 		}
 		while(area <= p2->radius_bomb + 1);
+		
+		for(i = 0; i < map->x; i++)
+			free(tmp[i]);
+		free(tmp);
+		print_number(area, 2, 40);
+		
 		map->map[randX][randY] = ' ';//*(p->view);
 		p2->pos.x = randX;
 		p2->pos.y = randY;
-		if(spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
+		if((p1->pos.x == p2->pos.x && p1->pos.y == p2->pos.y) || spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
 			ok=1;
 	}while(ok != 1);
 }
@@ -81,16 +104,14 @@ void spawn(player p1, player p2, board map){
 
 
 int spawnValide(int x,int y,int x_f,int y_f,board map){
-	int i, j, ret;
+	int i, j;
 	char **tmp = malloc(sizeof(char*)*map->x);
 	for(i = 0; i < map->x; i++)
 		tmp[i] = malloc(sizeof(char)*map->y);
 	for(i = 0; i < map->x; i++)
 		for(j = 0; j < map->y; j++)
 			tmp[i][j] = 0;
-	ret = check_path(tmp, map, x, y, x_f, y_f);
-	print_number(ret, 2, 40);
-	if(ret) {
+	if(check_path(tmp, map, x, y, x_f, y_f)) {
 		for(i = 0; i < map->x; i++)
 			free(tmp[i]);
 		free(tmp);

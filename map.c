@@ -265,77 +265,129 @@ void print_carac(struct player p1,struct player p2){
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
 }
 
-int area_calcul(board map, int x, int y) {
+int area_calcul(char** tmp, board map, int x, int y) {
 	if(map->map[x][y] != ' ')
 		return 0;
-	int area = 1, i, j, k;
-	char **tmp = malloc(sizeof(char*)*map->x);
-	for(i = 0; i < map->x; i++)
-		tmp[i] = malloc(sizeof(char)*map->y);
-
-	for(i = 0; i < map->x; i++)
-		for(j = 0; j < map->y; j++)
-			tmp[i][j] = 0;
-
+	
 	tmp[x][y] = 1;
-	i = 1;
-	while(map->map[x+i][y] == ' ') {
-		if(tmp[x+i][y] != 1) {
-			area++;
-			tmp[x+i][y] = 1;
-		}
-		j = 1; k = 1;
-		while(map->map[x+i][y+j] == ' ' || map->map[x+i][y-k] == ' ') {
-			if(tmp[x+i][y+j] != 1) {
-				area++;
-				tmp[x+i][y+j] = 1;
-			}
-			if(map->map[x+i][y+j] == ' ')
-				j++;
-			if(tmp[x+i][y-k] != 1) {
-				area++;
-				tmp[x+i][y-k] = 1;
-			}
-			if(map->map[x+i][y-k] == ' ')
-				k++;
-		}
-		i++;
-	}
-	i = 1;
-	while(map->map[x-i][y] == ' ') {
-		if(tmp[x-i][y] != 1) {
-			area++;
-			tmp[x-i][y] = 1;
-		}
-		j = 1; k = 1;
-		while(map->map[x-i][y+j] == ' ' || map->map[x-i][y-k] == ' ') {
-			if(tmp[x-i][y+j] != 1) {
-				area++;
-				tmp[x-i][y+j] = 1;
-			}
-			if(map->map[x-i][y+j] == ' ')
-				j++;
-			if(tmp[x-i][y-k] != 1) {
-				area++;
-				tmp[x-i][y-k] = 1;
-			}
-			if(map->map[x-i][y-k] == ' ')
-				k++;
-		}
-		i++;
-	}
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 0 && tmp[x][y+1] == 0 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y+1) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 0 && tmp[x][y+1] == 0 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y+1);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 0 && tmp[x][y+1] == 1 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 0 && tmp[x][y+1] == 1 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x-1, y);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 1 && tmp[x][y+1] == 0 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x, y+1) + area_calcul(tmp, map, x, y-1);
 
-	for(i = 0; i < map->x; i++)
-		free(tmp[i]);
-	free(tmp);
-	return area;
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 1 && tmp[x][y+1] == 0 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x, y+1);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 1 && tmp[x][y+1] == 1 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x+1, y) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 0 && tmp[x-1][y] == 1 && tmp[x][y+1] == 1 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x+1, y);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 0 && tmp[x][y+1] == 0 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y+1) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 0 && tmp[x][y+1] == 0 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y+1);
+
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 0 && tmp[x][y+1] == 1 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x-1, y) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 0 && tmp[x][y+1] == 1 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x-1, y);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 1 && tmp[x][y+1] == 0 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x, y+1) + area_calcul(tmp, map, x, y-1);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 1 && tmp[x][y+1] == 0 && tmp[x][y-1] == 1)
+		return 1 + area_calcul(tmp, map, x, y+1);
+	
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 1 && tmp[x][y+1] == 1 && tmp[x][y-1] == 0)
+		return 1 + area_calcul(tmp, map, x, y-1);
+
+	if(tmp[x+1][y] == 1 && tmp[x-1][y] == 1 && tmp[x][y+1] == 1 && tmp[x][y-1] == 1)
+		return 1;
+
+	return 0;
+	// int area = 1, i, j, k;
+	// char **tmp = malloc(sizeof(char*)*map->x);
+	// for(i = 0; i < map->x; i++)
+	// 	tmp[i] = malloc(sizeof(char)*map->y);
+
+	// for(i = 0; i < map->x; i++)
+	// 	for(j = 0; j < map->y; j++)
+	// 		tmp[i][j] = 0;
+
+	// tmp[x][y] = 1;
+	// i = 1;
+	// while(map->map[x+i][y] == ' ') {
+	// 	if(tmp[x+i][y] != 1) {
+	// 		area++;
+	// 		tmp[x+i][y] = 1;
+	// 	}
+	// 	j = 1; k = 1;
+	// 	while(map->map[x+i][y+j] == ' ' || map->map[x+i][y-k] == ' ') {
+	// 		if(tmp[x+i][y+j] != 1) {
+	// 			area++;
+	// 			tmp[x+i][y+j] = 1;
+	// 		}
+	// 		if(map->map[x+i][y+j] == ' ')
+	// 			j++;
+	// 		if(tmp[x+i][y-k] != 1) {
+	// 			area++;
+	// 			tmp[x+i][y-k] = 1;
+	// 		}
+	// 		if(map->map[x+i][y-k] == ' ')
+	// 			k++;
+	// 	}
+	// 	i++;
+	// }
+	// i = 1;
+	// while(map->map[x-i][y] == ' ') {
+	// 	if(tmp[x-i][y] != 1) {
+	// 		area++;
+	// 		tmp[x-i][y] = 1;
+	// 	}
+	// 	j = 1; k = 1;
+	// 	while(map->map[x-i][y+j] == ' ' || map->map[x-i][y-k] == ' ') {
+	// 		if(tmp[x-i][y+j] != 1) {
+	// 			area++;
+	// 			tmp[x-i][y+j] = 1;
+	// 		}
+	// 		if(map->map[x-i][y+j] == ' ')
+	// 			j++;
+	// 		if(tmp[x-i][y-k] != 1) {
+	// 			area++;
+	// 			tmp[x-i][y-k] = 1;
+	// 		}
+	// 		if(map->map[x-i][y-k] == ' ')
+	// 			k++;
+	// 	}
+	// 	i++;
+	// }
+
+	// for(i = 0; i < map->x; i++)
+	// 	free(tmp[i]);
+	// free(tmp);
+	// return area;
 }
 
 board random_map() {
 	board newBoard = malloc(sizeof(struct board));
 	int x = my_rand(5, atoi(getenv("LINES"))-2);
 	int y = my_rand(5, atoi(getenv("COLUMNS"))) + 1;
-	int area, n, i, j;
+	int area, n, i, j, k, l;
 	// char w;
 	char **map = malloc(sizeof(char*)*x);
 	for(i = 0; i < x; i++)
@@ -407,10 +459,21 @@ board random_map() {
 				}
 			}
 		}
+
+		char **tmp = malloc(sizeof(char*)*newBoard->x);
+		for(i = 0; i < newBoard->x; i++)
+			tmp[i] = malloc(sizeof(char)*newBoard->y);
+
 		for(i = 0; i < newBoard->x-1; i++) {
 			for(j = 0; j < newBoard->y-1; j++) {
 				if(map[i][j] == ' ') {
-					if((area = area_calcul(newBoard, i, j)) > RADIUS + 2)
+					for(k = 0; k < newBoard->x; k++)
+						for(l = 0; l < newBoard->y; l++)
+							if(newBoard->map[k][l] != ' ')
+								tmp[k][l] = 1;
+							else
+								tmp[k][l] = 0;
+					if((area = area_calcul(tmp, newBoard, i, j)) > RADIUS + 2)
 						return newBoard;
 				}
 			}
