@@ -46,6 +46,7 @@ void mainGame(player p1, player p2, board map){
 
 			time_left = get_timer(&other);
 	}
+	print_carac(*p1,*p2);
 	printEndOfMap(map);
 	sleep(2);
 }
