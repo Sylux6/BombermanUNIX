@@ -94,7 +94,6 @@ void spawn(player p1, player p2, board map){
 		for(i = 0; i < map->x; i++)
 			free(tmp[i]);
 		free(tmp);
-		print_number(area, 2, 40);
 	
 		if(!(p1->pos.x == p2->pos.x && p1->pos.y == p2->pos.y) && spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
 			ok = 1;
