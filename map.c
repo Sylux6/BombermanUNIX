@@ -79,12 +79,18 @@ void print_map(board map, player p1, player p2){
 	int i;
 	for (i = 0; i < map->x; ++i)
 	{
-		print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
+		// print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		for(int j = 0 ; j < map->y ; j++){
 			if(map->map[i][j] == 'X'){
 				print_line_("X",3,map->up_left_corner.x + i, map->up_left_corner.y + j,RED);
-			}else if(map->map[i][j] == ' '){
-				print_line(&(map->powerups[i][j].symbol),map->up_left_corner.x + i, map->up_left_corner.y + j);
+			}else if(map->map[i][j] == '0'){
+				print_line_("0",3,map->up_left_corner.x + i, map->up_left_corner.y + j,PURPLE);
+			}
+			else if(map->map[i][j] == ' '){
+
+				print_line_(&(map->powerups[i][j].symbol),3,map->up_left_corner.x + i, map->up_left_corner.y + j,BLUE);
+			}else{
+				print_line_(&(map->map[i][j]),2,map->up_left_corner.x +i,map->up_left_corner.y +j);
 			}
 		}
 	}
@@ -161,8 +167,8 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 		my_print_err("the map is too big!");
 		exit(-1);
 	}
-	int x = (atoi(getenv("LINES"))+2-map->x)/2;
-	int y = (atoi(getenv("COLUMNS"))-map->y)/2;
+	int x = (atoi(getenv("LINES"))+2-map->x)/2+1;
+	int y = (atoi(getenv("COLUMNS"))-map->y)/2+1;
 	map->up_left_corner.x = x;
 	map->up_left_corner.y = y;
 
@@ -330,16 +336,16 @@ board random_map() {
 	int x = my_rand(5, atoi(getenv("LINES"))-2);
 	int y = my_rand(5, atoi(getenv("COLUMNS"))) + 1;
 	int area, n, i, j;
-	char w;
+	// char w;
 	char **map = malloc(sizeof(char*)*x);
-	for(i = 0; i < y; i++)
+	for(i = 0; i < x; i++)
 		map[i] = malloc(sizeof(char)*y);
 
 	newBoard->map = map;
 	newBoard->x = x;
 	newBoard->y = y - 1;
-	newBoard->up_left_corner.x = (atoi(getenv("LINES"))+2-newBoard->x)/2;
-	newBoard->up_left_corner.y = (atoi(getenv("COLUMNS"))-newBoard->y)/2;
+	newBoard->up_left_corner.x = (atoi(getenv("LINES"))+2-newBoard->x)/2+1;
+	newBoard->up_left_corner.y = (atoi(getenv("COLUMNS"))-newBoard->y)/2+1;
 	newBoard->powerups = malloc(sizeof(struct powerup*)*newBoard->x);
 	for(i = 0; i < newBoard->x; i++)
 		newBoard->powerups[i] = malloc(sizeof(struct powerup)*newBoard->y);
@@ -349,13 +355,13 @@ board random_map() {
 	for(i = 0; i < newBoard->y; i++) {
 		map[0][i] = '0';
 		map[newBoard->x-1][i] = '0';
-		map[newBoard->x-1][newBoard->y] = '\0';
 	}
 	for(i = 0; i < newBoard->x; i++) {
 		map[i][0] = '0';
 		map[i][newBoard->y-1] = '0';
+		map[i][newBoard->y] = '\0';
 	}
-
+	sleep(1);
 	do {
 		//GENERATING POWERUPS
 		for(i = 0; i < newBoard->x; i++) {
@@ -363,7 +369,7 @@ board random_map() {
 				if(i == 0 || i == newBoard->x-1 || j == 0 || j == newBoard->y-1)
 					newBoard->powerups[i][j] = createPowerup(EMPTY, 0);
 				else {
-					n = my_rand(0, 100);
+					n = my_rand(1, 100);
 					if(n < 5) {
 						n = my_rand(1, 4);
 						switch(n) {
@@ -383,19 +389,21 @@ board random_map() {
 				}
 			}
 		}
+	// sleep(1);
 		//FILLING MAP
 		for(i = 1; i < newBoard->x-1; i++) {
 			for(j = 1; j < newBoard->y-1; j++) {
 				n = my_rand(0, 100);
 				if(n < 20)
 					map[i][j] = '0';
-				else if(n > 60)
+				else if(n > 50)
 					map[i][j] = ' ';
 				else {
 					n = my_rand(1, 9);
-					memcpy(&w, &n, 1);
-					w += 48;
-					map[i][j] = w;
+					// memcpy(&w, &n, 1);
+					// w += 48;
+					// map[i][j] = w;
+					map[i][j] = n+48;
 				}
 			}
 		}

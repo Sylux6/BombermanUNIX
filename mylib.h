@@ -22,8 +22,9 @@
 #define GREEN 		"\033[22;32m"			
 #define BLUE 		"\033[22;34m"
 #define BROWN	    "\033[22;33m"      
-#define GRAY 		"\033[22;37m"			
+#define GRAY 		"\033[22;37m"
 #define CYAN_CLAIRE "\033[22;36m"
+#define PURPLE		"\033[0;35m"
 
 #define YELLOW 		"\033[01;33m"		
 #define CYAN 		"\033[01;36m"			
