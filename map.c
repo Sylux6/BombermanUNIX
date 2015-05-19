@@ -116,6 +116,9 @@ void print_map(board map, player p1, player p2){
 	//Displaying players on map
 	print_player(p1, map);
 	print_player(p2, map);
+	if(p1->pos.x == p2->pos.x && p1->pos.y == p2->pos.y){
+		print_line_("P",3,map->up_left_corner.x + p->pos.x, map->up_left_corner.y + p->pos.y,GREEN);// afficher le joueur		
+	}
 	printBomb(map);
 	print_carac(*p1,*p2);
 
