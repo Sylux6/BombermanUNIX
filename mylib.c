@@ -136,3 +136,11 @@ char* my_str_cpy_cat(char* dest,char *from,...) {
 int isNeg(int nb) {
     return nb<0;
 }
+
+
+void gestion_sig_alarm(){
+    //gestion du signal sigalarm
+    struct sigaction sig_alarm;
+    sig_alarm.sa_handler = SIG_IGN;
+    sigaction(SIGALARM,&sig_alarm,NULL);
+}

@@ -11,10 +11,14 @@
 #include <string.h>
 #include <dirent.h>
 #include <termios.h>
+#include <signal.h>
+#include <sys/signal.h>
 
 #include <stdarg.h>
 #include <math.h>
 
+#include "term.h"
+#define SIGALARM 14
 #define WHITE 		"\033[01;37m"			
 #define BLACK 		"\033[22;30m"			
 
@@ -58,5 +62,9 @@ int my_rand(int min,int max);
 char* my_str_cpy_cat(char* dest,char *from,...);
 
 int isNeg(int nb);
+
+void new_alarm(int sig);
+
+void gestion_sig_alarm();
  
 #endif

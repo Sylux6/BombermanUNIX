@@ -1,50 +1,50 @@
 #include "gameplay.h"
 
 void mainGame(player p1, player p2, board map) {
-		char buff[1];
-		struct pollfd act[1];
-		act[0].fd = 0;
-		act[0].events = POLLIN;
+	char buff[1];
+	struct pollfd act[1];
+	act[0].fd = 0;
+	act[0].events = POLLIN;
+	
+	int timeout = 100;
+	struct itimerval start;
+	struct itimerval other;
+
+	int time_left=0;
+	int milliS=0;
+
+	while(p1->life >0 && p2->life >0) {
+
+		milliS = time_poll(&start,act,1,timeout);
+		init_timer(&other);
 		
-		int timeout = 100;
-		struct itimerval start;
-		struct itimerval other;
+		if(act->revents & POLLIN) 
+			read(0 , buff , 1);
+		else
+			*buff = 0;
 
-		int time_left=0;
-		int milliS=0;
+		*buff = code_action(*buff);
+		updateData(milliS+time_left,p1,p2,map->listBombs);
+		
 
-		while(p1->life >0 && p2->life >0) {
+		if(*buff-5 <= 0) {
+			if(p1->wait <=0 && *buff != 5)
+				do_action(*buff,p1,map);
+			else if(*buff == 5)
+				do_action(*buff,p1,map);
+		}
+		else {
+			if(p2->wait <= 0 && *buff-5 != 5)
+				do_action(*buff-5,p2,map);
+			else if(*buff-5 == 5)
+				do_action(*buff-5,p2,map);
+		}
 
-			milliS = time_poll(&start,act,1,timeout);
-			init_timer(&other);
-			
-			if(act->revents & POLLIN) 
-				read(0 , buff , 1);
-			else
-				*buff = 0;
+		timeout = nextEvent(p1,p2,map->listBombs);
 
-			*buff = code_action(*buff);
-			updateData(milliS+time_left,p1,p2,map->listBombs);
-			
-
-			if(*buff-5 <= 0) {
-				if(p1->wait <=0 && *buff != 5)
-					do_action(*buff,p1,map);
-				else if(*buff == 5)
-					do_action(*buff,p1,map);
-			}
-			else {
-				if(p2->wait <= 0 && *buff-5 != 5)
-					do_action(*buff-5,p2,map);
-				else if(*buff-5 == 5)
-					do_action(*buff-5,p2,map);
-			}
-
-			timeout = nextEvent(p1,p2,map->listBombs);
-
-			is_touch(p1,p2,map);
-			print_map(map,p1,p2);
-			time_left = get_timer(&other);
+		is_touch(p1,p2,map);
+		print_map(map,p1,p2);
+		time_left = get_timer(&other);
 	}
 	printEndOfMap(map);
 }

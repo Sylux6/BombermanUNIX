@@ -150,6 +150,29 @@ void printBomb(board map){
 	}
 }
 
+void print_carac(struct player p1,struct player p2) {
+	set_pos(3,1);
+	print_line2(CLEAR_BEFOR_CUR);
+
+	
+	print_line_(p1.name,3,1,1,BROWN);
+	print_line_(p2.name,3,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1,CYAN_CLAIRE);
+
+	//--- end of printf name ------------
+
+	//LIFE
+	char *playerslife = calloc(10,1);
+
+	// player1 life
+	print_line("life :",2,1);
+	sprintf(playerslife,"%d",p1.life);
+	print_line(playerslife,2,8);
+
+	//player2 life
+	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
+	sprintf(playerslife,"%d",p2.life);
+	print_line(playerslife,2,atoi(getenv("COLUMNS")));
+}
 
 void map_init(struct board* map,char* file){
 	char *buffer2 = malloc(100);
@@ -265,25 +288,6 @@ void del_board(struct board *map){
 	free(map);
 }
 
-void print_carac(struct player p1,struct player p2){
-	print_line_(p1.name,3,1,1,BROWN);
-	print_line_(p2.name,3,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1,CYAN_CLAIRE);
-
-	//--- end of printf name ------------
-
-	//LIFE
-	char *playerslife = calloc(10,1);
-
-	// player1 life
-	print_line("life :",2,1);
-	sprintf(playerslife,"%d",p1.life);
-	print_line(playerslife,2,8);
-
-	//player2 life
-	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
-	sprintf(playerslife,"%d",p2.life);
-	print_line(playerslife,2,atoi(getenv("COLUMNS")));
-}
 
 //tmp must be initialized !
 int area_calcul(char** tmp, board map, int x, int y) {

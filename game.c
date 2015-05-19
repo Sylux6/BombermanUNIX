@@ -32,6 +32,7 @@ int main(int argc,char** argv){
 		//Switching to RAW mode
 		term_raw();
 		//Launch main menu
+		gestion_sig_alarm();
 		launchMenu(menuINIT(), 7, 4);
 	}
 	return 1;
