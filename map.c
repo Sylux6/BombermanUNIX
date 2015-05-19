@@ -27,15 +27,15 @@ void launch_game(char* folder){
 	}
 	free(string1);
 
-	string1 = read_line(game_line);//name of the game
-	print_line(string1,1,(atoi(getenv("COLUMNS"))-strlen(string1))/2);
-	free(string1);
-	//string1 = current level name
+	char* name = malloc(30);
+	name = read_line(game_line);//name of the game
 	char* string2;//contiendra le path du lvl
 	int win1=0;
 	int win2=0;
 
 	while((string1 = read_line(game_line)) != NULL){
+		print_line(name,1,(atoi(getenv("COLUMNS"))-strlen(string1))/2);
+	
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
 		string2 = my_str_cpy_cat(string2,folder,"/niveaux/",string1,NULL);		
@@ -69,13 +69,13 @@ void launch_game(char* folder){
 		print_line2(CLEAR_TERM);
 	}
 	if(win1 > win2){
-		print_line_("Player 1 won the game",3,5,20,GREEN);
+		print_line_("Player 1 won the game",4,10,20,GREEN,BLINK);
         sleep(4);
 	}else if(win1 < win2){
-		print_line_("Player 2 won the game",3,5,20,GREEN);
+		print_line_("Player 2 won the game",4,10,20,GREEN,BLINK);
         sleep(4);
 	}else{
-		print_line_("Nobody won the game",3,5,20,RED);
+		print_line_("Nobody won the game",4,10,20,RED,BLINK);
         sleep(4);
 	}
 }
@@ -151,8 +151,8 @@ void printBomb(board map){
 }
 
 void print_carac(struct player p1,struct player p2) {
-	set_pos(3,1);
-	print_line2(CLEAR_BEFOR_CUR);
+	// set_pos(3,1);
+	// print_line2(CLEAR_BEFOR_CUR);
 
 	
 	print_line_(p1.name,3,1,1,BROWN);
@@ -376,7 +376,6 @@ board random_map() {
 		map[i][newBoard->y-1] = '0';
 		map[i][newBoard->y] = '\0';
 	}
-	sleep(1);
 	do {
 		//GENERATING POWERUPS
 		for(i = 0; i < newBoard->x; i++) {

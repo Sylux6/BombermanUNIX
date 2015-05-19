@@ -19,8 +19,8 @@ void print_title(int x,int y) {
 
 void print_commande() {
     printf_line("press enter to continue",18,5);
-    printf_line("PLAYER 1:\tMOVE: Z/Q/S/D\n\tBOMB: A", 10, 5);
-    printf_line("PLAYER 2:\tMOVE: UP/LEFT/DOWN/RIGHT\n\tBOMB: \"END\"", 13, 5);
+    printf_line("PLAYER 1 (yellow):\t\tMOVE: Z/Q/S/D\n\t\t\t\tBOMB: A", 10, 5);
+    printf_line("PLAYER 2 (light blue):\tMOVE: UP/LEFT/DOWN/RIGHT\n\t\t\t\tBOMB: \"END\"", 13, 5);
     char* quit = malloc(1);
     int ret;
     do{
@@ -50,6 +50,7 @@ void RandomlyCreated() {
     player p1 = create_player(1);
     player p2 = create_player(2);
     print_line2(CLEAR_TERM);
+    print_line("random map",1,(atoi(getenv("COLUMNS"))-strlen("random map"))/2);
     board map = random_map();
     spawn(p1, p2, map);
     print_map(map,p1,p2);

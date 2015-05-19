@@ -1,7 +1,7 @@
 #include "bomb.h"
 
 bomb createBomb(player owner) {
-	if(owner->nb_bomb_set < owner->nb_bomb){
+	if(owner->nb_bomb_set < owner->nb_bomb) {
 		bomb newBomb = malloc(sizeof(struct bomb));
 		newBomb->owner = owner;
 		newBomb->x = owner->pos.x;
@@ -10,7 +10,7 @@ bomb createBomb(player owner) {
 		newBomb->time = BOMB_TIME;
 		newBomb->time_explode = BOMB_EXPLODE;
 		return newBomb;
-	}else{
+	}else {
 		return NULL;
 	}
 }
@@ -44,7 +44,7 @@ listBomb initList() {
 }
 
 int addBombToList(listBomb l, bomb b) {
-	if(b != NULL){
+	if(b != NULL) {
 		listBomb add = malloc(sizeof(struct listBomb));
 		add->bomb = b;
 		add->next = NULL;
@@ -52,7 +52,7 @@ int addBombToList(listBomb l, bomb b) {
 		b->owner->nb_bomb_set++;
 		listBomb p = l;
 		listBomb c = l->next;
-		while(c != NULL){
+		while(c != NULL) {
 			p = c;
 			c = c->next;
 		}
@@ -110,7 +110,7 @@ void updateTimer(listBomb l, int ms) {
 			c->bomb->time -= ms;
 			if(c->bomb->time <= 0){
 				c->bomb->time = -1;
-				changeState(c->bomb,EXPLODING);
+				changeState(c->bomb, EXPLODING);
 
 			}
 		}else if(c->bomb->state == ENDED){
