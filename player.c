@@ -67,7 +67,6 @@ void spawn(player p1, player p2, board map){
 			area = area_calcul(tmp, map, randX, randY);
 		}
 		while(area <= p1->radius_bomb + 2);
-		map->map[randX][randY] = ' ';//*(p->view);
 		p1->pos.x = randX;
 		p1->pos.y = randY;
 
@@ -87,18 +86,19 @@ void spawn(player p1, player p2, board map){
 			area = area_calcul(tmp, map, randX, randY);
 		}
 		while(area <= p2->radius_bomb + 2);
-		
+	
+		p2->pos.x = randX;
+		p2->pos.y = randY;
+	
 		for(i = 0; i < map->x; i++)
 			free(tmp[i]);
 		free(tmp);
 		print_number(area, 2, 40);
-		
-		map->map[randX][randY] = ' ';//*(p->view);
-		p2->pos.x = randX;
-		p2->pos.y = randY;
-		if((p1->pos.x == p2->pos.x && p1->pos.y == p2->pos.y) || spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
-			ok=1;
-	}while(ok != 1);
+	
+		if(!(p1->pos.x == p2->pos.x && p1->pos.y == p2->pos.y) && spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
+			ok = 1;
+	}
+	while(ok != 1);
 }
 
 
