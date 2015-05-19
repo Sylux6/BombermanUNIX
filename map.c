@@ -1,10 +1,10 @@
 #include "map.h"
 
-//print the map and launch the game 
+//Print the map and launch the game 
 void launch_game(char* folder){
 	struct board* map;
 	print_line2(CLEAR_TERM);
-	DIR* mod = opendir(folder); // tester avec un access peut etre plutot
+	DIR* mod = opendir(folder);
 	if(mod == NULL){
 		my_print_err(folder);
 		my_print_err("ouverture du dossier de mod impossible\n");
@@ -12,8 +12,6 @@ void launch_game(char* folder){
 		exit(-1);
 	}
 	closedir(mod);
-	//se serai la fin du test avec access
-
 
 	char* string1 = malloc(100);//contiendra le path du deroulement
 	
@@ -32,27 +30,23 @@ void launch_game(char* folder){
 	string1 = read_line(game_line);//name of the game
 	print_line(string1,1,(atoi(getenv("COLUMNS"))-strlen(string1))/2);
 	free(string1);
-	//now string1 est egale au nom du niveau
+	//string1 = current level name
 	char* string2;//contiendra le path du lvl
-	// char playerslife;
 	while((string1 = read_line(game_line)) != NULL){
 		map = malloc(sizeof(struct board));
 		string2 = malloc(100);
 		string2 = my_str_cpy_cat(string2,folder,"/niveaux/",string1,NULL);		
 		map_init(map,string2);
-		// print_map(map);
 
 		// -----------launch the game here------------------
 		player p1 = create_player(1);
 		player p2 = create_player(2);
 	
 		spawn(p1, p2, map);
-		// spawn(p2, map);
 		print_map(map,p1,p2);
 		mainGame(p1, p2, map);
 
 		//-------------------end---------------------------
-		// sleep(5);
 		// print who won the game
 		print_line2(CLEAR_TERM);
 		free(string2);
@@ -79,7 +73,6 @@ void print_map(board map, player p1, player p2){
 	int i;
 	for (i = 0; i < map->x; ++i)
 	{
-		// print_line(map->map[i],map->up_left_corner.x + i,map->up_left_corner.y);
 		for(int j = 0 ; j < map->y ; j++){
 			if(map->map[i][j] == 'X'){
 				print_line_("X",3,map->up_left_corner.x + i, map->up_left_corner.y + j,RED);
@@ -94,7 +87,7 @@ void print_map(board map, player p1, player p2){
 			}
 		}
 	}
-	//print les 2 player
+	//Displaying players on map
 	print_player(p1, map);
 	print_player(p2, map);
 	printBomb(map);
@@ -129,7 +122,7 @@ void printBomb(board map){
 }
 
 
-void map_init(struct board* map,char* file/*,int x,int y*/){
+void map_init(struct board* map,char* file){
 	char *buffer2 = malloc(100);
 	char* tmp;
 	int lvl1 = open(file,O_RDONLY); // open the map's file
@@ -142,13 +135,13 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 		sleep(2);
 		exit(-1);
 	}
-	//read the first line of the file
+	//Read the first line of the file
 	do{
 		n += myread(lvl1, buffer2+n, 1);
 
 	}while(buffer2[n-1] != '\n');
 	buffer2[n]='\0';
-	//find the number of line and columns of the file
+	//Getting lines and columns
 	if((tmp = strpbrk(buffer2," ")) != NULL){
 		*tmp = '\0';
 		tmp++;
@@ -156,7 +149,7 @@ void map_init(struct board* map,char* file/*,int x,int y*/){
 		columns = atoi(tmp);
 	}
 
-	// copy this map to the memory 
+	//Copying map 
 	int i = 0, j;
 	buf = malloc(columns+1);
 	map->x = line;
@@ -244,22 +237,20 @@ void del_board(struct board *map){
 }
 
 void print_carac(struct player p1,struct player p2){
-	//name player 1
 	print_line_(p1.name,3,1,1,BROWN);
-	//name player 2
 	print_line_(p2.name,3,1,atoi(getenv("COLUMNS"))-strlen(p2.name)+1,CYAN_CLAIRE);
 
 	//--- end of printf name ------------
 
-	//their life 
+	//LIFE
 	char *playerslife = calloc(10,1);
 
-	// player1's life
+	// player1 life
 	print_line("life :",2,1);
 	sprintf(playerslife,"%d",p1.life);
 	print_line(playerslife,2,8);
 
-	//player2's life
+	//player2 life
 	print_line("life :",2,atoi(getenv("COLUMNS"))-1-strlen("life :"));
 	sprintf(playerslife,"%d",p2.life);
 	print_line(playerslife,2,atoi(getenv("COLUMNS")));
@@ -328,7 +319,6 @@ board random_map() {
 	int x = my_rand(5, atoi(getenv("LINES"))-2);
 	int y = my_rand(5, atoi(getenv("COLUMNS"))) + 1;
 	int area, n, i, j, k, l;
-	// char w;
 	char **map = malloc(sizeof(char*)*x);
 	for(i = 0; i < x; i++)
 		map[i] = malloc(sizeof(char)*y);
@@ -381,7 +371,6 @@ board random_map() {
 				}
 			}
 		}
-	// sleep(1);
 		//FILLING MAP
 		for(i = 1; i < newBoard->x-1; i++) {
 			for(j = 1; j < newBoard->y-1; j++) {
@@ -392,9 +381,6 @@ board random_map() {
 					map[i][j] = ' ';
 				else {
 					n = my_rand(1, 9);
-					// memcpy(&w, &n, 1);
-					// w += 48;
-					// map[i][j] = w;
 					map[i][j] = n+48;
 				}
 			}

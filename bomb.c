@@ -102,7 +102,7 @@ bomb searchBomb(listBomb l, int x, int y) {
 	return NULL;
 }
 
-//Met à jour le timer de toutes les bombes actives
+//Update timer active bombs
 void updateTimer(listBomb l, int ms) {
 	listBomb c = l->next;
 	while(c != NULL) {
@@ -124,30 +124,26 @@ void updateTimer(listBomb l, int ms) {
 	deletUseless(l);
 }
 
-int nextBombEvent(listBomb l){
+int nextBombEvent(listBomb l) {
 	int next = BOMB_TIME + 1;
 	int tmp = -1;
 	listBomb c = l->next;
-	while(c != NULL){
-		if(c->bomb->state == SET &&  next > c->bomb->time){
+	while(c != NULL) {
+		if(c->bomb->state == SET &&  next > c->bomb->time)
 			next = c->bomb->time;
-		}
-		if(c->bomb->state == ENDED && next > c->bomb->time_explode){
+		if(c->bomb->state == ENDED && next > c->bomb->time_explode)
 			next = c->bomb->time_explode;
-		}
-		if(c->bomb->state == EXPLODING && next > c->bomb->time_explode){
+		if(c->bomb->state == EXPLODING && next > c->bomb->time_explode)
 			next = 1;
-		}
 		c = c->next;
 	}
 	if(next != BOMB_TIME+1)
 		return next;
-	else{
+	else
 		return tmp;
-	}
 }
 
-void deletUseless(listBomb l){
+void deletUseless(listBomb l) {
 	listBomb p = l;
 	listBomb c = l->next;
 	while(c != NULL) {
@@ -164,7 +160,7 @@ void deletUseless(listBomb l){
 	}
 }
 
-int isBomb(listBomb l,int x,int y){
+int isBomb(listBomb l,int x,int y) {
 	listBomb c = l->next
 	;
 	while(c != NULL) {
@@ -175,17 +171,17 @@ int isBomb(listBomb l,int x,int y){
 	return 0;	
 }
 
-int isSet(bomb b){
+int isSet(bomb b) {
 	return (b->state == SET);
 }
-int isEnded(bomb b){
+int isEnded(bomb b) {
 	return (b->state == ENDED);
 }
-int isExploding(bomb b){
+int isExploding(bomb b) {
 	return (b->state == EXPLODING);
 }
 
-void explode(bomb b,board map){
+void explode(bomb b,board map) {
 	changeState(b,ENDED);
 	int x = b->x;
 	int y = b->y;
@@ -261,40 +257,47 @@ void clear_bomb(bomb b,board map){
 	int y = b->y;
 	map->map[x][y] = ' ';
 
-	do{ //NORTH
+	//NORTH
+	do{
 		if(map->map[x-i][y] == 'X' || map->map[x-i][y] == ' ')
 			map->map[x-i][y] = ' ';
 		else
 			break;
 		i++;
-	}while(i <= b->owner->radius_bomb);
+	}
+	while(i <= b->owner->radius_bomb);
 	i = 1;
 
-
-	do{//SOUTH
+	//SOUTH
+	do{
 		
 		if(map->map[x+i][y] == 'X' || map->map[x+i][y] == ' ')
 			map->map[x+i][y] = ' ';
 		else
 			break;
 		i++;
-	}while(i <= b->owner->radius_bomb);
+	}
+	while(i <= b->owner->radius_bomb);
 	i = 1;
 
-	do{//WEST
+	//WEST
+	do{
 		if(map->map[x][y-i] == 'X' || map->map[x][y-i] == ' ')
 			map->map[x][y-i] = ' ';
 		else
 			break;
 		i++;
-	}while(i <= b->owner->radius_bomb);
+	}
+	while(i <= b->owner->radius_bomb);
 	i = 1;
 
-	do{//EAST
+	//EAST
+	do{
 		if(map->map[x][y+i] == 'X' || map->map[x][y+i] == ' ')
 			map->map[x][y+i] = ' ';
 		else
 			break;
 		i++;
-	}while(i <= b->owner->radius_bomb);
+	}
+	while(i <= b->owner->radius_bomb);
 }

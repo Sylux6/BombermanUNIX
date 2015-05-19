@@ -13,18 +13,22 @@ void print_line(char* line,int x,int y){
 void print_line_(char* line,int nb_arg,...){
 	va_list ap;
 	va_start(ap,nb_arg);
-	// int i=0;
-	if(nb_arg == 1){//juste color
+	//ONLY COLOR
+	if(nb_arg == 1) {
 		char* color =malloc(strlen(line)+10);
 		strcpy(color,va_arg(ap,char*));
 		strcat(color,line);
 		print_line2(color);
 		free(color);
-	}else if(nb_arg == 2){//juste position
+	}
+	//ONLY POSITION
+	else if(nb_arg == 2) {
 		int x = va_arg(ap,int);
 		int y = va_arg(ap,int);
 		print_line(line,x,y);
-	}else if(nb_arg == 3){//both
+	}
+	//COLOR + POSITION
+	else if(nb_arg == 3) {
 		int x = va_arg(ap,int);
 		int y = va_arg(ap,int);
 		char* color =malloc(strlen(line)+10);
@@ -32,7 +36,9 @@ void print_line_(char* line,int nb_arg,...){
 		strcat(color,line);
 		print_line(color,x,y);
 		free(color);
-	}else if(nb_arg == 4){//both + effect
+	}
+	//COLOR + POSITION + EFFECT
+	else if(nb_arg == 4) {
 		int x = va_arg(ap,int);
 		int y = va_arg(ap,int);
 		char* end = malloc(100);
@@ -47,11 +53,14 @@ void print_line_(char* line,int nb_arg,...){
 		free(color);
 		free(effet);
 		free(end);
-	}else{//print normal
+	}
+	//CLASSIC PRINT
+	else {
 		print_line2(line);
 	}
 	va_end(ap);
 }
+
 void print_line2(char* line){
 	mywrite(1,line,strlen(line));
 }
@@ -87,25 +96,27 @@ void printf_line(char* line,int x,int y){
 	free(save_tmp);
 }
 
-void set_pos(int x,int y){
+void set_pos(int x,int y) {
 	print_line("",x,y);
 }
-void term_cannonique(){
+
+void term_cannonique() {
 	tcsetattr(0,TCSANOW,&old);
 }
-void save_old(){
+
+void save_old() {
 	struct termios term;
 	tcgetattr(0, &term);
 	old = term;
 }
 
-void term_raw(){
+void term_raw() {
 	struct termios new;
 	tcgetattr(0, &new);
 	cfmakeraw(&new);
 	tcsetattr(0,TCSANOW,&new);
 }
 
-void leave(){
+void leave() {
 	_exit(1);
 }

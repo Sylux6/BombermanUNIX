@@ -49,3 +49,9 @@
 *Explosion en chaîne fonctionnelle
 *Spawn aléatoire des joueurs fonctionnelle
 *Ajout de la fonction random_map()
+
+19/05
+*Génération aléatoire de maps
+*Spawn aléatoire des joueurs cohérent
+*Corrections mineures
+*Nettoyage de code

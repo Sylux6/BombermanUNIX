@@ -66,19 +66,18 @@ char *mystrcpy(char *dest, const char *src) {
     return dest;
 }
 
-void new_stderr(){
+void new_stderr() {
     int new_stderr = open("stderr.log",O_CREAT | O_WRONLY,0777);
-
     lseek(new_stderr,0,SEEK_END);
     dup2(new_stderr,2);
     close(new_stderr);
 }
 
-void my_print_err(char* message){
+void my_print_err(char* message) {
     mywrite(2,message,strlen(message));
 }
 
-char* read_line(int fd){
+char* read_line(int fd) {
     char* ret=NULL;
     int n;
     int i = 1;
@@ -87,12 +86,13 @@ char* read_line(int fd){
     int pos_end = lseek(fd,0,SEEK_END);
     char buf[1];
     if(pos_end == pos_act){
-        return ret; // if it's the end of the file
+        //If end of file
+        return ret;
     }
     ret = malloc(i);
     lseek(fd,pos_act,SEEK_SET);
 
-    do{
+    do {
         n = read(fd,buf,1);
         if(n == -1){
             perror("erreur lecture du fichier");
@@ -101,15 +101,14 @@ char* read_line(int fd){
         ret[i-1] = *buf;
         i++;
         ret = realloc(ret,i);
-
-    }while(ret[i-2] != '\n');
+    }
+    while(ret[i-2] != '\n');
     ret[i-2] = '\0';
-    
     return ret;
 }
 
 
-int my_rand(int min,int max){
+int my_rand(int min,int max) {
     int f;
     unsigned int random;
     if ((f = open("/dev/urandom",O_RDONLY)) == -1) {
@@ -121,18 +120,19 @@ int my_rand(int min,int max){
     return min+random%(max-min+1);
 }
 
-char* my_str_cpy_cat(char* dest,char *from,...){
+char* my_str_cpy_cat(char* dest,char *from,...) {
     va_list ap;
     va_start(ap,from);
     char* tmp = from;
     *dest = 0;
-    do{
+    do {
         strcat(dest,tmp);
         tmp = va_arg(ap,char*);
-    }while(tmp != NULL);
-    // my_print_err(dest);
+    }
+    while(tmp != NULL);
     return dest;
 }
-int isNeg(int nb){
+
+int isNeg(int nb) {
     return nb<0;
 }

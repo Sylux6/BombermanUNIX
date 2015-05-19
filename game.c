@@ -25,11 +25,14 @@ int main(int argc,char** argv){
 			execlp("xterm","xterm","-bcf","100","-geometry",size,"-e",argv[0],"lancement_du_jeu",NULL);
 	}
 	else if(strcmp(getenv("continue"),"true") == 0){
-		new_stderr(); // create a strerr.log to save all the error
-
-		save_old(); // save the term cannonique value
-		term_raw(); // change the terminal to the mode raw
-		launchMenu(menuINIT(), 7, 4); // launch the main menu 
+		//Creating stderr.log to save errors
+		new_stderr();
+		//Saving old terminal values
+		save_old();
+		//Switching to RAW mode
+		term_raw();
+		//Launch main menu
+		launchMenu(menuINIT(), 7, 4);
 	}
 	return 1;
 }

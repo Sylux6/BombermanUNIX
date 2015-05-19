@@ -39,8 +39,8 @@ struct player {
 	int nb_bomb_set;
 	int speed;
 	int wait;
-	int invinsible;
-	int invinsible_time;
+	int invincible;
+	int invincible_time;
 	int radius_bomb;
 };
 typedef struct player *player;
@@ -59,9 +59,9 @@ void in_explode(player p1, player p2 , bomb b, board map);
 
 void is_touch(player p1, player p2, board map);
 
-int endOfInvinsibility(player p1,player p2);
+int endOfInviolability(player p1,player p2);
 
-void setInvinsibility(player p);
+void setInviolability(player p);
 
 int spawnValide(int x,int y,int x_f,int y_f,board map);
 
