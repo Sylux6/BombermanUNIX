@@ -50,8 +50,7 @@ void RandomlyCreated(){
     player p2 = create_player(2);
     print_line2(CLEAR_TERM);
     board map = random_map();
-    spawn(p1, map);
-    spawn(p2, map);
+    spawn(p1, p2, map);
     // sleep(2);
     print_map(map,p1,p2);
     mainGame(p1, p2, map);
@@ -240,9 +239,9 @@ menu menuINIT() {
     addMenuAction1(main_, "Commands", print_commande);
     addMenuAction1(main_, "Exit", leave);
 
-    addMenuAction2(game, "Randomly generated", RandomlyCreated);
     addMenuAction2(game, "mod1", launch_game);
     addMenuAction2(game, "mod2", launch_game);
+    addMenuAction2(game, "Randomly generated", RandomlyCreated);
     addMenuAction1(game, "Custom", wich_folder);
     return main_;
 }

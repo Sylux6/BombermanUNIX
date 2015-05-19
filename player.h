@@ -45,7 +45,7 @@ struct player {
 };
 typedef struct player *player;
 
-void spawn(struct player *p, struct board *map);
+void spawn(player p1, player p2, board map);
 
 player create_player(int nb);
 
@@ -62,5 +62,7 @@ void is_touch(player p1, player p2, board map);
 int endOfInvinsibility(player p1,player p2);
 
 void setInvinsibility(player p);
+
+int spwanValide(int x,int y,int x_f,int y_f,board map);
 
 #endif
