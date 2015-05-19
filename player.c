@@ -73,16 +73,32 @@ void spawn(player p1, player p2, board map){
 		map->map[randX][randY] = ' ';//*(p->view);
 		p2->pos.x = randX;
 		p2->pos.y = randY;
-
-		// if(spwanValide(p1->x,p1->y,p2->x,p2->y,map))
+		if(spawnValide(p1->pos.x, p1->pos.y, p2->pos.x, p2->pos.y, map))
 			ok=1;
 	}while(ok != 1);
 }
 
 
 
-int spwanValide(int x,int y,int x_f,int y_f,board map){
-	//backtracking
+int spawnValide(int x,int y,int x_f,int y_f,board map){
+	int i, j, ret;
+	char **tmp = malloc(sizeof(char*)*map->x);
+	for(i = 0; i < map->x; i++)
+		tmp[i] = malloc(sizeof(char)*map->y);
+	for(i = 0; i < map->x; i++)
+		for(j = 0; j < map->y; j++)
+			tmp[i][j] = 0;
+	ret = check_path(tmp, map, x, y, x_f, y_f);
+	print_number(ret, 2, 40);
+	if(ret) {
+		for(i = 0; i < map->x; i++)
+			free(tmp[i]);
+		free(tmp);
+		return 1;
+	}
+	for(i = 0; i < map->x; i++)
+		free(tmp[i]);
+	free(tmp);
 	return 0;
 }
 void is_touch(player p1, player p2, board map){

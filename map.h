@@ -75,6 +75,6 @@ board random_map();
 
 void printEndOfMap(board map);
 
-int check_path(char**, board, int, int, player);
+int check_path(char**, board, int, int, int, int);
 
 #endif

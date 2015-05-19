@@ -422,25 +422,25 @@ board random_map() {
 }
 
 //Check if there is a path to player p from (x, y)
-int check_path(char **tmp, board map, int x, int y, player p) {
+int check_path(char **tmp, board map, int x, int y, int xf, int yf) {
 	tmp[x][y] = 1;
-	if(x == p->pos.x && y == p->pos.y)
+	if(x == xf && y == yf)
 		return 1;
 	if(x+1 < map->x)
 		if(map->map[x+1][y] != '0' && tmp[x+1][y] == 0)
-			if(check_path(tmp, map, x+1, y, p))
+			if(check_path(tmp, map, x+1, y, xf, yf))
 				return 1;
 	if(x-1 > 0)
 		if(map->map[x-1][y] != '0' && tmp[x-1][y] == 0)
-			if(check_path(tmp, map, x-1, y, p))
+			if(check_path(tmp, map, x-1, y, xf, yf))
 				return 1;
 	if(y+1 <= map->y)
 		if(map->map[x][y+1] != '0' && tmp[x][y+1] == 0)
-			if(check_path(tmp, map, x, y+1, p))
+			if(check_path(tmp, map, x, y+1, xf, yf))
 				return 1;
 	if(y-1 > 0)
 		if(map->map[x][y-1] != '0' && tmp[x][y-1] == 0)
-			if(check_path(tmp, map, x, y-1, p))
+			if(check_path(tmp, map, x, y-1, xf, yf))
 				return 1;
 	return 0;
 }

@@ -63,6 +63,6 @@ int endOfInvinsibility(player p1,player p2);
 
 void setInvinsibility(player p);
 
-int spwanValide(int x,int y,int x_f,int y_f,board map);
+int spawnValide(int x,int y,int x_f,int y_f,board map);
 
 #endif
