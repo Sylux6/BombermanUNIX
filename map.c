@@ -331,9 +331,9 @@ board random_map() {
 	int y = my_rand(5, atoi(getenv("COLUMNS"))) + 1;
 	int area, n, i, j;
 	char w;
-	char **map = malloc(sizeof(char*)*y);
-	for(i = 0; i < x; i++)
-		map[i] = malloc(sizeof(char)*x);
+	char **map = malloc(sizeof(char*)*x);
+	for(i = 0; i < y; i++)
+		map[i] = malloc(sizeof(char)*y);
 
 	newBoard->map = map;
 	newBoard->x = x;
@@ -347,13 +347,13 @@ board random_map() {
 	
 	//WALL OUTLINE
 	for(i = 0; i < newBoard->y; i++) {
-		map[0][i] = 0;
-		map[newBoard->x-1][i] = 0;
+		map[0][i] = '0';
+		map[newBoard->x-1][i] = '0';
 		map[newBoard->x-1][newBoard->y] = '\0';
 	}
 	for(i = 0; i < newBoard->x; i++) {
-		map[i][0] = 0;
-		map[i][newBoard->y-1] = 0;
+		map[i][0] = '0';
+		map[i][newBoard->y-1] = '0';
 	}
 
 	do {

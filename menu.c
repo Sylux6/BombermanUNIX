@@ -48,10 +48,12 @@ void wich_folder(){
 void RandomlyCreated(){
     player p1 = create_player(1);
     player p2 = create_player(2);
+    print_line2(CLEAR_TERM);
     board map = random_map();
     spawn(p1, map);
     spawn(p2, map);
     print_map(map,p1,p2);
+    sleep(2);
     mainGame(p1, p2, map);
 }
 

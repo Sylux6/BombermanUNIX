@@ -56,7 +56,7 @@ void spawn(struct player *p, struct board *map){
 		area = area_calcul(map, randX, randY);
 	}
 	while(area <= p->radius_bomb + 1);
-	map->map[randX][randY] = *(p->view);
+	map->map[randX][randY] = ' ';//*(p->view);
 	p->pos.x = randX;
 	p->pos.y = randY;
 }
