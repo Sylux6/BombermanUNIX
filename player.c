@@ -46,21 +46,45 @@ void upgradeRadius(struct player* p,int value){
 void upgradeSpeed(struct player* p,int value){
 	p->speed += value;
 }
-void spawn(struct player *p, struct board *map){
-	int randX, randY, area;
-	do {
-		randX = my_rand(0, map->x-1);
-		randY = my_rand(0, map->y-1);
-		if(map->powerups[randX][randY].type != EMPTY)
-			continue;
-		area = area_calcul(map, randX, randY);
-	}
-	while(area <= p->radius_bomb + 1);
-	map->map[randX][randY] = ' ';//*(p->view);
-	p->pos.x = randX;
-	p->pos.y = randY;
+void spawn(player p1, player p2, board map){
+	int randX, randY, area,ok=0;
+	do{
+		do {
+			randX = my_rand(0, map->x-1);
+			randY = my_rand(0, map->y-1);
+			if(map->powerups[randX][randY].type != EMPTY)
+				continue;
+			area = area_calcul(map, randX, randY);
+		}
+		while(area <= p1->radius_bomb + 1);
+		map->map[randX][randY] = ' ';//*(p->view);
+		p1->pos.x = randX;
+		p1->pos.y = randY;
+
+
+		do {
+			randX = my_rand(0, map->x-1);
+			randY = my_rand(0, map->y-1);
+			if(map->powerups[randX][randY].type != EMPTY)
+				continue;
+			area = area_calcul(map, randX, randY);
+		}
+		while(area <= p2->radius_bomb + 1);
+		map->map[randX][randY] = ' ';//*(p->view);
+		p2->pos.x = randX;
+		p2->pos.y = randY;
+
+		// if(spwanValide(p1->x,p1->y,p2->x,p2->y,map))
+			ok=1;
+	}while(ok != 1);
 }
 
+
+
+int spwanValide(int x,int y,int x_f,int y_f,board map){
+	//backtracking
+	return 0;
+}
 void is_touch(player p1, player p2, board map){
 	//si p1 ou p2 est dans une range de bombe en phase 3 , il perd une vie
 

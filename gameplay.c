@@ -43,12 +43,9 @@ void mainGame(player p1, player p2, board map){
 
 			print_map(map,p1,p2);
 			is_touch(p1,p2,map);
-
 			time_left = get_timer(&other);
 	}
-	print_carac(*p1,*p2);
 	printEndOfMap(map);
-	sleep(2);
 }
 
 char code_action(int action){
@@ -102,10 +99,7 @@ int tryMove(char direction, player p, board map){
 	switch(direction){
 		case 1://up
 			if(isPassable(map,x-1,y)){
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				p->pos.x--;
-				map->map[p->pos.x][p->pos.y] = ' ';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 
 				p->wait = p->speed;
@@ -114,12 +108,8 @@ int tryMove(char direction, player p, board map){
 			break;
 		case 2://down
 			if(isPassable(map,x+1,y)){
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				p->pos.x++;	
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}
@@ -127,23 +117,16 @@ int tryMove(char direction, player p, board map){
 			break;
 		case 3://right
 			if(isPassable(map,x,y+1)){
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				p->pos.y++;
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}
 			break;
 		case 4://left
 			if(isPassable(map,x,y-1)){
-				map->map[p->pos.x][p->pos.y] = ' ';
-
 				p->pos.y--;
 				p->wait = p->speed;
-				map->map[p->pos.x][p->pos.y] = ' ';
 				lootPowerup(p,&map->powerups[p->pos.x][p->pos.y]);
 				return 1;
 			}

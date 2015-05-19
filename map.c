@@ -46,8 +46,8 @@ void launch_game(char* folder){
 		player p1 = create_player(1);
 		player p2 = create_player(2);
 	
-		spawn(p1, map);
-		spawn(p2, map);
+		spawn(p1, p2, map);
+		// spawn(p2, map);
 		print_map(map,p1,p2);
 		mainGame(p1, p2, map);
 
