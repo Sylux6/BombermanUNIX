@@ -69,13 +69,13 @@ void launch_game(char* folder){
 		print_line2(CLEAR_TERM);
 	}
 	if(win1 > win2){
-		print_line_("Player 1 won game",3,5,20,GREEN);
+		print_line_("Player 1 won the game",3,5,20,GREEN);
         sleep(4);
 	}else if(win1 < win2){
-		print_line_("Player 2 won game",3,5,20,GREEN);
+		print_line_("Player 2 won the game",3,5,20,GREEN);
         sleep(4);
 	}else{
-		print_line_("Nobody won game",3,5,20,RED);
+		print_line_("Nobody won the game",3,5,20,RED);
         sleep(4);
 	}
 }

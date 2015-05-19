@@ -52,17 +52,16 @@ void RandomlyCreated() {
     print_line2(CLEAR_TERM);
     board map = random_map();
     spawn(p1, p2, map);
-    // sleep(2);
     print_map(map,p1,p2);
     mainGame(p1, p2, map);
     if(p1->life == 0 && p2->life != 0){
-        print_line_("Player 2 won game",3,5,20,GREEN);
+        print_line_("Player 2 won the game",3,5,20,GREEN);
         sleep(4);
     }else if(p1->life != 0 && p2->life == 0){
-        print_line_("Player 1 won game",3,5,20,GREEN);
+        print_line_("Player 1 won the game",3,5,20,GREEN);
         sleep(4);
     }else{
-        print_line_("Nobody won game",3,5,20,RED);
+        print_line_("Nobody won the game",3,5,20,RED);
         sleep(4);
     }
     print_line2(CLEAR_TERM);
